@@ -1,0 +1,150 @@
+<script setup>
+import { ref } from 'vue';
+
+const option = ref({
+  data: [
+    {
+      title: 'QQ翻译',
+      content: 'QQ翻译不必多说吧。',
+      status: '正常',
+      date: '1天前'
+    },
+    {
+      title: '电影票房',
+      content: '获取电影排行前10。',
+      status: '正常',
+      date: '1天前'
+    },
+    {
+      title: '动漫头像',
+      content: '殷其雷，天阴霾，雨零耶，盼君留。',
+      status: '正常',
+      date: '1天前'
+    },
+    {
+      title: '感动哭了',
+      content: '殷其雷，纵不零，卿若留，吾将从。',
+      status: '正常',
+      date: '1天前'
+    }
+  ]
+});
+</script>
+
+<template>
+  <div class="container">
+    <el-card class="wrapper">
+      <el-row :gutter="20">
+        <el-col
+            v-for="(item, index) in option.data"
+            :key="index"
+            :xs="24"
+            :sm="12"
+            :md="8"
+            :lg="6"
+        >
+          <div class="card">
+            <div class="card-header">
+              <h3>{{ item.title }}</h3>
+            </div>
+            <div class="card-body">
+              <p>{{ item.content }}</p>
+            </div>
+            <div class="card-footer">
+              <span class="status">{{ item.status }}</span>
+              <span class="date">{{ item.date }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-card>
+  </div>
+</template>
+
+<style scoped>
+/* 主容器 */
+.container {
+  width: 90%;
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* 卡片整体样式 */
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  height: 240px;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 悬浮时放大 + 增强光影 */
+.card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* 头部标题 */
+.card-header h3 {
+  font-size: 18px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff7e5f, #feb47b);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* 主要内容 */
+.card-body {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  text-align: center;
+  padding: 10px;
+}
+
+/* 底部信息 */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #888;
+}
+
+/* 状态样式 */
+.status {
+  font-weight: bold;
+  color: #42b983;
+}
+
+/* 日期样式 */
+.date {
+  font-style: italic;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .card {
+    height: auto;
+    padding: 15px;
+  }
+  .card-header h3 {
+    font-size: 16px;
+  }
+  .card-body {
+    font-size: 13px;
+  }
+}
+</style>
