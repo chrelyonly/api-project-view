@@ -1,5 +1,5 @@
 import hljs from 'highlight.js';
-import 'highlight.js/styles/default.css';
+import 'highlight.js/styles/github-dark-dimmed.min.css';
 export const HighlightPlugin = {
     install(Vue) {
         Vue.directive('highlight', {

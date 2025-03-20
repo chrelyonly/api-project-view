@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
-
+import { useRouter } from 'vue-router';
+// 获取路由实例
+const router = useRouter();
 const option = ref({
   data: [
     {
@@ -29,6 +31,9 @@ const option = ref({
     }
   ]
 });
+const goDetail = () => {
+  router.push("/doc/api-detail");
+}
 </script>
 
 <template>
@@ -43,7 +48,7 @@ const option = ref({
             :md="8"
             :lg="6"
         >
-          <div class="card">
+          <div class="card" @click="goDetail">
             <div class="card-header">
               <h3 >{{ item.title }}</h3>
             </div>
