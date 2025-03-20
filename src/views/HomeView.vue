@@ -41,7 +41,7 @@ const goDetail = () => {
               <p>{{ item.content }}</p>
             </div>
             <div class="card-footer">
-              <span class="status">{{ item.status }}</span>
+              <span class="status">{{ item.status===1?'正常':'异常' }}</span>
               <span class="date">上次更新: {{ item.updateTime }}</span>
             </div>
           </div>
