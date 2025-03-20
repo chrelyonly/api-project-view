@@ -27,5 +27,9 @@ app.use(router)
 app.use(ElementPlus, {
     locale: zhCn,
 })
+// 注册高亮插件 使用 v-highlight 在标签上就行
+import {HighlightPlugin} from '@/util/highlightPlugin.js';
+app.use(HighlightPlugin);
+
 app.use(Avue, { locale:zhLocale,axios:request })
 app.mount('#app')
