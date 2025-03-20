@@ -5,7 +5,6 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-
 const app = createApp(App)
 //需要先安装ElementPlus的依赖
 import ElementPlus from 'element-plus'
@@ -20,8 +19,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
-app.provide("$https",http)
-app.provide("$findObject",findObject)
+window.$https = http;
+window.$findObject = findObject;
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus, {

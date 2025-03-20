@@ -1,36 +1,21 @@
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted} from 'vue';
 import { useRouter } from 'vue-router';
 // 获取路由实例
 const router = useRouter();
 const option = ref({
-  data: [
-    {
-      title: 'QQ翻译',
-      content: 'QQ翻译不必多说吧。',
-      status: '正常',
-      date: '1天前'
-    },
-    {
-      title: '电影票房',
-      content: '获取电影排行前10。',
-      status: '正常',
-      date: '1天前'
-    },
-    {
-      title: '动漫头像',
-      content: '殷其雷，天阴霾，雨零耶，盼君留。',
-      status: '正常',
-      date: '1天前'
-    },
-    {
-      title: '感动哭了',
-      content: '殷其雷，纵不零，卿若留，吾将从。',
-      status: '正常',
-      date: '1天前'
-    }
-  ]
+  data: []
 });
+// 加载完成初始化
+onMounted(()=>{
+  let params = {
+
+  }
+  $https("/emoji-api/api-list","get",params,1,{}).then( res => {
+    option.value.data = res.data.data.records
+  })
+})
+// 前往详情页面
 const goDetail = () => {
   router.push("/doc/api-detail");
 }
@@ -50,14 +35,14 @@ const goDetail = () => {
         >
           <div class="card" @click="goDetail">
             <div class="card-header">
-              <h3 >{{ item.title }}</h3>
+              <h3 >{{ item.name }}</h3>
             </div>
             <div class="card-body">
               <p>{{ item.content }}</p>
             </div>
             <div class="card-footer">
               <span class="status">{{ item.status }}</span>
-              <span class="date">{{ item.date }}</span>
+              <span class="date">上次更新: {{ item.updateTime }}</span>
             </div>
           </div>
         </el-col>
@@ -115,7 +100,7 @@ const goDetail = () => {
   font-size: 14px;
   color: #333;
   line-height: 1.6;
-  text-align: center;
+  text-align: left;
   padding: 10px;
 }
 
