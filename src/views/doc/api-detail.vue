@@ -3,9 +3,9 @@
     <!-- API 详情 -->
     <el-card class="api-glass-card">
       <h2 class="title">API 详情</h2>
-      <p><strong>接口名称：</strong> QQ 翻译 API</p>
-      <p><strong>描述：</strong> 该接口用于将输入内容翻译为目标语言</p>
-      <p><strong>适用场景：</strong> 需要快速翻译的 Web 或移动应用</p>
+      <p><strong>接口名称：</strong> {{ apiInfo.name }}</p>
+      <p><strong>描述：</strong> {{ apiInfo.content }}</p>
+      <p><strong>适用场景：</strong> 煤油</p>
     </el-card>
 
     <!-- API 信息 -->
@@ -13,69 +13,58 @@
       <h2 class="title">接口信息</h2>
       <el-descriptions :column="isMobile ? 1 : 3" border>
         <el-descriptions-item label="接口地址">
-          <el-tag type="success">{{ apiInfo.url }}</el-tag>
+          <el-tag type="success">{{ apiInfo.apiUrl }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="请求方法">
-          <el-tag type="warning">{{ apiInfo.method }}</el-tag>
+          <el-tag type="warning">{{ apiInfo.requestType }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="返回格式">
-          <el-tag type="info">{{ apiInfo.format }}</el-tag>
+          <el-tag type="info">{{ apiInfo.responseType }}</el-tag>
         </el-descriptions-item>
       </el-descriptions>
     </el-card>
 
     <!-- 请求参数说明 -->
-    <el-card class="api-section">
+    <el-card class="api-section" v-if="apiInfo.requestParams">
       <h2 class="title">请求参数说明</h2>
-      <el-table :data="requestParams" border stripe style="width: 100%">
+      <el-table :data="JSON.parse(apiInfo.requestParams)" border stripe style="width: 100%">
         <el-table-column prop="name" label="名称" width="120"></el-table-column>
         <el-table-column prop="required" label="必填" width="80"></el-table-column>
         <el-table-column prop="type" label="类型" width="120"></el-table-column>
-        <el-table-column prop="description" label="说明"></el-table-column>
+        <el-table-column prop="des" label="说明"></el-table-column>
       </el-table>
     </el-card>
 
     <!-- 调用示例 -->
-    <el-card class="api-section">
-      <h2 class="title">调用示例</h2>
-      <el-input v-model="exampleUrl" readonly class="copy-input">
-        <template #append>
-          <el-button type="primary" @click="copyToClipboard">复制</el-button>
-        </template>
-      </el-input>
-    </el-card>
+<!--    <el-card class="api-section">-->
+<!--      <h2 class="title">调用示例</h2>-->
+<!--      <el-input v-model="exampleUrl" readonly class="copy-input">-->
+<!--        <template #append>-->
+<!--          <el-button type="primary" @click="copyToClipboard">复制</el-button>-->
+<!--        </template>-->
+<!--      </el-input>-->
+<!--    </el-card>-->
 
     <!-- 代码示例 -->
-    <el-card class="api-section">
-      <h2 class="title">代码示例</h2>
-      <pre v-highlight class="code-block">
-fetch("https://api.lolimi.cn/API/qqfy/api.php?msg=晨常&type=json")
-  .then(response => response.json())
-  .then(data => console.log(data));
-      </pre>
-    </el-card>
+<!--    <el-card class="api-section">-->
+<!--      <h2 class="title">代码示例</h2>-->
+<!--      <pre v-highlight class="code-block">-->
+<!--fetch("https://api.lolimi.cn/API/qqfy/api.php?msg=晨常&type=json")-->
+<!--  .then(response => response.json())-->
+<!--  .then(data => console.log(data));-->
+<!--      </pre>-->
+<!--    </el-card>-->
   </el-container>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { ElMessage } from "element-plus";
-
+import { useRoute } from "vue-router";
+const router = useRoute();
+const id = router.query.id; // 获取传递的 id
 // API 信息
-const apiInfo = ref({
-  url: "https://api.lolimi.cn/API/qqfy/api.php",
-  method: "GET/POST",
-  format: "text/json",
-});
-
-// 请求参数
-const requestParams = ref([
-  { name: "msg", required: "是", type: "string", description: "填写需要翻译的内容" },
-  { name: "type", required: "否", type: "string", description: "可填写json/text，默认为text" },
-]);
-
-// 示例 API 调用 URL
-const exampleUrl = ref("https://api.lolimi.cn/API/qqfy/api.php?msg=晨常&type=json");
+const apiInfo = ref({});
 
 // 复制到剪贴板
 const copyToClipboard = () => {
@@ -93,6 +82,18 @@ const handleResize = () => {
 // 监听窗口变化
 onMounted(() => {
   window.addEventListener("resize", handleResize);
+  let params = {
+    id:id
+  }
+  $https("/emoji-api/api-detail","get",params,1,{}).then( res=> {
+    if (res.data.data){
+      apiInfo.value = res.data.data
+    }else{
+      router.push({
+        path: "/"
+      });
+    }
+  })
 });
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize);
@@ -118,7 +119,6 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
-  color: white;
   text-align: center;
   font-size: 16px;
   font-weight: bold;

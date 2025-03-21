@@ -16,8 +16,13 @@ onMounted(()=>{
   })
 })
 // 前往详情页面
-const goDetail = () => {
-  router.push("/doc/api-detail");
+const goDetail = (item) => {
+  router.push({
+    path: "/doc/api-detail",
+    query: {
+      id: item.id
+    }
+  });
 }
 </script>
 
@@ -33,7 +38,7 @@ const goDetail = () => {
             :md="8"
             :lg="6"
         >
-          <div class="card" @click="goDetail">
+          <div class="card" @click="goDetail(item)">
             <div class="card-header">
               <h3 >{{ item.name }}</h3>
             </div>
