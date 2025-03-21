@@ -59,19 +59,13 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { ElMessage } from "element-plus";
-import { useRoute } from "vue-router";
-const router = useRoute();
-const id = router.query.id; // 获取传递的 id
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();  // 获取路由信息（只能读取，不支持 push）
+const router = useRouter(); // 获取路由实例（可以使用 push、replace）
+const id = route.query.id; // 获取传递的 id
 // API 信息
 const apiInfo = ref({});
 
-// 复制到剪贴板
-const copyToClipboard = () => {
-  navigator.clipboard.writeText(exampleUrl.value).then(() => {
-    ElMessage.success("已复制到剪贴板");
-  });
-};
 
 // 响应式布局
 const isMobile = ref(window.innerWidth < 768);
@@ -86,7 +80,7 @@ onMounted(() => {
     id:id
   }
   $https("/emoji-api/api-detail","get",params,1,{}).then( res=> {
-    if (res.data.data){
+    if (res.data.data && res.data.data.id){
       apiInfo.value = res.data.data
     }else{
       router.push({
