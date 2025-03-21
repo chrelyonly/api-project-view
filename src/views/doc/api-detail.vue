@@ -1,5 +1,5 @@
 <template>
-  <el-container class="api-container">
+  <el-container class="api-container" v-loading="loading">
     <!-- API 详情 -->
     <el-card class="api-glass-card">
       <h2 class="title">API 详情</h2>
@@ -65,6 +65,7 @@ const router = useRouter(); // 获取路由实例（可以使用 push、replace�
 const id = route.query.id; // 获取传递的 id
 // API 信息
 const apiInfo = ref({});
+const loading = ref(true);
 
 
 // 响应式布局
@@ -87,6 +88,8 @@ onMounted(() => {
         path: "/"
       });
     }
+  }).finally(()=>{
+    loading.value = false
   })
 });
 onUnmounted(() => {
