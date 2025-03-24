@@ -11,7 +11,7 @@
     <!-- API 信息 -->
     <el-card class="api-section">
       <h2 class="title">接口信息</h2>
-      <el-descriptions :column="isMobile ? 1 : 3" border>
+      <el-descriptions :column="isMobile ? 1 : 1" border>
         <el-descriptions-item label="接口地址">
           <el-tag type="success">{{ apiInfo.apiUrl }}</el-tag>
         </el-descriptions-item>
