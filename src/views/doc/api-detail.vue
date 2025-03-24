@@ -138,6 +138,12 @@ onUnmounted(() => {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* 悬浮时放大 + 增强光影 */
+.api-section:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
 /* 标题 */
 .title {
   font-size: 20px;
