@@ -80,7 +80,7 @@ onMounted(() => {
   let params = {
     id:id
   }
-  $https("/emoji-api/api-detail","get",params,1,{}).then( res=> {
+  $https("/view-api/api-detail","get",params,1,{}).then( res=> {
     if (res.data.data && res.data.data.id){
       apiInfo.value = res.data.data
     }else{

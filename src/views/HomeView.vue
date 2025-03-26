@@ -11,7 +11,7 @@ onMounted(()=>{
   let params = {
 
   }
-  $https("/emoji-api/api-list","get",params,1,{}).then( res => {
+  $https("/view-api/api-list","get",params,1,{}).then( res => {
     option.value.data = res.data.data.records
   })
 })
