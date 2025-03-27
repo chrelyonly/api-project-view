@@ -1,54 +1,8 @@
-<script setup>
-import { ref,onMounted} from 'vue';
-import { useRouter } from 'vue-router';
-// 获取路由实例
-const router = useRouter();
-const option = ref({
-  // api列表数据
-  apiData: [],
-// 赞助数据
-  sponsorData: []
-});
-// 加载完成初始化
-onMounted(()=>{
-  // 获取数据
-  getApiList();
-  // 获取赞助列表
-  getSponsorList();
-})
-// 获取接口列表
-const getApiList = () => {
-  let params = {
-
-  }
-  $https("/view-api/api-list","get",params,1,{}).then( res => {
-    option.value.apiData = res.data.data.records
-  })
-}
-// 获取赞助列表
-const getSponsorList = () => {
-  let params = {
-
-  }
-  $https("/view-api/sponsor-list","get",params,1,{}).then( res => {
-    option.value.sponsorData = res.data.data.records
-  })
-}
-// 前往详情页面
-const goDetail = (item) => {
-  router.push({
-    path: "/doc/api-detail",
-    query: {
-      id: item.id
-    }
-  });
-}
-</script>
-
 <template>
   <div class="container">
-    <el-card class="wrapper">
-      <h2 style="text-align: center;margin: 30px auto;color:#26c96b">API接口</h2>
+    <!-- API 列表 -->
+    <el-card class="wrapper animate__animated animate__fadeInUp">
+      <h2 class="title">🚀 API 接口</h2>
       <el-row :gutter="20">
         <el-col
             v-for="(item, index) in option.apiData"
@@ -58,39 +12,41 @@ const goDetail = (item) => {
             :md="8"
             :lg="6"
         >
-          <div class="card" @click="goDetail(item)">
+          <div class="card animate__animated animate__fadeIn" @click="goDetail(item)">
             <div class="card-header">
-              <h3 >{{ item.name }}</h3>
+              <h3>{{ item.name }}</h3>
             </div>
             <div class="card-body">
               <p>{{ item.content }}</p>
             </div>
             <div class="card-footer">
-              <span class="status">{{ item.status===1?'正常':'异常' }}</span>
-              <span class="date">上次更新: {{ item.updateTime }}</span>
+              <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>
+              <span class="date">⏳ {{ item.updateTime }}</span>
             </div>
           </div>
         </el-col>
       </el-row>
     </el-card>
-    <el-card class="wrapper">
-      <h2 style="text-align: center;margin: 30px auto;color:#26c96b">特别赞助</h2>
+
+    <!-- 赞助者列表 -->
+    <el-card class="wrapper animate__animated animate__fadeInUp">
+      <h2 class="title">💖 特别赞助</h2>
       <el-row :gutter="20">
         <el-col
             v-for="(item, index) in option.sponsorData"
             :key="index"
-            :span="4"
+            :xs="12"
+            :sm="8"
+            :md="6"
+            :lg="4"
         >
-          <div class="card" style="padding: 0;height: 200px;min-width: 200px;">
-            <div class="card-header">
-              <h3 >{{ item.name }}</h3>
-            </div>
-            <div class="card-body" style="text-align: center;padding: 0" >
-              <el-image :src="item.avatar" style="width: 100px;height: 100px;border-radius: 50%;border: 2px solid #26c96b"></el-image>
-            </div>
-            <div class="card-header" style="padding: 0;" >
-              <h3 >{{ item.money }}</h3>
-            </div>
+          <div class="sponsor-card animate__animated animate__zoomIn">
+            <h3 class="sponsor-name">{{ item.name }}</h3>
+            <el-image
+                :src="item.avatar"
+                class="sponsor-avatar animate__animated animate__pulse"
+            ></el-image>
+            <h3 class="sponsor-money">💰 {{ item.money }}</h3>
           </div>
         </el-col>
       </el-row>
@@ -98,54 +54,88 @@ const goDetail = (item) => {
   </div>
 </template>
 
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const option = ref({ apiData: [], sponsorData: [] });
+
+onMounted(() => {
+  getApiList();
+  getSponsorList();
+});
+
+const getApiList = () => {
+  $https("/view-api/api-list", "get", {}, 1, {}).then(res => {
+    option.value.apiData = res.data.data.records;
+  });
+};
+
+const getSponsorList = () => {
+  $https("/view-api/sponsor-list", "get", {}, 1, {}).then(res => {
+    option.value.sponsorData = res.data.data.records;
+  });
+};
+
+const goDetail = (item) => {
+  router.push({ path: "/doc/api-detail", query: { id: item.id } });
+};
+</script>
+
 <style scoped>
-/* 主容器 */
 .container {
   width: 90%;
-  max-width: 1700px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 20px;
 }
-.wrapper{
+
+.wrapper {
   margin-bottom: 20px;
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  backdrop-filter: blur(10px);
 }
-/* 卡片整体样式 */
+
+.title {
+  text-align: center;
+  margin: 30px auto;
+  color: #ff6b6b;
+  font-size: 26px;
+  font-weight: bold;
+}
+
 .card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 20px;
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
   border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  height: 240px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
-  border: 1px solid rgba(255, 255, 255, 0.3);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #e0e0e0;
 }
 
-/* 悬浮时放大 + 增强光影 */
 .card:hover {
-  transform: translateY(-10px) scale(1.05);
+  transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-color: #ff6b6b;
 }
 
-/* 头部标题 */
 .card-header h3 {
   font-size: 18px;
   font-weight: bold;
-  background: linear-gradient(45deg, #ff7e5f, #feb47b);
-  -webkit-background-clip: text;
-  color: transparent;
   text-align: center;
   margin-bottom: 10px;
+  color: #ff6b6b;
 }
 
-/* 主要内容 */
 .card-body {
   flex-grow: 1;
   font-size: 14px;
@@ -153,39 +143,52 @@ const goDetail = (item) => {
   line-height: 1.6;
   text-align: left;
   padding: 10px;
+  margin-bottom: 10px; /* 添加间距 */
 }
 
-/* 底部信息 */
 .card-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   font-size: 12px;
-  color: #888;
+  color: #666;
+  border-top: 1px solid #eee; /* 视觉分隔 */
+  padding-top: 10px;
 }
 
-/* 状态样式 */
-.status {
-  font-weight: bold;
-  color: #42b983;
+.sponsor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 15px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 日期样式 */
-.date {
-  font-style: italic;
+.sponsor-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #ff6b6b;
+  transition: transform 0.3s ease-in-out;
 }
 
-/* 响应式优化 */
+.sponsor-avatar:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
 @media (max-width: 768px) {
-  .card {
-    height: auto;
-    padding: 15px;
+  .title {
+    font-size: 22px;
   }
   .card-header h3 {
     font-size: 16px;
   }
-  .card-body {
-    font-size: 13px;
+  .sponsor-avatar {
+    width: 80px;
+    height: 80px;
   }
 }
 </style>
