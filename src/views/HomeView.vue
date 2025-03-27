@@ -81,7 +81,7 @@ const goDetail = (item) => {
             :key="index"
             :span="4"
         >
-          <div class="card" style="padding: 0;height: 200px">
+          <div class="card" style="padding: 0;height: 200px;min-width: 200px;">
             <div class="card-header">
               <h3 >{{ item.name }}</h3>
             </div>
