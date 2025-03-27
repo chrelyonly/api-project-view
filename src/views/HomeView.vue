@@ -4,17 +4,36 @@ import { useRouter } from 'vue-router';
 // 获取路由实例
 const router = useRouter();
 const option = ref({
-  data: []
+  // api列表数据
+  apiData: [],
+// 赞助数据
+  sponsorData: []
 });
 // 加载完成初始化
 onMounted(()=>{
+  // 获取数据
+  getApiList();
+  // 获取赞助列表
+  getSponsorList();
+})
+// 获取接口列表
+const getApiList = () => {
   let params = {
 
   }
   $https("/view-api/api-list","get",params,1,{}).then( res => {
-    option.value.data = res.data.data.records
+    option.value.apiData = res.data.data.records
   })
-})
+}
+// 获取赞助列表
+const getSponsorList = () => {
+  let params = {
+
+  }
+  $https("/view-api/sponsor-list","get",params,1,{}).then( res => {
+    option.value.sponsorData = res.data.data.records
+  })
+}
 // 前往详情页面
 const goDetail = (item) => {
   router.push({
@@ -29,9 +48,10 @@ const goDetail = (item) => {
 <template>
   <div class="container">
     <el-card class="wrapper">
+      <h2 style="text-align: center;margin: 30px auto;color:#26c96b">API接口</h2>
       <el-row :gutter="20">
         <el-col
-            v-for="(item, index) in option.data"
+            v-for="(item, index) in option.apiData"
             :key="index"
             :xs="24"
             :sm="12"
@@ -53,6 +73,28 @@ const goDetail = (item) => {
         </el-col>
       </el-row>
     </el-card>
+    <el-card class="wrapper">
+      <h2 style="text-align: center;margin: 30px auto;color:#26c96b">特别赞助</h2>
+      <el-row :gutter="20">
+        <el-col
+            v-for="(item, index) in option.sponsorData"
+            :key="index"
+            :span="4"
+        >
+          <div class="card" style="padding: 0;height: 200px">
+            <div class="card-header">
+              <h3 >{{ item.name }}</h3>
+            </div>
+            <div class="card-body" style="text-align: center;padding: 0" >
+              <el-image :src="item.avatar" style="width: 100px;height: 100px;border-radius: 50%;border: 2px solid #26c96b"></el-image>
+            </div>
+            <div class="card-header" style="padding: 0;" >
+              <h3 >{{ item.money }}</h3>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-card>
   </div>
 </template>
 
@@ -64,7 +106,11 @@ const goDetail = (item) => {
   margin: 0 auto;
   padding: 20px 0;
 }
-
+.wrapper{
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
 /* 卡片整体样式 */
 .card {
   display: flex;
