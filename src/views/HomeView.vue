@@ -89,6 +89,7 @@ const goDetail = (item) => {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
+  opacity: 0.9;
 }
 
 .wrapper {

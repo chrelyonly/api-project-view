@@ -110,6 +110,7 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  opacity: 0.9;
 }
 
 /* 玻璃风格卡片 */
