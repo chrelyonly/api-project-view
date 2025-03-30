@@ -29,7 +29,12 @@
       <h2 class="title">请求参数说明</h2>
       <el-table :data="JSON.parse(apiInfo.requestParams)" border stripe style="width: 100%">
         <el-table-column prop="name" label="名称" width="120"></el-table-column>
-        <el-table-column prop="required" label="必填" width="80"></el-table-column>
+        <el-table-column prop="required" label="必填" width="80">
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.required === 1">是</el-tag>
+            <el-tag type="danger" v-else>否</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="type" label="类型" width="120"></el-table-column>
         <el-table-column prop="des" label="说明"></el-table-column>
       </el-table>
