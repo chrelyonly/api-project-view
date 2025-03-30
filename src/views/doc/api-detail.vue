@@ -119,7 +119,7 @@ onUnmounted(() => {
   max-width: 600px;
   padding: 20px;
   border-radius: 15px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 1);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   text-align: center;
@@ -140,7 +140,7 @@ onUnmounted(() => {
   max-width: 800px;
   padding: 20px;
   border-radius: 15px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 1);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 

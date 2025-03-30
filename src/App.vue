@@ -7,11 +7,11 @@ import { RouterView } from 'vue-router'
     <RouterView />
   </div>
 </template>
-
+<!--//background-image:linear-gradient(-225deg,#E3FDF5 ,#FFE6FA 100%)-->
 <style scoped>
 .background-main{
   width: 100%;
   min-height: 100vh;
-  background-image:linear-gradient(-225deg,#E3FDF5 ,#FFE6FA 100%)
+  background-image: url(@/static/img/bg.jpg);
 }
 </style>
