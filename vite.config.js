@@ -7,7 +7,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-
+import setupExtend from 'vite-plugin-vue-setup-extend'
+// import compression from 'vite-plugin-compression'
 // https://vite.dev/config/
 export default defineConfig({
 
@@ -16,6 +17,12 @@ export default defineConfig({
     vueJsx(),
     vueDevTools(),
     AutoImport({
+      imports: [
+        'vue',
+        'vue-router',
+        'vuex'
+      ],
+      dts: false,
       resolvers: [
         ElementPlusResolver(),
       ],
@@ -25,6 +32,8 @@ export default defineConfig({
         ElementPlusResolver(),
       ],
     }),
+    setupExtend(),
+    // compression()
   ],
   resolve: {
     alias: {
