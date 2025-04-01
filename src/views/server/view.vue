@@ -6,7 +6,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="(server, index) in servers" :key="server.id">
               <transition-group name="fade" tag="div">
-                <el-card :body-style="{ padding: '20px', borderRadius: '12px'}" class="server-card animate__animated animate__fadeInUp" :style="{ 'animation-delay': `${index * 0.2}s` }">
+                <el-card :body-style="{ padding: '20px', borderRadius: '12px'}" class="server-card animate__animated animate__fadeInUp" :style="{ 'animation-delay': `${index * 0.05}s` }">
                   <div class="server-header">
                     <div>{{ server.name }}</div>
                   </div>
