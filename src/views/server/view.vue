@@ -4,7 +4,7 @@
       <el-col :span="20">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="(server, index) in servers" :key="server.id">
-            <transition name="fade" mode="out-in">
+            <div class="animate__animated animate__fadeInUp">
               <el-card :body-style="{ padding: '20px', borderRadius: '12px'}" class="server-card">
                 <div class="server-header">
                   <div>{{ server.name }}</div>
@@ -19,7 +19,7 @@
                   <div>网络出：{{ formatBytes(server.state?.net_out_transfer) }}</div>
                 </div>
                 <div class="server-info">
-                  <div>CPU负载 (1min/5min/15min)：{{ server.state?.load_1?.toFixed(2) }} / {{ server.state?.load_5?.toFixed(2) }} / {{ server.state?.load_15?.toFixed(2) }}</div>
+                  <div>CPU负载：{{ server.state?.load_1?.toFixed(2) }} / {{ server.state?.load_5?.toFixed(2) }} / {{ server.state?.load_15?.toFixed(2) }}</div>
                   <div>在线时长：{{ formatUptime(server.state?.uptime) }}</div>
                 </div>
                 <div class="server-info">
@@ -33,7 +33,7 @@
                 </div>
                 <el-progress :percentage="server.state?.cpu" status="active" />
               </el-card>
-            </transition>
+            </div>
           </el-col>
         </el-row>
       </el-col>
