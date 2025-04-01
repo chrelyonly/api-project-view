@@ -53,15 +53,22 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.css')) {
+            return 'css/[name]-[hash][extname]';
+          }
+          if (assetInfo.name.match(/\.(png|jpe?g|gif|svg|webp)$/)) {
+            return 'img/[name]-[hash][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
+        chunkFileNames: 'js/[name]-[hash].js',
+        entryFileNames: 'js/[name]-[hash].js',
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('element-plus')) return 'element-plus';
-            if (id.includes('highlight.js')) return 'highlight';
-            if (id.includes('@vueuse')) return 'vueuse';
-            if (id.includes('lodash')) return 'lodash';
-            return 'vendor';
+            return id.toString().split('node_modules/')[2].split('/')[0].toString();
           }
-        }
+        },
       },
     },
     terserOptions: {
