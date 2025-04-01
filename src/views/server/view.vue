@@ -23,9 +23,8 @@
                   <span>在线时长：{{ formatUptime(server.state?.uptime) }}</span>
                 </div>
                 <div class="server-info">
-                  <span>温度：{{ server.state?.temperature }}°C</span>
-                  <span>电源状态：{{ server.state?.power_status }}</span>
-                  <span>风扇速度：{{ server.state?.fan_speed }} RPM</span>
+                  <span>系统信息：{{ server.host?.platform }} {{ server.host?.platform_version }} / {{ server.host?.arch }}</span>
+                  <span>上报时间：{{ formatTimestamp(server.last_active) }}</span>
                 </div>
                 <div class="server-info">
                   <span>TCP连接数：{{ server.state?.tcp_conn_count }}</span>
@@ -88,6 +87,12 @@ export default {
       return `${days}天 ${hours}小时 ${minutes}分钟`;
     };
 
+    // 格式化时间戳
+    const formatTimestamp = (timestamp) => {
+      const date = new Date(timestamp);
+      return date.toISOString().replace('T', ' ').substring(0, 19);
+    };
+
     // 获取对应值的类名
     const getClassForValue = (value) => {
       if (value < 50) {
@@ -142,6 +147,7 @@ export default {
       formatMemory,
       formatBytes,
       formatUptime,
+      formatTimestamp,
       getClassForValue,
     };
   },
@@ -186,18 +192,27 @@ export default {
 }
 
 .low-value {
-  color: #28a745;
+  color: #28a745; /* 绿色 */
   font-weight: bold;
+  background-color: rgba(40, 167, 69, 0.1); /* 绿色背景 */
+  padding: 2px 4px;
+  border-radius: 4px;
 }
 
 .medium-value {
-  color: #ffc107;
+  color: #ffc107; /* 黄色 */
   font-weight: bold;
+  background-color: rgba(255, 193, 7, 0.1); /* 黄色背景 */
+  padding: 2px 4px;
+  border-radius: 4px;
 }
 
 .high-value {
-  color: #dc3545;
+  color: #dc3545; /* 红色 */
   font-weight: bold;
+  background-color: rgba(220, 53, 69, 0.1); /* 红色背景 */
+  padding: 2px 4px;
+  border-radius: 4px;
 }
 
 .el-progress {
