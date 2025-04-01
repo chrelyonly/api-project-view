@@ -11,7 +11,7 @@
                     <div>{{ server.name }}</div>
                   </div>
                   <div class="server-info">
-                    <div :class="getClassForValue(server.state?.cpu)">CPU：{{ server.state?.cpu.toFixed(2) }}%</div>
+                    <div :class="getClassForValue(server.state?.cpu)">CPU：{{ server.state?.cpu?.toFixed(2) }}%</div>
                     <div :class="getClassForValue(server.state?.mem_used / server.host?.mem_total * 100)">内存：{{ formatMemory(server.state?.mem_used) }} / {{ formatMemory(server.host?.mem_total) }}</div>
                     <div :class="getClassForValue(server.state?.disk_used / server.host?.disk_total * 100)">磁盘：{{ formatMemory(server.state?.disk_used) }} / {{ formatMemory(server.host?.disk_total) }}</div>
                   </div>
@@ -45,15 +45,10 @@
 
 <script>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { ElCard, ElRow, ElCol, ElProgress } from 'element-plus';
 
 export default {
   name: 'ServerMonitoring',
   components: {
-    ElCard,
-    ElRow,
-    ElCol,
-    ElProgress,
   },
   setup() {
     const servers = ref([]);

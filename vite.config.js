@@ -47,14 +47,19 @@ export default defineConfig({
       },
     },
   },
+  esbuild: {
+    drop: ['console', 'debugger']
+  },
   build: {
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            return id.toString().split('node_modules/')[2].split('/')[0].toString();
+            const modules = ['element-plus', 'vue', 'vue-router', 'pinia'];
+            const chunkName = modules.find(m => id.includes(m));
+            return chunkName ? chunkName : 'vendor';
           }
-        },
+        }
       },
     },
     terserOptions: {
