@@ -1,4 +1,5 @@
-import hljs from 'highlight.js';
+// import hljs from 'highlight.js';
+const hljs = () => import('highlight.js');
 import 'highlight.js/styles/github-dark-dimmed.min.css';
 export const HighlightPlugin = {
     install(Vue) {

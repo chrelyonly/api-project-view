@@ -6,7 +6,8 @@
  * isToken是否需要token
  */
 import axios from 'axios';
-import {ElMessage} from "element-plus";
+const {ElMessage} = () => import('element-plus');
+// import {ElMessage} from "element-plus";
 const baseURL = import.meta.env.VITE_APP_API;
 /**
  * 创建一个新的 Axios 实例

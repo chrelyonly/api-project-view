@@ -55,9 +55,13 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            return id.toString().split('node_modules/')[2].split('/')[0].toString();
+            if (id.includes('element-plus')) return 'element-plus';
+            if (id.includes('highlight.js')) return 'highlight';
+            if (id.includes('@vueuse')) return 'vueuse';
+            if (id.includes('lodash')) return 'lodash';
+            return 'vendor';
           }
-        },
+        }
       },
     },
     terserOptions: {
