@@ -10,9 +10,9 @@
                   <span>{{ server.name }}</span>
                 </div>
                 <div class="server-info">
-                  <span>CPU：{{ server.state?.cpu.toFixed(2) }}%</span>
-                  <span>内存：{{ formatMemory(server.state?.mem_used) }} / {{ formatMemory(server.host?.mem_total) }}</span>
-                  <span>磁盘：{{ formatMemory(server.state?.disk_used) }} / {{ formatMemory(server.host?.disk_total) }}</span>
+                  <span :class="getClassForValue(server.state?.cpu)">CPU：{{ server.state?.cpu.toFixed(2) }}%</span>
+                  <span :class="getClassForValue(server.state?.mem_used / server.host?.mem_total * 100)">内存：{{ formatMemory(server.state?.mem_used) }} / {{ formatMemory(server.host?.mem_total) }}</span>
+                  <span :class="getClassForValue(server.state?.disk_used / server.host?.disk_total * 100)">磁盘：{{ formatMemory(server.state?.disk_used) }} / {{ formatMemory(server.host?.disk_total) }}</span>
                 </div>
                 <div class="server-info">
                   <span>网络入：{{ formatBytes(server.state?.net_in_transfer) }}</span>
@@ -88,6 +88,17 @@ export default {
       return `${days}天 ${hours}小时 ${minutes}分钟`;
     };
 
+    // 获取对应值的类名
+    const getClassForValue = (value) => {
+      if (value < 50) {
+        return 'low-value';
+      } else if (value < 75) {
+        return 'medium-value';
+      } else {
+        return 'high-value';
+      }
+    };
+
     // 初始化 WebSocket 连接
     const initWebSocket = () => {
       ws = new WebSocket('wss://nezha-dashboard.frp.chrelyonly.cn/api/v1/ws/server');
@@ -131,7 +142,7 @@ export default {
       formatMemory,
       formatBytes,
       formatUptime,
-      percent: (value) => `${value.toFixed(2)}%`,
+      getClassForValue,
     };
   },
 };
@@ -172,6 +183,21 @@ export default {
   margin: 10px 0; /* 增加间隔 */
   font-size: 14px;
   color: #333; /* 深色文字 */
+}
+
+.low-value {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.medium-value {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.high-value {
+  color: #dc3545;
+  font-weight: bold;
 }
 
 .el-progress {
