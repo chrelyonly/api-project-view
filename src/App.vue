@@ -11,6 +11,7 @@ import { RouterView } from 'vue-router'
 <style scoped>
 .background-main {
   width: 100%;
+  min-height: 150vh;
   background-image: url(@/static/img/bg.jpg);
   background-repeat: no-repeat;
   background-attachment: fixed;

@@ -51,6 +51,26 @@
         </el-col>
       </el-row>
     </el-card>
+
+    <!-- 服务监控 -->
+    <el-card class="wrapper animate__animated animate__fadeInUp">
+      <h2 class="title">🌟 服务监控</h2>
+      <el-row justify="center">
+        <el-col :xs="24" :sm="12" :md="8" :lg="6">
+          <div class="monitor-card animate__animated animate__zoomIn" @click="goMonitor">
+            <div class="monitor-header">
+              <h3>🔍 服务器状态</h3>
+            </div>
+            <div class="monitor-body">
+              <p>查看实时服务状态，保障系统稳定运行</p>
+            </div>
+            <div class="monitor-footer">
+              <el-button type="primary" round>📊 进入监控中心</el-button>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-card>
   </div>
 </template>
 
@@ -80,6 +100,10 @@ const getSponsorList = () => {
 
 const goDetail = (item) => {
   router.push({ path: "/doc/api-detail", query: { id: item.id } });
+};
+
+const goMonitor = () => {
+  router.push({ path: "/server/view" });
 };
 </script>
 
@@ -144,7 +168,7 @@ const goDetail = (item) => {
   line-height: 1.6;
   text-align: left;
   padding: 10px;
-  margin-bottom: 10px; /* 添加间距 */
+  margin-bottom: 10px;
 }
 
 .card-footer {
@@ -152,7 +176,7 @@ const goDetail = (item) => {
   justify-content: space-between;
   font-size: 12px;
   color: #666;
-  border-top: 1px solid #eee; /* 视觉分隔 */
+  border-top: 1px solid #eee;
   padding-top: 10px;
 }
 
@@ -178,6 +202,42 @@ const goDetail = (item) => {
 
 .sponsor-avatar:hover {
   transform: scale(1.1) rotate(5deg);
+}
+
+/* 服务监控卡片 */
+.monitor-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  text-align: center;
+}
+
+.monitor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.monitor-header h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #409eff;
+}
+
+.monitor-body p {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.monitor-footer .el-button {
+  margin-top: 10px;
 }
 
 @media (max-width: 768px) {
