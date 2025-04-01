@@ -1,43 +1,45 @@
 <template>
-  <div class="server-container">
-    <el-row :gutter="20" justify="center">
-      <el-col :span="20">
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="(server, index) in servers" :key="server.id">
-            <div class="animate__animated animate__fadeInUp">
-              <el-card :body-style="{ padding: '20px', borderRadius: '12px'}" class="server-card">
-                <div class="server-header">
-                  <div>{{ server.name }}</div>
-                </div>
-                <div class="server-info">
-                  <div :class="getClassForValue(server.state?.cpu)">CPU：{{ server.state?.cpu.toFixed(2) }}%</div>
-                  <div :class="getClassForValue(server.state?.mem_used / server.host?.mem_total * 100)">内存：{{ formatMemory(server.state?.mem_used) }} / {{ formatMemory(server.host?.mem_total) }}</div>
-                  <div :class="getClassForValue(server.state?.disk_used / server.host?.disk_total * 100)">磁盘：{{ formatMemory(server.state?.disk_used) }} / {{ formatMemory(server.host?.disk_total) }}</div>
-                </div>
-                <div class="server-info">
-                  <div>网络入：{{ formatBytes(server.state?.net_in_transfer) }}</div>
-                  <div>网络出：{{ formatBytes(server.state?.net_out_transfer) }}</div>
-                </div>
-                <div class="server-info">
-                  <div>CPU负载：{{ server.state?.load_1?.toFixed(2) }} / {{ server.state?.load_5?.toFixed(2) }} / {{ server.state?.load_15?.toFixed(2) }}</div>
-                  <div>在线时长：{{ formatUptime(server.state?.uptime) }}</div>
-                </div>
-                <div class="server-info">
-                  <div>系统信息：{{ server.host?.platform }} {{ server.host?.platform_version }} / {{ server.host?.arch }}</div>
-                  <div>上报时间：{{ formatTimestamp(server.last_active) }}</div>
-                </div>
-                <div class="server-info">
-                  <div>TCP连接数：{{ server.state?.tcp_conn_count }}</div>
-                  <div>UDP连接数：{{ server.state?.udp_conn_count }}</div>
-                  <div>进程数：{{ server.state?.process_count }}</div>
-                </div>
-                <el-progress :percentage="server.state?.cpu" status="active" />
-              </el-card>
-            </div>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
+  <div class="background-main">
+    <div class="server-container">
+      <el-row :gutter="20" justify="center">
+        <el-col :span="20">
+          <el-row :gutter="20">
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="(server, index) in servers" :key="server.id">
+              <transition-group name="fade" tag="div">
+                <el-card :body-style="{ padding: '20px', borderRadius: '12px'}" class="server-card animate__animated animate__fadeInUp" :style="{ 'animation-delay': `${index * 0.2}s` }">
+                  <div class="server-header">
+                    <div>{{ server.name }}</div>
+                  </div>
+                  <div class="server-info">
+                    <div :class="getClassForValue(server.state?.cpu)">CPU：{{ server.state?.cpu.toFixed(2) }}%</div>
+                    <div :class="getClassForValue(server.state?.mem_used / server.host?.mem_total * 100)">内存：{{ formatMemory(server.state?.mem_used) }} / {{ formatMemory(server.host?.mem_total) }}</div>
+                    <div :class="getClassForValue(server.state?.disk_used / server.host?.disk_total * 100)">磁盘：{{ formatMemory(server.state?.disk_used) }} / {{ formatMemory(server.host?.disk_total) }}</div>
+                  </div>
+                  <div class="server-info">
+                    <div>网络入：{{ formatBytes(server.state?.net_in_transfer) }}</div>
+                    <div>网络出：{{ formatBytes(server.state?.net_out_transfer) }}</div>
+                  </div>
+                  <div class="server-info">
+                    <div>CPU负载：{{ server.state?.load_1?.toFixed(2) }} / {{ server.state?.load_5?.toFixed(2) }} / {{ server.state?.load_15?.toFixed(2) }}</div>
+                    <div>在线时长：{{ formatUptime(server.state?.uptime) }}</div>
+                  </div>
+                  <div class="server-info">
+                    <div>系统信息：{{ server.host?.platform }} {{ server.host?.platform_version }} / {{ server.host?.arch }}</div>
+                    <div>上报时间：{{ formatTimestamp(server.last_active) }}</div>
+                  </div>
+                  <div class="server-info">
+                    <div>TCP连接数：{{ server.state?.tcp_conn_count }}</div>
+                    <div>UDP连接数：{{ server.state?.udp_conn_count }}</div>
+                    <div>进程数：{{ server.state?.process_count }}</div>
+                  </div>
+                  <el-progress :percentage="server.state?.cpu" status="active" />
+                </el-card>
+              </transition-group>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
@@ -156,8 +158,8 @@ export default {
 
 <style scoped>
 .server-container {
-  padding: 30px 5%;
   text-align: center;
+  padding: 30px 5% 400px;
 }
 
 .server-card {
@@ -217,5 +219,13 @@ export default {
 
 .el-progress {
   margin-top: 15px;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all 0.5s;
+}
+.list-enter, .list-leave-to /* .list-leave-active in <2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
