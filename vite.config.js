@@ -55,11 +55,9 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            const modules = ['element-plus', 'vue', 'vue-router', 'pinia'];
-            const chunkName = modules.find(m => id.includes(m));
-            return chunkName ? chunkName : 'vendor';
+            return id.toString().split('node_modules/')[2].split('/')[0].toString();
           }
-        }
+        },
       },
     },
     terserOptions: {
