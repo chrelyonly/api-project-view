@@ -11,6 +11,7 @@
             :sm="12"
             :md="8"
             :lg="6"
+            style="margin-top: 10px"
         >
           <div class="card animate__animated animate__fadeIn" @click="goDetail(item)">
             <div class="card-header">
