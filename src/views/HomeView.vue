@@ -1,77 +1,82 @@
 <template>
-  <div class="container">
-    <!-- API 列表 -->
-    <el-card class="wrapper animate__animated animate__fadeInUp">
-      <h2 class="title">🚀 API 接口</h2>
-      <el-row :gutter="20">
-        <el-col
-            v-for="(item, index) in option.apiData"
-            :key="index"
-            :xs="24"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            style="margin-top: 10px"
-        >
-          <div class="card animate__animated animate__fadeIn" @click="goDetail(item)">
-            <div class="card-header">
-              <h3>{{ item.name }}</h3>
-            </div>
-            <div class="card-body">
-              <p>{{ item.content }}</p>
-            </div>
-            <div class="card-footer">
-              <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>
-              <span class="date">⏳ {{ item.updateTime }}</span>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </el-card>
+  <div class="page-frame animate-frame">
+    <div class="frame-wrapper">
+      <div class="container">
+            <!-- API 列表 -->
+            <el-card class="wrapper animate__animated animate__fadeInUp">
+              <h2 class="title">🚀 API 接口</h2>
+              <el-row :gutter="20">
+                <el-col
+                    v-for="(item, index) in option.apiData"
+                    :key="index"
+                    :xs="24"
+                    :sm="12"
+                    :md="8"
+                    :lg="6"
+                    style="margin-top: 10px"
+                >
+                  <div class="card animate__animated animate__fadeIn" @click="goDetail(item)">
+                    <div class="card-header">
+                      <h3>{{ item.name }}</h3>
+                    </div>
+                    <div class="card-body">
+                      <p>{{ item.content }}</p>
+                    </div>
+                    <div class="card-footer">
+                      <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>
+                      <span class="date">⏳ {{ item.updateTime }}</span>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-card>
 
-    <!-- 赞助者列表 -->
-    <el-card class="wrapper animate__animated animate__fadeInUp">
-      <h2 class="title">💖 特别赞助</h2>
-      <el-row :gutter="20">
-        <el-col
-            v-for="(item, index) in option.sponsorData"
-            :key="index"
-            :xs="12"
-            :sm="8"
-            :md="6"
-            :lg="4"
-        >
-          <div class="sponsor-card animate__animated animate__zoomIn">
-            <h3 class="sponsor-name">{{ item.name }}</h3>
-            <el-image
-                :src="item.avatar"
-                class="sponsor-avatar animate__animated animate__pulse"
-            ></el-image>
-            <h3 class="sponsor-money">💰 {{ item.money }}</h3>
-          </div>
-        </el-col>
-      </el-row>
-    </el-card>
+            <!-- 赞助者列表 -->
+            <el-card class="wrapper animate__animated animate__fadeInUp">
+              <h2 class="title">💖 特别赞助</h2>
+              <el-row :gutter="20">
+                <el-col
+                    v-for="(item, index) in option.sponsorData"
+                    :key="index"
+                    :xs="12"
+                    :sm="8"
+                    :md="6"
+                    :lg="4"
+                >
+                  <div class="sponsor-card animate__animated animate__zoomIn">
+                    <h3 class="sponsor-name">{{ item.name }}</h3>
+                    <el-image
+                        :src="item.avatar"
+                        class="sponsor-avatar animate__animated animate__pulse"
+                    ></el-image>
+                    <h3 class="sponsor-money">💰 {{ item.money }}</h3>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-card>
 
-    <!-- 服务监控 -->
-    <el-card class="wrapper animate__animated animate__fadeInUp">
-      <h2 class="title">🌟 服务监控</h2>
-      <el-row justify="center">
-        <el-col :xs="24" :sm="12" :md="8" :lg="6">
-          <div class="monitor-card animate__animated animate__zoomIn" @click="goMonitor">
-            <div class="monitor-header">
-              <h3>🔍 服务器状态</h3>
-            </div>
-            <div class="monitor-body">
-              <p>查看实时服务状态，保障系统稳定运行</p>
-            </div>
-            <div class="monitor-footer">
-              <el-button type="primary" round>📊 进入监控中心</el-button>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </el-card>
+            <!-- 服务监控 -->
+            <el-card class="wrapper animate__animated animate__fadeInUp">
+              <h2 class="title">🌟 服务监控</h2>
+              <el-row justify="center">
+                <el-col :xs="24" :sm="12" :md="8" :lg="6">
+                  <div class="monitor-card animate__animated animate__zoomIn" @click="goMonitor">
+                    <div class="monitor-header">
+                      <h3>🔍 服务器状态</h3>
+                    </div>
+                    <div class="monitor-body">
+                      <p>查看实时服务状态，保障系统稳定运行</p>
+                    </div>
+                    <div class="monitor-footer">
+                      <el-button type="primary" round>📊 进入监控中心</el-button>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-card>
+      </div>
+    </div>
+    <el-image class="frame-overlay" src="/src/static/img/border.png" />
   </div>
 </template>
 
@@ -109,11 +114,47 @@ const goMonitor = () => {
 </script>
 
 <style scoped>
-.container {
-  width: 90%;
-  max-width: 1400px;
-  margin: 0 auto;
+@keyframes frameIn {
+  0% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.page-frame {
+  position: relative;
+  width: 100%;
+  margin: auto;
+}
+
+
+.animate-frame {
+  animation: frameIn 1s ease-out forwards;
+}
+
+
+
+/*
+.frame-wrapper {
   padding: 20px;
+  border: 15px solid #ff6b6b;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  border-radius: 20px;
+  margin: 20px;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+*/
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1400px;
   opacity: 0.9;
 }
 
