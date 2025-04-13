@@ -1,4 +1,6 @@
 <template>
+  <!--        顶部预留空间 -->
+  <div style="height: 20vh"></div>
   <el-container class="api-container" v-loading="loading">
     <!-- API 详情 -->
     <el-card class="api-glass-card">

@@ -1,9 +1,9 @@
 <template>
-  <div class="page-frame animate-frame">
-    <div class="frame-wrapper">
+  <!--        顶部预留空间 -->
+  <div style="height: 20vh"></div>
       <div class="container">
             <!-- API 列表 -->
-            <el-card class="wrapper animate__animated animate__fadeInUp">
+            <el-card class="wrapper animate__animated animate__fadeInUp" >
               <h2 class="title">🚀 API 接口</h2>
               <el-row :gutter="20">
                 <el-col
@@ -75,15 +75,11 @@
               </el-row>
             </el-card>
       </div>
-    </div>
-    <el-image class="frame-overlay" src="/src/static/img/border.png" />
-  </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-
 const router = useRouter();
 const option = ref({ apiData: [], sponsorData: [] });
 
@@ -114,42 +110,8 @@ const goMonitor = () => {
 </script>
 
 <style scoped>
-@keyframes frameIn {
-  0% {
-    transform: scale(1.3);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.page-frame {
-  position: relative;
-  width: 100%;
-  margin: auto;
-}
 
 
-.animate-frame {
-  animation: frameIn 1s ease-out forwards;
-}
-
-
-
-/*
-.frame-wrapper {
-  padding: 20px;
-  border: 15px solid #ff6b6b;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
-  background-color: #fff;
-  border-radius: 20px;
-  margin: 20px;
-  box-sizing: border-box;
-  min-height: 100vh;
-}
-*/
 
 .container {
   width: 100%;
