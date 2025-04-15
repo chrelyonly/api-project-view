@@ -41,6 +41,18 @@
         <el-table-column prop="des" label="说明"></el-table-column>
       </el-table>
     </el-card>
+<!--    最近历史调用 -->
+    <el-card class="api-section">
+      <h2 class="title">最近历史调用</h2>
+      <el-table :data="[]" border stripe style="width: 100%" align="center">
+        <el-table-column prop="id" label="id" align="center"></el-table-column>
+        <el-table-column prop="requestUrl" label="请求地址"  align="center"></el-table-column>
+        <el-table-column prop="requestParams" label="请求参数"  align="center"></el-table-column>
+        <el-table-column prop="requestMethod" label="请求方法"  align="center"></el-table-column>
+        <el-table-column prop="requestStatus" label="状态码"  align="center"></el-table-column>
+        <el-table-column prop="createTime" label="调用时间"  align="center"></el-table-column>
+      </el-table>
+    </el-card>
 
     <!-- 调用示例 -->
 <!--    <el-card class="api-section">-->
