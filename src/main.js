@@ -10,6 +10,7 @@ const app = createApp(App)
 // import ElementPlus from 'element-plus'
 // import zhCn from 'element-plus/es/locale/lang/zh-cn'
 // import 'element-plus/dist/index.css'
+import 'element-plus/dist/index.css'
 import Avue,{findObject} from '@smallwei/avue';
 import zhLocale from '@smallwei/avue/lib/locale/lang/zh'
 import '@smallwei/avue/lib/index.css';

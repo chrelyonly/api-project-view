@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import {nextTick} from "vue";
+import {ElNotification} from "element-plus";
 // 在 Vue 实例挂载后隐藏 loading
 nextTick (() => {
   const loadingElement = document.getElementById('loading')
@@ -23,7 +24,6 @@ const setBorderImage = () => {
       import.meta.url
   ).href
 }
-
 onMounted(() => {
   setBorderImage()
   window.addEventListener('resize', setBorderImage)

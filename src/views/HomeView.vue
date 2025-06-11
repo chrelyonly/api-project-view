@@ -80,6 +80,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import {ElNotification} from "element-plus";
 const router = useRouter();
 const option = ref({ apiData: [], sponsorData: [] });
 
@@ -91,6 +92,29 @@ onMounted(() => {
 const getApiList = () => {
   $https("/view-api/api-list", "get", {}, 1, {}).then(res => {
     option.value.apiData = res.data.data.records;
+
+// 弹出公告
+    ElNotification({
+      title: '🎉 网站更新完成',
+      message: `
+    <div>
+      <p>我们已完成本次网站更新。</p>
+      <ul style="margin: 6px 0; padding-left: 16px;">
+        <li>✨ 已修复接口访问问题</li>
+        <li>🚀 提升了页面加载速度</li>
+        <li>🔒 增强了账户安全策略</li>
+      </ul>
+      <p>感谢您的支持！如遇问题请联系我。</p>
+    </div>
+  `,
+      dangerouslyUseHTMLString: true,
+      type: 'success',
+      duration: 8000,
+      position: 'top-right',
+      offset: 80,
+      showClose: true,
+      customClass: 'custom-notify-box'
+    })
   });
 };
 
@@ -110,8 +134,6 @@ const goMonitor = () => {
 </script>
 
 <style scoped>
-
-
 
 .container {
   width: 100%;
