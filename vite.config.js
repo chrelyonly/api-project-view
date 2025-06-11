@@ -49,7 +49,7 @@ export default defineConfig({
     proxy: {
       '/api/': {
         // target: 'http://127.0.0.1:8077',
-        target: 'https://api-project.frp.chrelyonly.cn/api/',
+        target: 'https://nginx-3.frp.chrelyonly.cn/api/',
         changeOrigin: true,
         ws: true,
         rewrite: path => path.replace(/^\/api/, ''),

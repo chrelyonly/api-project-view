@@ -9,8 +9,25 @@ nextTick (() => {
     loadingElement.style.visibility = 'hidden'
   }
 })
-// 使用 import 导入图片
-const borderImage = ref(new URL('@/static/img/border/pc1.png', import.meta.url).href);
+
+
+
+const borderImage = ref('')
+
+const setBorderImage = () => {
+  const isMobile = window.innerWidth <= 768
+  borderImage.value = new URL(
+      isMobile
+          ? '/src/static/img/border/phone1.png'
+          : '/src/static/img/border/pc1.png',
+      import.meta.url
+  ).href
+}
+
+onMounted(() => {
+  setBorderImage()
+  window.addEventListener('resize', setBorderImage)
+})
 </script>
 
 <template>
