@@ -12,17 +12,14 @@ nextTick (() => {
 })
 
 
+import phoneBorder from '@/static/img/border/phone1.png'
+import pcBorder from '@/static/img/border/pc1.png'
 
 const borderImage = ref('')
 
 const setBorderImage = () => {
   const isMobile = window.innerWidth <= 768
-  borderImage.value = new URL(
-      isMobile
-          ? '/src/static/img/border/phone1.png'
-          : '/src/static/img/border/pc1.png',
-      import.meta.url
-  ).href
+  borderImage.value = isMobile ? phoneBorder : pcBorder
 }
 onMounted(() => {
   setBorderImage()

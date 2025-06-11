@@ -141,7 +141,8 @@ const option = ref({
   ]
 });
 const goPath = (item) => {
-  router.push({ path: item.path});
+  // router.push({ path: item.path});
+  window.location.href = item.path;
 };
 
 onMounted(() => {
