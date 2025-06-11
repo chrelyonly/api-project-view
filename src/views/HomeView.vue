@@ -54,6 +54,34 @@
                 </el-col>
               </el-row>
             </el-card>
+        <!-- 功能导航 -->
+        <el-card class="wrapper animate__animated animate__fadeInUp">
+          <h2 class="title">🔧 功能导航</h2>
+          <el-row :gutter="20">
+            <el-col
+                v-for="(item, index) in option.featureList"
+                :key="index"
+                :xs="24"
+                :sm="12"
+                :md="8"
+                :lg="6"
+                style="margin-top: 10px"
+            >
+              <div class="card animate__animated animate__fadeIn" @click="goPath(item)">
+                <div class="card-header">
+                  <h3>{{ item.name }}</h3>
+                </div>
+                <div class="card-body">
+                  <p>{{ item.content }}</p>
+                </div>
+                <div class="card-footer">
+                  <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>
+                  <span class="date">⏳ {{ item.updateTime }}</span>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </el-card>
 
             <!-- 服务监控 -->
             <el-card class="wrapper animate__animated animate__fadeInUp">
@@ -82,7 +110,39 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {ElNotification} from "element-plus";
 const router = useRouter();
-const option = ref({ apiData: [], sponsorData: [] });
+const option = ref({
+  apiData: [],
+  sponsorData: [],
+  featureList: [
+    {
+      name: '头像表情包制作',
+      content: '头像表情包制作',
+      path: '/emoji-app',
+      status: 1,
+    },
+    {
+      name: '任务面板',
+      content: '查看和管理当前任务',
+      path: '/tasks',
+      status: 2,
+    },
+    {
+      name: '图表统计',
+      content: '访问系统分析图表',
+      path: '/charts',
+      status: 2,
+    },
+    {
+      name: '设置中心',
+      content: '系统参数与功能配置',
+      path: '/settings',
+      status: 2,
+    }
+  ]
+});
+const goPath = (item) => {
+  router.push({ path: item.path});
+};
 
 onMounted(() => {
   getApiList();
@@ -98,13 +158,21 @@ const getApiList = () => {
       title: '🎉 网站更新完成',
       message: `
     <div>
-      <p>我们已完成本次网站更新。</p>
-      <ul style="margin: 6px 0; padding-left: 16px;">
-        <li>✨ 已修复接口访问问题</li>
-        <li>🚀 提升了页面加载速度</li>
-        <li>🔒 增强了账户安全策略</li>
+      <p><strong>🆕 版本号：</strong>v20250611</p>
+      <p><strong>🕒 更新时间：</strong>2025年6月11日13:06:09</p>
+      <hr style="margin: 8px 0;" />
+      <p><strong>🔧 本次更新内容：</strong></p>
+      <ul style="margin: 6px 0; padding-left: 18px;">
+<!--        <li>✨ 新增夜间模式，夜间浏览更舒适</li>-->
+        <li>🚀 首页加载速度提升</li>
+<!--        <li>📱 移动端适配增强，支持全面屏优化</li>-->
+        <li>🔒 修复用户密码修改时的安全漏洞</li>
+        <li>🧹 清理部分历史无用缓存数据</li>
       </ul>
-      <p>感谢您的支持！如遇问题请联系我。</p>
+      <hr style="margin: 8px 0;" />
+      <p><strong>📬 联系我们：</strong></p>
+      <p>如遇问题，可通过 <el-tag>wx: whoAmI1172576293</el-tag> 加群提交反馈。</p>
+      <p style="margin-top: 8px;">感谢您的支持与使用，祝您使用愉快！🎈</p>
     </div>
   `,
       dangerouslyUseHTMLString: true,
