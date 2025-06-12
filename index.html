@@ -5,6 +5,7 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+      <link href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet">
     <title>Vite App</title>
       <style>
           /* 滚动条宽度 */
@@ -73,6 +74,21 @@
     <div id="app">
     </div>
     <script type="module" src="/src/main.js"></script>
+  <div id="player" style="z-index: 999"></div>
+<script type="application/javascript" src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+  <script type="application/javascript">
+      const ap = new APlayer({
+          container: document.getElementById('player'),
+          fixed: true,
+          autoplay: true,
+          audio: [{
+              name: '干物女',
+              artist: 'artist',
+              url: 'http://fs.youthandroid2.kugou.com/202506121007/328b770de2dd434a4c666cd227f093d6/v3/a9c77bce4f268a75e10570483694e625/yp/full/ap3116_us0_mi336d5ebc5436534e61d16e63ddfca327_pi411_mx0_qu128_s3722039683.mp3',
+              cover: 'http://singerimg.kugou.com/uploadpic/softhead/{size}/20230804/20230804110550288.jpg',
+          }]
+      });
+  </script>
 
   </body>
 </html>
