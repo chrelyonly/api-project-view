@@ -84,24 +84,24 @@
         </el-card>
 
             <!-- 服务监控 -->
-            <el-card class="wrapper animate__animated animate__fadeInUp">
-              <h2 class="title">🌟 服务监控</h2>
-              <el-row justify="center">
-                <el-col :xs="24" :sm="12" :md="8" :lg="6">
-                  <div class="monitor-card animate__animated animate__zoomIn" @click="goMonitor">
-                    <div class="monitor-header">
-                      <h3>🔍 服务器状态</h3>
-                    </div>
-                    <div class="monitor-body">
-                      <p>查看实时服务状态，保障系统稳定运行</p>
-                    </div>
-                    <div class="monitor-footer">
-                      <el-button type="primary" round>📊 进入监控中心</el-button>
-                    </div>
-                  </div>
-                </el-col>
-              </el-row>
-            </el-card>
+<!--            <el-card class="wrapper animate__animated animate__fadeInUp">-->
+<!--              <h2 class="title">🌟 服务监控</h2>-->
+<!--              <el-row justify="center">-->
+<!--                <el-col :xs="24" :sm="12" :md="8" :lg="6">-->
+<!--                  <div class="monitor-card animate__animated animate__zoomIn" @click="goMonitor">-->
+<!--                    <div class="monitor-header">-->
+<!--                      <h3>🔍 服务器状态</h3>-->
+<!--                    </div>-->
+<!--                    <div class="monitor-body">-->
+<!--                      <p>查看实时服务状态，保障系统稳定运行</p>-->
+<!--                    </div>-->
+<!--                    <div class="monitor-footer">-->
+<!--                      <el-button type="primary" round>📊 进入监控中心</el-button>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </el-col>-->
+<!--              </el-row>-->
+<!--            </el-card>-->
       </div>
 </template>
 
@@ -120,24 +120,24 @@ const option = ref({
       path: '/emoji-app',
       status: 1,
     },
-    {
-      name: '任务面板',
-      content: '查看和管理当前任务',
-      path: '/tasks',
-      status: 2,
-    },
-    {
-      name: '图表统计',
-      content: '访问系统分析图表',
-      path: '/charts',
-      status: 2,
-    },
-    {
-      name: '设置中心',
-      content: '系统参数与功能配置',
-      path: '/settings',
-      status: 2,
-    }
+    // {
+    //   name: '任务面板',
+    //   content: '查看和管理当前任务',
+    //   path: '/tasks',
+    //   status: 2,
+    // },
+    // {
+    //   name: '图表统计',
+    //   content: '访问系统分析图表',
+    //   path: '/charts',
+    //   status: 2,
+    // },
+    // {
+    //   name: '设置中心',
+    //   content: '系统参数与功能配置',
+    //   path: '/settings',
+    //   status: 2,
+    // }
   ]
 });
 const goPath = (item) => {
