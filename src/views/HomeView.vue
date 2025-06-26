@@ -102,6 +102,24 @@
 <!--                </el-col>-->
 <!--              </el-row>-->
 <!--            </el-card>-->
+        <el-card class="wrapper animate__animated animate__fadeInUp">
+          <h2 class="title">🌟 底部导航</h2>
+          <el-row justify="center">
+            <!--                <el-col :xs="24" :sm="12" :md="8" :lg="6">-->
+            <!--                  <div class="monitor-card animate__animated animate__zoomIn" @click="goMonitor">-->
+            <!--                    <div class="monitor-header">-->
+            <!--                      <h3>🔍 服务器状态</h3>-->
+            <!--                    </div>-->
+            <!--                    <div class="monitor-body">-->
+            <!--                      <p>查看实时服务状态，保障系统稳定运行</p>-->
+            <!--                    </div>-->
+            <!--                    <div class="monitor-footer">-->
+            <!--                      <el-button type="primary" round>📊 进入监控中心</el-button>-->
+            <!--                    </div>-->
+            <!--                  </div>-->
+            <!--                </el-col>-->
+          </el-row>
+        </el-card>
       </div>
 </template>
 
@@ -118,6 +136,16 @@ const option = ref({
       name: '头像表情包制作',
       content: '头像表情包制作',
       path: '/emoji-app',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: 'redis在线免费连接',
+      content: 'redis在线免费连接',
+      path: '/redis-view/index',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:1,
       status: 1,
     },
     // {
@@ -141,8 +169,12 @@ const option = ref({
   ]
 });
 const goPath = (item) => {
-  // router.push({ path: item.path});
-  window.location.href = item.path;
+  // 1vue路由跳转,  2路径跳转
+  if (item.jumpType === 1) {
+    router.push({ path: item.path });
+  }else if (item.jumpType === 2) {
+    window.location.href = item.path;
+  }
 };
 
 onMounted(() => {

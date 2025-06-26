@@ -11,9 +11,13 @@ const router = createRouter({
       path: '/doc/api-detail',
       component: () => import('@/views/doc/api-detail.vue'),
     },
-      {
+    {
       path: '/server/view',
       component: () => import('@/views/server/view.vue'),
+    },
+    {
+      path: '/redis-view/index',
+      component: () => import('@/views/redis-view/index.vue'),
     },
   ],
 })
