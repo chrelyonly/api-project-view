@@ -33,14 +33,29 @@ onMounted(() => {
     <div class="page-frame animate-frame">
       <el-image class="frame-overlay" :src="borderImage" />
     </div>
-    <RouterView />
+    <transition name="fade-slide" mode="out-in">
+      <RouterView />
+    </transition>
   </div>
 </template>
 <!--//background-image:linear-gradient(-225deg,#E3FDF5 ,#FFE6FA 100%)-->
 <style scoped>
+/* 动画定义：进入和离开都带淡入淡出 + 平移动作 */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.4s ease;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
 .background-main {
   width: 100%;
-  min-height: 150vh;
+  min-height: 100vh;
   background-image: url(@/static/img/bg.jpg);
   background-size: cover;
   background-repeat: no-repeat;

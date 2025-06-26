@@ -1,34 +1,38 @@
 <script setup>
 import { ElMessage } from 'element-plus'
 
-const redisList = [
+const mysqlList = [
   {
-    name: 'Redis 服务器1-节点1',
+    name: 'MariaDB 公益节点 1',
     host: 'api.chrelyonly.cn',
-    port: '16371',
-    password: 'redis-public1',
+    port: '13301',
+    user: 'root',
+    password: 'mariadb-public1',
   },
   {
-    name: 'Redis 服务器1-节点2',
+    name: 'MariaDB 公益节点 2',
     host: 'api.chrelyonly.cn',
-    port: '16372',
-    password: 'redis-public2',
+    port: '13302',
+    user: 'root',
+    password: 'mariadb-public2',
   },
   {
-    name: 'Redis 服务器1-节点2',
+    name: 'MariaDB 公益节点 3',
     host: 'api.chrelyonly.cn',
-    port: '16373',
-    password: 'redis-public3',
+    port: '13303',
+    user: 'root',
+    password: 'mariadb-public3',
   },
 ]
 
 const copyToClipboard = (item) => {
-  const conn = `redis://${item.password}@${item.host}:${item.port}`
+  const conn = `mysql://${item.user}:${item.password}@${item.host}:${item.port}`
   navigator.clipboard.writeText(conn).then(() => {
     ElMessage.success('🎉 连接信息已复制到剪贴板！')
   })
 }
 </script>
+
 <template>
   <div class="page-container">
     <div class="floating-stars">
@@ -37,32 +41,35 @@ const copyToClipboard = (item) => {
       <span class="star">🌸</span>
     </div>
 
-    <h1 class="title">🌟 Redis 公益连接导航页 🌟</h1>
-    <p class="subtitle">以下 Redis 服务可免费使用，适合学习与测试～</p>
+    <h1 class="title">🌟 MariaDB 公益连接导航页 🌟</h1>
+    <p class="subtitle">
+      提供可公开访问的 MariaDB（MySQL 兼容）服务，适合开发、教学与测试场景 🌱
+    </p>
 
     <div class="card-container">
       <el-card
-          v-for="(item, index) in redisList"
+          v-for="(item, index) in mysqlList"
           :key="index"
           class="glass-card"
           shadow="hover"
           @click="copyToClipboard(item)"
       >
-        <!-- 丝带角标 -->
         <div class="ribbon">免费</div>
         <div class="card-content">
-          <div class="icon">🧸</div>
+          <div class="icon">🐬</div>
           <h2>{{ item.name }}</h2>
           <p><strong>地址：</strong>{{ item.host }}</p>
           <p><strong>端口：</strong>{{ item.port }}</p>
+          <p><strong>用户名：</strong>{{ item.user }}</p>
           <p><strong>密码：</strong>{{ item.password }}</p>
         </div>
       </el-card>
     </div>
 
-    <p class="footer-tip">💡 点卡片可复制连接信息哦！</p>
+    <p class="footer-tip">💡 点击任意卡片即可复制 MariaDB 连接字符串！</p>
   </div>
 </template>
+
 
 <style scoped>
 .page-container {

@@ -19,6 +19,16 @@ const router = createRouter({
       path: '/redis-view/index',
       component: () => import('@/views/redis-view/index.vue'),
     },
+    {
+      path: '/mariadb-view/index',
+      component: () => import('@/views/mariadb-view/index.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/views/NotFound.vue'),
+    }
+
   ],
 })
 
