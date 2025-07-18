@@ -7,7 +7,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-
+import setupExtend from 'vite-plugin-vue-setup-extend'
+// import compression from 'vite-plugin-compression'
 // https://vite.dev/config/
 export default defineConfig({
 
@@ -16,6 +17,12 @@ export default defineConfig({
     vueJsx(),
     vueDevTools(),
     AutoImport({
+      imports: [
+        'vue',
+        'vue-router',
+        'vuex'
+      ],
+      dts: false,
       resolvers: [
         ElementPlusResolver(),
       ],
@@ -25,6 +32,8 @@ export default defineConfig({
         ElementPlusResolver(),
       ],
     }),
+    setupExtend(),
+    // compression()
   ],
   resolve: {
     alias: {
@@ -39,16 +48,31 @@ export default defineConfig({
     // port: 2888,
     proxy: {
       '/api/': {
-        target: 'http://localhost:55555',
+        // target: 'http://127.0.0.1:8077',
+        target: 'https://nginx-3.frp.chrelyonly.cn/api/',
         changeOrigin: true,
         ws: true,
         rewrite: path => path.replace(/^\/api/, ''),
       },
     },
   },
+  esbuild: {
+    drop: ['console', 'debugger']
+  },
   build: {
     rollupOptions: {
       output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.css')) {
+            return 'css/[name]-[hash][extname]';
+          }
+          if (assetInfo.name.match(/\.(png|jpe?g|gif|svg|webp)$/)) {
+            return 'img/[name]-[hash][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
+        chunkFileNames: 'js/[name]-[hash].js',
+        entryFileNames: 'js/[name]-[hash].js',
         manualChunks(id) {
           if (id.includes('node_modules')) {
             return id.toString().split('node_modules/')[2].split('/')[0].toString();

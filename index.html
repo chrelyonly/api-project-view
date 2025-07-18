@@ -4,10 +4,103 @@
     <meta charset="UTF-8">
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+      <link href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+      <link href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet">
+      <!-- 在 index.html 或 main.ts 中引入 --><!-- 推荐用 fastly CDN 引入，速度快 -->
+      <link href="https://fonts.font.im/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+
+      <script>
+          var _hmt = _hmt || [];
+          (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?01a9692edd1963101e2d889c020fd5e8";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+          })();
+      </script>
+      <title>莓烦恼</title>
+      <style>
+          /* 滚动条宽度 */
+          ::-webkit-scrollbar {
+              width: 10px;
+              height: 10px;
+          }
+
+          /* 滚动条轨道 */
+          ::-webkit-scrollbar-track {
+              background: rgba(255, 182, 193, 0.1); /* 甜粉 */
+              backdrop-filter: blur(6px);
+              border-radius: 10px;
+          }
+
+          /* 滚动条滑块 */
+          ::-webkit-scrollbar-thumb {
+              background: linear-gradient(180deg, #ffc1cc, #dda0dd); /* 粉红 ➜ 浅紫 */
+              border-radius: 10px;
+              box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+              border: 2px solid rgba(255, 255, 255, 0.2);
+              transition: background 0.3s ease;
+          }
+
+          /* 悬停时更亮 */
+          ::-webkit-scrollbar-thumb:hover {
+              background: linear-gradient(180deg, #ffb6c1, #d8bfd8); /* 浅粉 ➜ 梦幻紫 */
+          }
+          /* Firefox 兼容（有限美化） */
+          * {
+              margin: 0;
+              padding: 0;
+              font-family: 'Comic Sans MS', 'Ma Shan Zheng', cursive;
+              //scrollbar-width: thin;
+              //scrollbar-color: #ffc1cc rgba(255, 182, 193, 0.1);
+          }
+
+          /* 全屏加载动画 */
+          #loading {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(255, 255, 255, 0.9);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              z-index: 9999;
+              opacity: 1;
+              visibility: visible;
+              transition: opacity 0.5s ease, visibility 0.5s ease;
+          }
+          .loading-text {
+              font-size: 24px;
+              color: #ff69b4;
+              animation: fadeIn 2s infinite;
+          }
+
+      </style>
   </head>
   <body>
-    <div id="app"></div>
+  <div id="loading">
+      <div class="loading-text">加载中...</div>
+  </div>
+    <div id="app">
+    </div>
     <script type="module" src="/src/main.js"></script>
+  <div id="player" style="z-index: 999"></div>
+<script type="application/javascript" src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+  <script type="application/javascript">
+      const ap = new APlayer({
+          container: document.getElementById('player'),
+          fixed: true,
+          autoplay: true,
+          audio: [{
+              name: '干物女',
+              artist: 'artist',
+              url: '/gwn.mp3',
+              cover: 'https://img.picui.cn/free/2025/06/12/684a45e52daa6.jpg',
+          }]
+      });
+  </script>
+
   </body>
 </html>

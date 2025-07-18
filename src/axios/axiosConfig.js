@@ -6,7 +6,9 @@
  * isToken是否需要token
  */
 import axios from 'axios';
-import {ElMessage} from "element-plus";
+const {ElMessage} = () => import('element-plus');
+// import {ElMessage} from "element-plus";
+const baseURL = import.meta.env.VITE_APP_API;
 /**
  * 创建一个新的 Axios 实例
  * @param {object} config - 自定义配置对象
@@ -17,6 +19,7 @@ const createAxiosInstance = (config = {}) => {
         timeout: 30000, // 请求超时时间
         validateStatus: status => status >= 200 && status <= 500, // 默认的状态码验证
         withCredentials: true, // 允许跨域携带凭证
+        baseURL: baseURL,
     };
 
     // 合并默认配置与传入配置
