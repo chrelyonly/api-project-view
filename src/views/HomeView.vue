@@ -28,6 +28,17 @@
                     </div>
                   </div>
                 </el-col>
+                <el-col>
+                  <!-- 分页控件 -->
+                  <el-pagination
+                      background
+                      layout="prev, pager, next"
+                      :total="option.pages.total"
+                      :page-size="option.pages.pageSize"
+                      v-model:current-page="option.pages.currentPage"
+                      style="margin-bottom: 15px;"
+                  />
+                </el-col>
               </el-row>
             </el-card>
 
@@ -130,6 +141,11 @@ import {ElNotification} from "element-plus";
 const router = useRouter();
 const option = ref({
   apiData: [],
+  pages:{
+    pageSize:20,
+    currentPage: 1,
+    total:0,
+  },
   sponsorData: [],
   featureList: [
     {
@@ -191,7 +207,13 @@ onMounted(() => {
 });
 
 const getApiList = () => {
-  $https("/view-api/api-list", "get", {}, 1, {}).then(res => {
+  let params = {
+    current: option.value.pages.currentPage,
+    size: option.value.pages.pageSize,
+  }
+  $https("/view-api/api-list", "get", params, 1, {}).then(res => {
+    option.value.pages.total = res.data.data.total;
+    option.value.pages.currentPage = res.data.data.current;
     option.value.apiData = res.data.data.records;
 
 // 弹出公告
