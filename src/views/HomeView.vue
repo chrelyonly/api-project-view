@@ -221,16 +221,12 @@ const getApiList = () => {
       title: '🎉 网站更新完成',
       message: `
     <div>
-      <p><strong>🆕 版本号：</strong>v20250611</p>
-      <p><strong>🕒 更新时间：</strong>2025年6月11日13:06:09</p>
+      <p><strong>🆕 版本号：</strong>v20250718</p>
+      <p><strong>🕒 更新时间：</strong>2025年7月18日12:40:15</p>
       <hr style="margin: 8px 0;" />
       <p><strong>🔧 本次更新内容：</strong></p>
       <ul style="margin: 6px 0; padding-left: 18px;">
-<!--        <li>✨ 新增夜间模式，夜间浏览更舒适</li>-->
-        <li>🚀 首页加载速度提升</li>
-<!--        <li>📱 移动端适配增强，支持全面屏优化</li>-->
-        <li>🔒 修复用户密码修改时的安全漏洞</li>
-        <li>🧹 清理部分历史无用缓存数据</li>
+        <li>🚀 增加一些接口</li>
       </ul>
       <hr style="margin: 8px 0;" />
       <p><strong>📬 联系我们：</strong></p>
