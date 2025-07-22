@@ -5,7 +5,7 @@
             <!-- API 列表 -->
             <el-card class="wrapper animate__animated animate__fadeInUp" >
               <h2 class="title">🚀 API 接口</h2>
-              <el-row :gutter="20">
+              <el-row :gutter="20" v-loading="option.tableLoading">
                 <el-col
                     v-for="(item, index) in option.apiData"
                     :key="index"
@@ -28,16 +28,23 @@
                     </div>
                   </div>
                 </el-col>
-                <el-col>
-                  <!-- 分页控件 -->
-                  <el-pagination
-                      background
-                      layout="prev, pager, next"
-                      :total="option.pages.total"
-                      :page-size="option.pages.pageSize"
-                      v-model:current-page="option.pages.currentPage"
-                      style="margin-bottom: 15px;"
-                  />
+              </el-row>
+              <el-row :gutter="20">
+                <el-col
+                    style="margin-top: 10px"
+                >
+                  <el-col>
+                    <!-- 分页控件 -->
+                    <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        :total="option.pages.total"
+                        :page-size="option.pages.pageSize"
+                        v-model:current-page="option.pages.currentPage"
+                        style="margin-bottom: 15px;"
+                        @change="pagesChange"
+                    />
+                  </el-col>
                 </el-col>
               </el-row>
             </el-card>
@@ -140,6 +147,7 @@ import { useRouter } from 'vue-router';
 import {ElNotification} from "element-plus";
 const router = useRouter();
 const option = ref({
+  tableLoading: false,
   apiData: [],
   pages:{
     pageSize:20,
@@ -205,8 +213,13 @@ onMounted(() => {
   getApiList();
   getSponsorList();
 });
-
+// 分页改变
+const pagesChange = () => {
+  getApiList();
+}
+// 加载数据方法
 const getApiList = () => {
+  option.value.tableLoading = true;
   let params = {
     current: option.value.pages.currentPage,
     size: option.value.pages.pageSize,
@@ -242,6 +255,8 @@ const getApiList = () => {
       showClose: true,
       customClass: 'custom-notify-box'
     })
+  }).finally(() => {
+    option.value.tableLoading = false;
   });
 };
 
