@@ -234,12 +234,13 @@ const getApiList = () => {
       title: '🎉 网站更新完成',
       message: `
     <div>
-      <p><strong>🆕 版本号：</strong>v20250718</p>
-      <p><strong>🕒 更新时间：</strong>2025年7月18日12:40:15</p>
+      <p><strong>🆕 版本号：</strong>v20250724</p>
+      <p><strong>🕒 更新时间：</strong>2025年7月24日14:34:47</p>
       <hr style="margin: 8px 0;" />
       <p><strong>🔧 本次更新内容：</strong></p>
       <ul style="margin: 6px 0; padding-left: 18px;">
-        <li>🚀 增加一些接口</li>
+        <li>🚀 上传图片base64时,不在需要手动截取前缀,后台自适应</li>
+        <li>🚀 上传图片时,新增按钮转换base64处理</li>
       </ul>
       <hr style="margin: 8px 0;" />
       <p><strong>📬 联系我们：</strong></p>
