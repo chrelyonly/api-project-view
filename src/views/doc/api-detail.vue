@@ -12,10 +12,10 @@
 
     <!-- API 信息 -->
     <el-card class="api-section">
-      <h2 class="title">接口信息</h2>
+      <h2 class="title">接口信息(点击复制)</h2>
       <el-descriptions :column="isMobile ? 1 : 1" border>
         <el-descriptions-item label="接口地址">
-          <el-tag type="success">{{ apiInfo.apiUrl }}</el-tag>
+          <el-tag type="success" @click="copyText(apiInfo.apiUrl)">{{ apiInfo.apiUrl }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="请求方法">
           <el-tag type="warning">{{ apiInfo.requestType }}</el-tag>
@@ -62,19 +62,23 @@
         <el-form-item label="请求参数"  v-if="requestData.params.length > 0">
 
             <el-table :data="requestData.params" border stripe style="width: 100%">
-              <el-table-column prop="name" label="名称" width="120"  align="center"></el-table-column>
-              <el-table-column prop="required" label="必填" width="80"  align="center">
+              <el-table-column prop="name" label="名称"   align="center"></el-table-column>
+              <el-table-column prop="required" label="必填"   align="center">
                 <template #default="scope">
                   <el-tag type="success" v-if="scope.row.required === 1">是</el-tag>
                   <el-tag type="danger" v-else>否</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="type" label="类型" width="120"  align="center"></el-table-column>
-              <el-table-column prop="dataLength" label="需要数据长度" width="120"  align="center"></el-table-column>
-              <el-table-column prop="value" label="值" align="center">
+              <el-table-column prop="type" label="类型"  align="center"></el-table-column>
+              <el-table-column prop="dataLength" label="需要数据长度"  align="center"></el-table-column>
+              <el-table-column prop="value" label="值" align="center" width="300"  >
                 <template #default="scope">
+<!--                  <el-input-->
+<!--                      v-model="scope.row.value"-->
+<!--                  >-->
                   <el-input
-                      v-model="scope.row.value"
+                      :value="Array.isArray(scope.row.value) ? `当前有[${scope.row.value.length}]组数据` : scope.row.value"
+                      @input="val => scope.row.value = val"
                   >
                     <template #append v-if="scope.row.type.includes('base64')">
                       <el-upload
@@ -99,7 +103,9 @@
 
       <el-divider></el-divider>
       <el-card style="padding: 20px">
-        <h3>返回结果: </h3>
+        <h3>返回结果:
+          <el-button type="success" @click="copyGif">复制内容(复制gif)</el-button>
+        </h3>
         <div v-if="responseResult.code === 200" style="width: 120px;height: 120px;border: #2dff12 1px solid;padding: 2px">
           <el-image :src="responseResult.data" :preview-src-list="[responseResult.data]"  preview-teleported style="width: 100%;height: 100%"></el-image>
         </div>
@@ -107,6 +113,8 @@
           {{responseResult.msg}}
         </div>
       </el-card>
+
+
     </el-card>
 
     <!-- 最近历史调用 -->
@@ -121,6 +129,8 @@
         <el-table-column prop="createTime" label="调用时间" align="center"></el-table-column>
       </el-table>
     </el-card>
+    <!-- 👇 隐藏区域用于复制 DOM -->
+    <div id="gifWrapper" contenteditable style="position: fixed; left: -9999px; top: -9999px;"></div>
   </el-container>
 </template>
 
@@ -153,7 +163,7 @@ onMounted(() => {
   $https("/view-api/api-detail", "get", params, 1, {}).then((res) => {
     if (res.data.data && res.data.data.id) {
       apiInfo.value = res.data.data;
-      requestData.value.url = apiInfo?.value?.apiUrl
+      requestData.value.url = apiInfo?.value?.apiUrl?.replace(/^\/api(\/|$)/, '/');
       requestData.value.method = apiInfo?.value?.requestType
       if (apiInfo.value?.requestParams) {
         try {
@@ -184,6 +194,105 @@ const requestData = ref({
   params: [],
 });
 const responseResult = ref({});
+
+
+/**
+ * 复制文本
+ * @param text
+ */
+function copyText(text) {
+  if (!text) return;
+
+  // 现代浏览器 Clipboard API
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      ElMessage.success('复制成功');
+    }).catch(() => {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+
+  // 兼容老浏览器的复制方法
+  function fallbackCopy(str) {
+    const textarea = document.createElement('textarea');
+    textarea.value = str;
+    // 避免影响页面布局
+    textarea.style.position = 'fixed';
+    textarea.style.top = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      const successful = document.execCommand('copy');
+      if (successful) {
+        ElMessage.success('复制成功');
+      }else{
+        ElMessage.error('复制失败');
+      }
+    } catch (err) {
+      ElMessage.error('复制失败，浏览器不支持');
+    }
+    document.body.removeChild(textarea);
+  }
+}
+
+
+/**
+ * 复制 gif 到剪贴板（适配 execCommand）
+ */
+const copyGif = () => {
+  const base64Gif = responseResult.value?.data;
+
+  if (!base64Gif || !base64Gif.startsWith('data:image/gif')) {
+    ElMessage.warning("当前图片不是 GIF 或数据为空");
+    return;
+  }
+
+  // 获取或创建 wrapper 节点
+  let wrapper = document.getElementById('gifWrapper');
+  if (!wrapper) {
+    wrapper = document.createElement('div');
+    wrapper.id = 'gifWrapper';
+    wrapper.contentEditable = true;
+    wrapper.style.position = 'fixed';
+    wrapper.style.left = '-9999px';
+    wrapper.style.top = '-9999px';
+    document.body.appendChild(wrapper);
+  }
+
+  // 清空并插入图片
+  wrapper.innerHTML = '';
+  const img = document.createElement('img');
+  img.src = base64Gif;
+  wrapper.appendChild(img);
+
+  // 选择并复制
+  const range = document.createRange();
+  range.selectNode(img);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+
+  try {
+    const success = document.execCommand('copy');
+    if (success) {
+      ElMessage.success("GIF 已复制 ✅（请尝试粘贴到微信）");
+    } else {
+      ElMessage.error("复制失败 ❌");
+    }
+  } catch (err) {
+    console.error(err);
+    ElMessage.error("浏览器不支持 execCommand(copy) ❌");
+  }
+
+  sel.removeAllRanges();
+};
+
+
+
+
+
 
 // 调试上传文件获取base64
 function handleImageToBase64(file, row) {
@@ -233,9 +342,10 @@ function sendRequest() {
     }
   })
   // 测试的时候处理下
-  // let url = requestData.value.url;
-  let url = requestData.value.url.toString().split("https://nginx-3.frp.chrelyonly.cn/api/")[1];
+  let url = requestData.value.url;
+  // let url = requestData.value.url.toString().split("https://nginx-3.frp.chrelyonly.cn/api/")[1];
   debugLoading.value = true;
+  // debugger
   $https(url,requestData.value.method,requestDataTemp,requestData.value.method === "GET"?1:2,{}).then((res) => {
     responseResult.value = res.data;
   }).catch((res) => {
