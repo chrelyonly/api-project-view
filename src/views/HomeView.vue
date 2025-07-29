@@ -212,6 +212,36 @@ const goPath = (item) => {
 onMounted(() => {
   getApiList();
   getSponsorList();
+
+
+// 弹出公告
+  ElNotification({
+    title: '🎉 网站更新完成',
+    message: `
+    <div>
+      <p><strong>🆕 版本号：</strong>v20250729</p>
+      <p><strong>🕒 更新时间：</strong>2025年7月29日15:18:04</p>
+      <hr style="margin: 8px 0;" />
+      <p><strong>🔧 本次更新内容：</strong></p>
+      <ul style="margin: 6px 0; padding-left: 18px;">
+        <li>🚀 生成结果可以复制gif了!!!!!!!!!!</li>
+        <li>🚀 优化接口调试器显示问题</li>
+        <li>🚀 优化首页公告频繁弹出问题</li>
+      </ul>
+      <hr style="margin: 8px 0;" />
+      <p><strong>📬 联系我们：</strong></p>
+      <p>如遇问题，可通过 <el-tag>wx: whoAmI1172576293</el-tag> 加群提交反馈。</p>
+      <p style="margin-top: 8px;">感谢您的支持与使用，祝您使用愉快！🎈</p>
+    </div>
+  `,
+    dangerouslyUseHTMLString: true,
+    type: 'success',
+    duration: 8000,
+    position: 'top-right',
+    offset: 80,
+    showClose: true,
+    customClass: 'custom-notify-box'
+  })
 });
 // 分页改变
 const pagesChange = () => {
@@ -229,33 +259,6 @@ const getApiList = () => {
     option.value.pages.currentPage = res.data.data.current;
     option.value.apiData = res.data.data.records;
 
-// 弹出公告
-    ElNotification({
-      title: '🎉 网站更新完成',
-      message: `
-    <div>
-      <p><strong>🆕 版本号：</strong>v20250724</p>
-      <p><strong>🕒 更新时间：</strong>2025年7月24日14:34:47</p>
-      <hr style="margin: 8px 0;" />
-      <p><strong>🔧 本次更新内容：</strong></p>
-      <ul style="margin: 6px 0; padding-left: 18px;">
-        <li>🚀 上传图片base64时,不在需要手动截取前缀,后台自适应</li>
-        <li>🚀 上传图片时,新增按钮转换base64处理</li>
-      </ul>
-      <hr style="margin: 8px 0;" />
-      <p><strong>📬 联系我们：</strong></p>
-      <p>如遇问题，可通过 <el-tag>wx: whoAmI1172576293</el-tag> 加群提交反馈。</p>
-      <p style="margin-top: 8px;">感谢您的支持与使用，祝您使用愉快！🎈</p>
-    </div>
-  `,
-      dangerouslyUseHTMLString: true,
-      type: 'success',
-      duration: 8000,
-      position: 'top-right',
-      offset: 80,
-      showClose: true,
-      customClass: 'custom-notify-box'
-    })
   }).finally(() => {
     option.value.tableLoading = false;
   });
