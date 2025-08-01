@@ -71,26 +71,40 @@
               </el-table-column>
               <el-table-column prop="type" label="类型"  align="center"></el-table-column>
               <el-table-column prop="dataLength" label="需要数据长度"  align="center"></el-table-column>
-              <el-table-column prop="value" label="值" align="center" width="300"  >
+              <el-table-column prop="value" label="值" align="center" width="300">
                 <template #default="scope">
-<!--                  <el-input-->
-<!--                      v-model="scope.row.value"-->
-<!--                  >-->
-                  <el-input
-                      :value="Array.isArray(scope.row.value) ? `当前有[${scope.row.value.length}]组数据` : scope.row.value"
-                      @input="val => scope.row.value = val"
-                  >
-                    <template #append v-if="scope.row.type.includes('base64')">
-                      <el-upload
-                          :show-file-list="false"
-                          :before-upload="file => handleImageToBase64(file, scope.row)"
-                      >
-                        <el-button type="primary" icon="Upload">上传图片</el-button>
-                      </el-upload>
-                    </template>
-                  </el-input>
+                  <!-- 如果是字符串数组 -->
+                  <template v-if="scope.row.type.includes('string[]')">
+                      <el-input
+                          v-model="scope.row.value"
+                      />
+                  </template>
+                  <!-- 如果是 base64 图片 -->
+                  <template v-else-if="scope.row.type.includes('base64')">
+                    <el-input
+                        :value="Array.isArray(scope.row.value) ? `当前有[${scope.row.value.length}]组数据` : scope.row.value"
+                        readonly
+                    >
+                      <template #append>
+                        <el-upload
+                            :show-file-list="false"
+                            :before-upload="file => handleImageToBase64(file, scope.row)"
+                        >
+                          <el-button type="primary" icon="Upload">上传图片</el-button>
+                        </el-upload>
+                      </template>
+                    </el-input>
+                  </template>
+
+                  <!-- 其他类型：默认输入框 -->
+                  <template v-else>
+                    <el-input
+                        v-model="scope.row.value"
+                    />
+                  </template>
                 </template>
               </el-table-column>
+
 
               <el-table-column prop="des" label="说明"  align="center"></el-table-column>
             </el-table>
@@ -245,7 +259,9 @@ const copyGif = () => {
   const base64Gif = responseResult.value?.data;
 
   if (!base64Gif || !base64Gif.startsWith('data:image/gif')) {
-    ElMessage.warning("当前图片不是 GIF 或数据为空");
+    // ElMessage.warning("当前图片不是 GIF 或数据为空");
+    // 不是gif则复制文本
+    copyText(base64Gif)
     return;
   }
 
