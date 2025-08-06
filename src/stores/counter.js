@@ -10,6 +10,28 @@ export const useCounterStore = defineStore('counter', () => {
 
   return { count, doubleCount, increment }
 })
+
+// 分页缓存
+export const usePageStore = defineStore('page', () => {
+  const currentPage = ref(1) // 默认第一页
+
+  function setCurrentPage(page) {
+    currentPage.value = page
+  }
+
+  return {
+    currentPage,
+    setCurrentPage
+  }
+})
+
+
+
+
+
+
+
+
 // 本地存储操作函数
 export const setLocalStorage = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value))

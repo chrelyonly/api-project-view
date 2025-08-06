@@ -145,13 +145,14 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {ElNotification} from "element-plus";
+import {usePageStore} from "@/stores/counter.js";
 const router = useRouter();
 const option = ref({
   tableLoading: false,
   apiData: [],
   pages:{
     pageSize:20,
-    currentPage: 1,
+    currentPage: usePageStore().currentPage,
     total:0,
   },
   sponsorData: [],
@@ -219,13 +220,13 @@ onMounted(() => {
     title: '🎉 网站更新完成',
     message: `
     <div>
-      <p><strong>🆕 版本号：</strong>v20250810</p>
-      <p><strong>🕒 更新时间：</strong>2025年8月1日15:58:50</p>
+      <p><strong>🆕 版本号：</strong>v20250806</p>
+      <p><strong>🕒 更新时间：</strong>2025年8月6日10:46:38</p>
       <hr style="margin: 8px 0;" />
       <p><strong>🔧 本次更新内容：</strong></p>
       <ul style="margin: 6px 0; padding-left: 18px;">
-        <li>✅ 修复复制按钮复制不了普通的问题</li>
-        <li>✅ 修复文本内容输入异常问题</li>
+        <li>✅ 新增跳转到详情然后返回保留分页</li>
+        <li>✅ 取消了边看图</li>
       </ul>
       <hr style="margin: 8px 0;" />
       <p><strong>📬 联系我们：</strong></p>
@@ -245,6 +246,7 @@ onMounted(() => {
 // 分页改变
 const pagesChange = () => {
   getApiList();
+  usePageStore().setCurrentPage(option.value.pages.currentPage)
 }
 // 加载数据方法
 const getApiList = () => {

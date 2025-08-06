@@ -12,27 +12,27 @@ nextTick (() => {
 })
 
 
-import phoneBorder from '@/static/img/border/phone1.png'
-import pcBorder from '@/static/img/border/pc1.png'
+// import phoneBorder from '@/static/img/border/phone1.png'
+// import pcBorder from '@/static/img/border/pc1.png'
 
-const borderImage = ref('')
+// const borderImage = ref('')
 
-const setBorderImage = () => {
-  const isMobile = window.innerWidth <= 768
-  borderImage.value = isMobile ? phoneBorder : pcBorder
-}
+// const setBorderImage = () => {
+//   const isMobile = window.innerWidth <= 768
+//   borderImage.value = isMobile ? phoneBorder : pcBorder
+// }
 onMounted(() => {
-  setBorderImage()
-  window.addEventListener('resize', setBorderImage)
+  // setBorderImage()
+  // window.addEventListener('resize', setBorderImage)
 })
 </script>
 
 <template>
   <div class="background-main">
 
-    <div class="page-frame animate-frame">
-      <el-image class="frame-overlay" :src="borderImage" />
-    </div>
+<!--    <div class="page-frame animate-frame">-->
+<!--      <el-image class="frame-overlay" :src="borderImage" />-->
+<!--    </div>-->
     <transition name="fade-slide" mode="out-in">
       <RouterView />
     </transition>
