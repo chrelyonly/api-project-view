@@ -24,6 +24,10 @@ const router = createRouter({
       component: () => import('@/views/mariadb-view/index.vue'),
     },
     {
+      path: '/sql-server-view/index',
+      component: () => import('@/views/sql-server-view/index.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/NotFound.vue'),
