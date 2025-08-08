@@ -189,6 +189,14 @@ const option = ref({
       jumpType:1,
       status: 1,
     },
+    {
+      name: 'mongodb在线免费连接',
+      content: 'mongodb在线免费连接',
+      path: '/mongodb-view/index',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:1,
+      status: 1,
+    },
     // {
     //   name: '任务面板',
     //   content: '查看和管理当前任务',
@@ -228,13 +236,13 @@ onMounted(() => {
     title: '🎉 网站更新完成',
     message: `
     <div>
-      <p><strong>🆕 版本号：</strong>v20250806</p>
-      <p><strong>🕒 更新时间：</strong>2025年8月6日10:46:38</p>
+      <p><strong>🆕 版本号：</strong>v20250808</p>
+      <p><strong>🕒 更新时间：</strong>2025年8月8日17:43:20</p>
       <hr style="margin: 8px 0;" />
       <p><strong>🔧 本次更新内容：</strong></p>
       <ul style="margin: 6px 0; padding-left: 18px;">
-        <li>✅ 新增跳转到详情然后返回保留分页</li>
-        <li>✅ 取消了边看图</li>
+        <li>✅ 新增了sql-server和mongodb节点</li>
+<!--        <li>✅ 取消了边看图</li>-->
       </ul>
       <hr style="margin: 8px 0;" />
       <p><strong>📬 联系我们：</strong></p>

@@ -28,6 +28,10 @@ const router = createRouter({
       component: () => import('@/views/sql-server-view/index.vue'),
     },
     {
+      path: '/mongodb-view/index',
+      component: () => import('@/views/mongodb-view/index.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/NotFound.vue'),
