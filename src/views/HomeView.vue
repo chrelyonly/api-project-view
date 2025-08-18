@@ -5,6 +5,14 @@
             <!-- API 列表 -->
             <el-card class="wrapper animate__animated animate__fadeInUp" >
               <h2 class="title">🚀 API 接口</h2>
+
+
+              <p align="center">
+                <a href="https://nginx-3.frp.chrelyonly.cn" target="_blank">
+                  <img alt="chrelyonly!" src="https://nginx-3.frp.chrelyonly.cn/moe-counter-api/@nginx-3.frp.chrelyonly.cn?name=nginx-3.frp.chrelyonly.cn&theme=rule34">
+                </a>
+              </p>
+
               <el-row :gutter="20" v-loading="option.tableLoading">
                 <el-col
                     v-for="(item, index) in option.apiData"
