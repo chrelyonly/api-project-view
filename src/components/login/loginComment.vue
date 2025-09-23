@@ -23,7 +23,7 @@
         <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" prefix-icon="el-icon-lock"></el-input>
       </el-form-item>
       <el-form-item label="验证码">
-        <el-input v-model="loginForm.code" placeholder="请输入验证码" prefix-icon="el-icon-code">
+        <el-input v-model="loginForm.code" placeholder="请输入验证码" prefix-icon="el-icon-sunny">
           <template #append>
             <el-image :src="loginForm.codeImage"></el-image>
           </template>
@@ -46,7 +46,7 @@
         <el-input v-model="registerForm.email" placeholder="请输入邮箱" prefix-icon="el-icon-message"></el-input>
       </el-form-item>
       <el-form-item label="验证码">
-        <el-input v-model="registerForm.code" placeholder="请输入验证码" prefix-icon="el-icon-code">
+        <el-input v-model="registerForm.code" placeholder="请输入验证码" prefix-icon="el-icon-sunny">
           <template #append>
             <el-image :src="registerForm.codeImage"></el-image>
           </template>
