@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 import {ref,nextTick} from "vue";
 import LoginComment from "@/components/login/loginComment.vue";
+import router from "@/router/index.js";
 // 在 Vue 实例挂载后隐藏 loading
 nextTick (() => {
   const loadingElement = document.getElementById('loading')
@@ -17,7 +18,13 @@ const handleLoginSuccess = (user) => {
 
 }
 
-
+/**
+ * 前往用户信息
+ *
+ */
+const goUserInfo = () => {
+  router.push({ path: "/userInfo/index" });
+}
 /**
  * 用户点击登录事件
  */
@@ -41,7 +48,7 @@ const userLogin = () => {
           <a href="/link/index"><span>💗</span> 友情链接</a>
 <!--          <a href="/about"><span>ℹ️</span> 关于我们</a>-->
 <!--          <a href="/contact"><span>📞</span> 联系我们</a>-->
-          <div style="float: right;">
+          <div style="float: right;" @click="goUserInfo">
             <div style="float: left;margin-left: 20px;margin-top: 10px;border-radius: 50%;overflow:hidden;height: 40px;width: 40px;border: #ff9400 1px solid">
               <el-image src="https://i.imgs.ovh/2025/07/29/2AO1n.png"  style="height: 40px"></el-image>
             </div>
