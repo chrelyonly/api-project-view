@@ -16,6 +16,14 @@ const loginDialogVisible = ref(false);
 const handleLoginSuccess = (user) => {
 
 }
+
+
+/**
+ * 用户点击登录事件
+ */
+const userLogin = () => {
+  loginDialogVisible.value = true
+}
 </script>
 
 <template>
@@ -33,8 +41,16 @@ const handleLoginSuccess = (user) => {
           <a href="/link/index"><span>💗</span> 友情链接</a>
 <!--          <a href="/about"><span>ℹ️</span> 关于我们</a>-->
 <!--          <a href="/contact"><span>📞</span> 联系我们</a>-->
-          <div style="margin-left: 20px;margin-top: 5px;float: right;border-radius: 50%;overflow:hidden;height: 50px;width: 50px;border: #ff9400 1px solid">
-            <el-image src="https://i.imgs.ovh/2025/07/29/2AO1n.png"  style="height: 50px"></el-image>
+          <div style="float: right;">
+            <div style="float: left;margin-left: 20px;margin-top: 10px;border-radius: 50%;overflow:hidden;height: 40px;width: 40px;border: #ff9400 1px solid">
+              <el-image src="https://i.imgs.ovh/2025/07/29/2AO1n.png"  style="height: 40px"></el-image>
+            </div>
+            <div style="float: left;height: 60px;color: #117000">
+              <div>管理员</div>
+            </div>
+          </div>
+          <div style="float: right;margin-left: 20px">
+            <el-button type="primary" @click="userLogin">登录/注册</el-button>
           </div>
         </el-col>
       </el-row>
