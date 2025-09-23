@@ -2,7 +2,7 @@
   <div style="height: 20vh"></div>
   <div class="container">
     <el-card class="wrapper animate__animated animate__fadeInUp">
-      <h2 class="title">🔗 友情链接</h2>
+      <h2 class="title">💗 友情链接</h2>
       <p class="subtitle">以下是一些友站推荐，按类别分组展示 💖</p>
 
       <div v-for="(group, groupName) in groupedLinks" :key="groupName" class="group">
@@ -40,11 +40,13 @@
         </el-row>
       </div>
     </el-card>
+    <FriendLinkComment linkId="10000"></FriendLinkComment>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
+import FriendLinkComment from "@/components/FriendLinkComment.vue";
 
 const links = ref([
   { name: "chrelyonly的小屋", url: "https://chrelyonly.cn", desc: "个人工具箱 & API 集合", emoji: "🏠", tag: "推荐", group: "推荐" },

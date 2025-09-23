@@ -1,7 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import {nextTick} from "vue";
-import {ElNotification} from "element-plus";
+import {ref,nextTick} from "vue";
+import LoginComment from "@/components/login/loginComment.vue";
 // 在 Vue 实例挂载后隐藏 loading
 nextTick (() => {
   const loadingElement = document.getElementById('loading')
@@ -12,19 +12,10 @@ nextTick (() => {
 })
 
 
-// import phoneBorder from '@/static/img/border/phone1.png'
-// import pcBorder from '@/static/img/border/pc1.png'
+const loginDialogVisible = ref(false);
+const handleLoginSuccess = (user) => {
 
-// const borderImage = ref('')
-
-// const setBorderImage = () => {
-//   const isMobile = window.innerWidth <= 768
-//   borderImage.value = isMobile ? phoneBorder : pcBorder
-// }
-onMounted(() => {
-  // setBorderImage()
-  // window.addEventListener('resize', setBorderImage)
-})
+}
 </script>
 
 <template>
@@ -42,6 +33,9 @@ onMounted(() => {
           <a href="/link/index"><span>💗</span> 友情链接</a>
 <!--          <a href="/about"><span>ℹ️</span> 关于我们</a>-->
 <!--          <a href="/contact"><span>📞</span> 联系我们</a>-->
+          <div style="margin-left: 20px;margin-top: 5px;float: right;border-radius: 50%;overflow:hidden;height: 50px;width: 50px;border: #ff9400 1px solid">
+            <el-image src="https://i.imgs.ovh/2025/07/29/2AO1n.png"  style="height: 50px"></el-image>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -51,6 +45,13 @@ onMounted(() => {
     <transition name="fade-slide" mode="out-in">
       <RouterView />
     </transition>
+
+
+    <!-- 登录组件 -->
+    <loginComment
+        v-model="loginDialogVisible"
+        @login-success="handleLoginSuccess"
+    ></loginComment>
   </div>
 </template>
 <!--//background-image:linear-gradient(-225deg,#E3FDF5 ,#FFE6FA 100%)-->
@@ -64,7 +65,7 @@ onMounted(() => {
   background-color: rgb(255,255,255,0.7);
   width: 94%;
   padding: 0 3%;
-  z-index: 99999;
+  z-index: 9;
 }
 
 /* LOGO 部分 */
@@ -77,6 +78,7 @@ onMounted(() => {
 /* 导航链接部分 */
 .nav {
   text-align: right;
+  position: relative;
 }
 
 .nav a {
