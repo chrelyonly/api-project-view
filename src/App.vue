@@ -29,7 +29,22 @@ onMounted(() => {
 
 <template>
   <div class="background-main">
+    <div class="topHeader">
+      <el-row align="middle">
+        <!-- 左边 LOGO -->
+        <el-col :span="12" class="logo">
+          🍓 我的站点
+        </el-col>
 
+        <!-- 右边导航 -->
+        <el-col :span="12" class="nav">
+          <a href="/"><span>🏠</span> 首页</a>
+          <a href="/link/index"><span>💗</span> 友情链接</a>
+<!--          <a href="/about"><span>ℹ️</span> 关于我们</a>-->
+<!--          <a href="/contact"><span>📞</span> 联系我们</a>-->
+        </el-col>
+      </el-row>
+    </div>
 <!--    <div class="page-frame animate-frame">-->
 <!--      <el-image class="frame-overlay" :src="borderImage" />-->
 <!--    </div>-->
@@ -40,6 +55,42 @@ onMounted(() => {
 </template>
 <!--//background-image:linear-gradient(-225deg,#E3FDF5 ,#FFE6FA 100%)-->
 <style scoped>
+.topHeader {
+  height: 60px;
+  line-height: 60px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 阴影 */
+  position: fixed;
+  background-color: rgb(255,255,255,0.7);
+  width: 94%;
+  padding: 0 3%;
+  z-index: 99999;
+}
+
+/* LOGO 部分 */
+.logo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
+}
+
+/* 导航链接部分 */
+.nav {
+  text-align: right;
+}
+
+.nav a {
+  margin-left: 20px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.nav a:hover {
+  color: #8481AE;
+  transform: scale(1.55); /* 鼠标移上去轻微放大 */
+}
 /* 动画定义：进入和离开都带淡入淡出 + 平移动作 */
 .fade-slide-enter-active,
 .fade-slide-leave-active {

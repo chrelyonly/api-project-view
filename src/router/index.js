@@ -32,6 +32,10 @@ const router = createRouter({
       component: () => import('@/views/mongodb-view/index.vue'),
     },
     {
+      path: '/link/index',
+      component: () => import('@/views/link/index.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/NotFound.vue'),

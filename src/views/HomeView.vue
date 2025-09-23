@@ -13,6 +13,11 @@
                 </a>
               </p>
 
+
+              <div style="width: 50%;text-align: center;margin: 20px auto 0">
+                <el-input style="text-align: center" placeholder="输入搜索关键词" show-word-limit v-model="option.searchKey" @keyup.enter.native="handleEnter"></el-input>
+              </div>
+
               <el-row :gutter="20" v-loading="option.tableLoading">
                 <el-col
                     v-for="(item, index) in option.apiData"
@@ -34,6 +39,12 @@
                       <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>
                       <span class="date">⏳ {{ item.updateTime }}</span>
                     </div>
+                  </div>
+                </el-col>
+                <!-- 🔽 没有数据时显示 -->
+                <el-col v-if="!option.tableLoading && option.apiData.length === 0" :span="24">
+                  <div style="text-align: center; padding: 40px; color: #999;">
+                    <el-empty description="暂无数据"></el-empty>
                   </div>
                 </el-col>
               </el-row>
@@ -156,6 +167,7 @@ import {ElNotification} from "element-plus";
 import {usePageStore} from "@/stores/counter.js";
 const router = useRouter();
 const option = ref({
+  searchKey: undefined,
   tableLoading: false,
   apiData: [],
   pages:{
@@ -267,6 +279,10 @@ onMounted(() => {
     customClass: 'custom-notify-box'
   })
 });
+// 输入框回车事件
+const handleEnter = ()=>{
+  getApiList();
+}
 // 分页改变
 const pagesChange = () => {
   getApiList();
@@ -278,6 +294,7 @@ const getApiList = () => {
   let params = {
     current: option.value.pages.currentPage,
     size: option.value.pages.pageSize,
+    name: option.value.searchKey === ""?undefined:option.value.searchKey,
   }
   $https("/view-api/api-list", "get", params, 1, {}).then(res => {
     option.value.pages.total = res.data.data.total;
@@ -305,7 +322,6 @@ const goMonitor = () => {
 </script>
 
 <style scoped>
-
 .container {
   width: 100%;
   margin: 0 auto;
