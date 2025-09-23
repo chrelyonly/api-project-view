@@ -1,9 +1,10 @@
 <template>
   <el-dialog
+      top="40vh"
       v-model="visible"
       title="🎉 用户登录"
       append-to-body
-      width="400px"
+      width="600px"
       :close-on-click-modal="false"
       custom-class="login-dialog"
   >
