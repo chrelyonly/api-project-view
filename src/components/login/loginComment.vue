@@ -28,9 +28,24 @@
     <!-- 第三方登录 -->
     <div class="social-login">
       <p>快速登录:</p>
-      <el-button type="primary" circle icon="el-icon-github" @click="socialLogin('github')"></el-button>
-      <el-button type="success" circle icon="el-icon-gitee" @click="socialLogin('gitee')"></el-button>
-      <el-button type="info" circle icon="el-icon-google" @click="socialLogin('google')"></el-button>
+      <el-button type="success" circle  @click="socialLogin('草莓通行证')">
+        莓
+      </el-button>
+      <el-button  circle  @click="socialLogin('github')">
+        <svg class="icon" aria-hidden="true" style="width: 30px;">
+          <use xlink:href="#icon-GITEE"></use>
+        </svg>
+      </el-button>
+      <el-button  circle  @click="socialLogin('gitee')">
+        <svg class="icon" aria-hidden="true" style="width: 30px;">
+          <use xlink:href="#icon-github"></use>
+        </svg>
+      </el-button>
+      <el-button circle   @click="socialLogin('google')">
+        <svg class="icon" aria-hidden="true" style="width: 30px;">
+          <use xlink:href="#icon-google"></use>
+        </svg>
+      </el-button>
     </div>
     <div style="text-align: center">
       <span slot="footer" class="dialog-footer">

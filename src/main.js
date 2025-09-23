@@ -33,3 +33,8 @@ app.use(HighlightPlugin);
 
 app.use(Avue, { locale:zhLocale,axios:request })
 app.mount('#app')
+
+
+//引入图标库
+import "@/iconfont/iconfont.js"
+import "@/iconfont/iconfont.css"
