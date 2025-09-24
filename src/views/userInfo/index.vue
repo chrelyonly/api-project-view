@@ -1,136 +1,201 @@
-<template>
-  <div class="profile-container">
-    <el-card class="profile-card animate__animated animate__fadeInUp">
-      <h2 class="title">👤 个人信息</h2>
-      <!-- 用户头像 -->
-      <div class="avatar-section">
-        <el-avatar :src="user.avatar" size="large">{{ user.user_name[0] }}</el-avatar>
-        <el-button type="primary" size="small" @click="changeAvatar">修改头像</el-button>
-      </div>
+  <template>
+    <div class="profile-container">
+      <el-card class="profile-card animate__animated animate__fadeInUp">
+        <h2 class="title">👤 个人信息</h2>
+        <!-- 用户头像 -->
+        <div class="avatar-section">
+          <el-avatar :src="userInfo.avatar" size="large"></el-avatar>
+          <el-button type="primary" size="small" @click="changeAvatar">修改头像</el-button>
+        </div>
 
-      <!-- 用户信息表单 -->
-      <el-form :model="user" label-width="100px" class="info-form">
-        <el-form-item label="用户名">
-          <el-input v-model="user.user_name" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="user.email"></el-input>
-        </el-form-item>
-        <el-form-item label="昵称">
-          <el-input v-model="user.nickname"></el-input>
-        </el-form-item>
-        <el-form-item label="注册时间">
-          <el-input v-model="user.created_at" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-tag :type="user.status === 1 ? 'success' : 'danger'">
-            {{ user.status === 1 ? '活跃' : '禁用' }}
-          </el-tag>
-        </el-form-item>
-      </el-form>
+        <el-form :model="userInfo" label-width="120px" class="info-form" label-position="left">
+          <!-- 用户名 -->
+          <el-form-item label="用户名">
+            <el-input
+                v-model="userInfo.userAccount"
+                disabled
+                placeholder="不可修改用户名"
+                prefix-icon="el-icon-user"
+            ></el-input>
+          </el-form-item>
 
-      <!-- 操作按钮 -->
-      <div class="actions">
-        <el-button type="primary" @click="updateProfile">保存修改</el-button>
-        <el-button type="danger" @click="logout">退出登录</el-button>
-      </div>
-    </el-card>
-  </div>
-</template>
+          <!-- 邮箱 -->
+          <el-form-item label="邮箱">
+            <el-input
+                v-model="userInfo.email"
+                placeholder="请输入邮箱"
+                clearable
+                prefix-icon="el-icon-message"
+            ></el-input>
+          </el-form-item>
 
-<script setup>
-import { ref, onMounted } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
+          <!-- 昵称 -->
+          <el-form-item label="昵称">
+            <el-input
+                v-model="userInfo.name"
+                placeholder="请输入昵称"
+                clearable
+                prefix-icon="el-icon-edit"
+                suffix-icon="el-icon-check"
+            ></el-input>
+          </el-form-item>
 
-const user = ref({
-  avatar: "https://i.imgs.ovh/2025/07/29/2AO1n.png",
-  user_name: "chrelyonly",
-  email: "chrelyonly@example.com",
-  nickname: "喜怒哀乐",
-  created_at: "2025-01-01",
-  status: 1
-});
+          <!-- 个性签名 -->
+          <el-form-item label="个性签名">
+            <el-input
+                v-model="userInfo.sign"
+                placeholder="请输入个性签名"
+                clearable
+                prefix-icon="el-icon-document"
+            ></el-input>
+          </el-form-item>
 
-// 模拟获取用户信息
-onMounted(async () => {
-  const res = await $https("/api/user/info", "get");
-  if (res.data.success) {
-    Object.assign(user.value, res.data.user);
-  }
-});
+          <!-- 描述 -->
+          <el-form-item label="描述">
+            <el-input
+                type="textarea"
+                v-model="userInfo.des"
+                :rows="3"
+                placeholder="请输入个人描述"
+                prefix-icon="el-icon-notebook-2"
+            ></el-input>
+          </el-form-item>
 
-// 修改头像
-const changeAvatar = () => {
-  ElMessage({ type: "info", message: "触发修改头像功能" });
-};
+          <!-- 个人网站 -->
+          <el-form-item label="个人网站">
+            <el-input
+                v-model="userInfo.webSite"
+                placeholder="https://example.com"
+                clearable
+                prefix-icon="el-icon-link"
+            ></el-input>
+          </el-form-item>
 
-// 保存修改
-const updateProfile = async () => {
-  const res = await $https("/api/user/update", "post", user.value);
-  if (res.data.success) {
-    ElMessage({ type: "success", message: "更新成功" });
-  } else {
-    ElMessage({ type: "error", message: res.data.message || "更新失败" });
-  }
-};
+          <!-- 注册时间 -->
+          <el-form-item label="注册时间">
+            <el-input
+                v-model="userInfo.createTime"
+                disabled
+                prefix-icon="el-icon-time"
+            ></el-input>
+          </el-form-item>
 
-// 退出登录
-const logout = () => {
-  ElMessageBox.confirm("确定要退出登录吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(() => {
-    $https("/api/logout", "post").then(() => {
-      ElMessage({ type: "success", message: "已退出登录" });
-      // 跳转到首页或登录页
-      window.location.href = "/";
-    });
+          <!-- 状态 -->
+          <el-form-item label="状态">
+            <el-tag :type="userInfo.status === 1 ? 'success' : 'danger'">
+              {{ userInfo.status === 1 ? '活跃' : '禁用' }}
+            </el-tag>
+          </el-form-item>
+        </el-form>
+
+
+        <!-- 操作按钮 -->
+        <div class="actions">
+          <el-button type="primary" @click="updateProfile" :disabled="btnLock">{{ btnLock?'修改中...':'保存修改' }}</el-button>
+          <el-button type="danger" @click="logout" :disabled="btnLock">退出登录</el-button>
+        </div>
+      </el-card>
+    </div>
+  </template>
+
+  <script setup>
+  import { ref, onMounted } from "vue";
+  import { ElMessage, ElMessageBox } from "element-plus";
+  import {getUserLoginStore} from "@/stores/counter.js";
+
+  const userInfo = ref({});
+
+  // 模拟获取用户信息
+  onMounted(async () => {
+    userInfo.value = getUserLoginStore().getUserInfo();
   });
-};
-</script>
 
-<style scoped>
-.profile-container {
-  width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
-  padding-top: 25vh;
-}
+  // 修改头像
+  const changeAvatar = () => {
+    ElMessage({ type: "info", message: "触发修改头像功能" });
+  };
 
-.profile-card {
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
+  // 按钮状态
+  const btnLock = ref(false)
+  // 保存修改
+  const updateProfile = async () => {
+    btnLock.value = true;
 
-.title {
-  text-align: center;
-  color: #42b983;
-  font-size: 26px;
-  margin-bottom: 20px;
-}
+    let params = {
+      email: userInfo.value.email,
+      name: userInfo.value.name,
+      sign: userInfo.value.sign || '',       // 个性签名
+      des: userInfo.value.des || '',         // 描述
+      avatar: userInfo.value.avatar,         // 头像
+      webSite: userInfo.value.webSite || '', // 个人网站
+    }
+    $https("/strawberry-user/updateProfile","post",params,2,{}).then( res=> {
+      ElMessage({ type: "success", message: res.data.msg});
+    //   将返回的新用户信息保存
+      $setStore({
+        name: "userInfo",
+        content: res.data.data
+      })
+    }).finally( () => {
+      btnLock.value = false;
+    })
+  };
 
-.avatar-section {
-  text-align: center;
-  margin-bottom: 30px;
-}
+  // 退出登录
+  const logout = () => {
+    ElMessageBox.confirm("确定要退出登录吗？", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    }).then(() => {
+        $clearStore();
+        // 跳转到首页或登录页
+        window.location.href = "/";
+    });
+  };
+  </script>
 
-.avatar-section .el-avatar {
-  margin-bottom: 10px;
-}
+  <style scoped>
+  .profile-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-top: 25vh;
+  }
 
-.info-form .el-form-item {
-  margin-bottom: 15px;
-}
+  .profile-card {
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+  }
 
-.actions {
-  text-align: center;
-  margin-top: 20px;
-}
+  .title {
+    text-align: center;
+    color: #42b983;
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
 
-.actions .el-button {
-  margin: 0 10px;
-}
-</style>
+  .avatar-section {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .avatar-section .el-avatar {
+    margin-bottom: 10px;
+  }
+
+  .info-form .el-form-item {
+    margin-bottom: 15px;
+  }
+
+  .actions {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .actions .el-button {
+    margin: 0 10px;
+  }
+  </style>

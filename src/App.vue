@@ -17,12 +17,6 @@ onMounted(()=>{
   // 检查用户登录状态
   getUserLogin()
 })
-
-const loginDialogVisible = ref(false);
-const handleLoginSuccess = (user) => {
-
-}
-
 /**
  * 前往用户信息
  *
@@ -30,8 +24,6 @@ const handleLoginSuccess = (user) => {
 const goUserInfo = () => {
   router.push({ path: "/userInfo/index" });
 }
-
-
 
 // 登录组件实例
 const loginCommentRef = ref({})
@@ -50,10 +42,10 @@ const getUserLogin = () => {
   userInfo.value = $getStore({
     name: "userInfo",
   });
-  if (userInfo?.id) {
+  if (userInfo.value?.id) {
   //   保存全局状态
   //   getUserLoginStore().setUserInfo(userInfo)
-    getUserLoginStore().setUserInfo(userInfo);
+    getUserLoginStore().setUserInfo(userInfo.value);
   }
   userLoginStatus.value = getUserLoginStore().getUserLoginStatus()
 }
@@ -76,10 +68,10 @@ const getUserLogin = () => {
 <!--          <a href="/contact"><span>📞</span> 联系我们</a>-->
           <div style="float: right;" @click="goUserInfo" v-if="userLoginStatus">
             <div style="float: left;margin-left: 20px;margin-top: 10px;border-radius: 50%;overflow:hidden;height: 40px;width: 40px;border: #ff9400 1px solid">
-              <el-image src="https://i.imgs.ovh/2025/07/29/2AO1n.png"  style="height: 40px"></el-image>
+              <el-image :src="userInfo.avatar || 'https://i.imgs.ovh/2025/07/29/2AO1n.png'"  style="height: 40px"></el-image>
             </div>
             <div style="float: left;height: 60px;color: #117000">
-              <div>管理员</div>
+              <div>{{ userInfo.userAccount }}</div>
             </div>
           </div>
           <div style="float: right;margin-left: 20px" v-else>
@@ -99,7 +91,6 @@ const getUserLogin = () => {
     <!-- 登录组件 -->
     <loginComment
         ref="loginCommentRef"
-        @login-success="handleLoginSuccess"
     ></loginComment>
   </div>
 </template>

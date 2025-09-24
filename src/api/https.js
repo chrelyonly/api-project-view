@@ -14,7 +14,10 @@ import request from '@/axios/axiosConfig.js';
  * @param headers 请求头{}
  * @returns {*}
  */
-export const http = (url,method, params,type,headers) => {
+export const http = (url,method, params,type,headers = {}) => {
+    headers["Authorization"] = $getStore({
+        name: "accessToken",
+    });
   if(type === 1){
     return requestApi(url,method,params,type,headers)
   }else if(type === 2){
