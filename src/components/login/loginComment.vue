@@ -1,10 +1,11 @@
 <template>
   <el-dialog
-      top="40vh"
+      top="30vh"
       v-model="visible"
       title="🎉 用户登录 / 注册"
       append-to-body
       width="600px"
+      @close="close"
       :close-on-click-modal="false"
       custom-class="login-dialog"
   >
@@ -17,7 +18,7 @@
     <!-- 登录表单 -->
     <el-form v-if="activeTab==='login'" :model="loginForm" label-width="80px">
       <el-form-item label="用户名">
-        <el-input v-model="loginForm.user_name" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
+        <el-input v-model="loginForm.userAccount" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
       </el-form-item>
       <el-form-item label="密码">
         <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" prefix-icon="el-icon-lock"></el-input>
@@ -25,7 +26,7 @@
       <el-form-item label="验证码">
         <el-input v-model="loginForm.code" placeholder="请输入验证码" prefix-icon="el-icon-sunny">
           <template #append>
-            <el-image :src="loginForm.codeImage"></el-image>
+            <el-image :src="captchaInfo.image"  @click="getCode" style="height: 30px"></el-image>
           </template>
         </el-input>
       </el-form-item>
@@ -34,21 +35,18 @@
     <!-- 注册表单 -->
     <el-form v-if="activeTab==='register'" :model="registerForm" label-width="80px">
       <el-form-item label="用户名">
-        <el-input v-model="registerForm.user_name" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
+        <el-input v-model="registerForm.userAccount" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
       </el-form-item>
       <el-form-item label="密码">
         <el-input type="password" v-model="registerForm.password" placeholder="请输入密码" prefix-icon="el-icon-lock"></el-input>
       </el-form-item>
       <el-form-item label="确认密码">
-        <el-input type="password" v-model="registerForm.confirm" placeholder="请再次输入密码" prefix-icon="el-icon-lock"></el-input>
-      </el-form-item>
-      <el-form-item label="邮箱">
-        <el-input v-model="registerForm.email" placeholder="请输入邮箱" prefix-icon="el-icon-message"></el-input>
+        <el-input type="password" v-model="registerForm.confirmPassword" placeholder="请再次输入密码" prefix-icon="el-icon-lock"></el-input>
       </el-form-item>
       <el-form-item label="验证码">
         <el-input v-model="registerForm.code" placeholder="请输入验证码" prefix-icon="el-icon-sunny">
           <template #append>
-            <el-image :src="registerForm.codeImage"></el-image>
+            <el-image :src="captchaInfo.image" @click="getCode" style="height: 30px"></el-image>
           </template>
         </el-input>
       </el-form-item>
@@ -78,63 +76,140 @@
     <div style="text-align: center; margin-top: 10px;">
       <span slot="footer" class="dialog-footer">
         <el-button @click="close">取消</el-button>
-        <el-button type="primary" v-if="activeTab==='login'" @click="login">登录</el-button>
-        <el-button type="primary" v-if="activeTab==='register'" @click="register">注册</el-button>
+        <el-button type="primary" v-if="activeTab==='login'" @click="login" :disabled="btnLock">{{ btnLock?'登录中...':'登录' }}</el-button>
+        <el-button type="primary" v-if="activeTab==='register'" @click="register" :disabled="btnLock">{{ btnLock?'注册中...':'注册' }}</el-button>
       </span>
     </div>
   </el-dialog>
 </template>
 
 <script setup>
-import { ref, watch, defineProps, defineEmits } from 'vue';
+import {ref, watch, defineProps, defineEmits, onMounted} from 'vue';
 import { ElNotification } from 'element-plus';
 
-const props = defineProps({ modelValue: { type: Boolean, default: false } });
-const emit = defineEmits(['update:modelValue', 'login-success']);
-const visible = ref(props.modelValue);
-const activeTab = ref('login'); // 登录/注册切换
+const visible = ref(false);
+const activeTab = ref('login');
 
-watch(() => props.modelValue, val => { visible.value = val; });
 
+onMounted(()=>{
+})
+
+const init = () => {
+  visible.value = true;
+  getCode();
+}
+defineExpose({
+  init:init
+})
+
+
+// 验证码信息
+const captchaInfo = ref({
+  key: "",
+  image: "",
+})
+// 获取验证码
+const getCode = ()=>{
+  let params = {
+
+  }
+  $https("/strawberry-user-api/getCode","get",params,1,{}).then(res => {
+    captchaInfo.value.image = res.data.data.image
+    captchaInfo.value.key = res.data.data.key
+  })
+}
+
+// 按钮锁
+const btnLock = ref(false);
 // 登录表单
-const loginForm = ref({ user_name:'', password:'' });
-// 注册表单
-const registerForm = ref({ user_name:'', password:'', confirm:'', email:'',
-  // 验证码的图片
-  codeImage: "",
+const loginForm = ref({
+  userAccount:'',
+  password:'',
   // 验证码的值
   code: "",
-  // 验证码唯一标识
-  codeKey: "",
-
-
 });
-
-// 关闭弹窗
-const close = () => { visible.value = false; emit('update:modelValue', false); };
-
 // 登录方法
 const login = async () => {
-  if (!loginForm.value.user_name || !loginForm.value.password) {
+  if (!loginForm.value.userAccount || !loginForm.value.password) {
     ElNotification({ type: 'warning', message: '请输入用户名和密码' });
     return;
   }
-  const res = await $https('/api/login', 'post', loginForm.value);
-  if (res.data.success) { ElNotification({ type: 'success', message: '登录成功' }); emit('login-success', res.data.user); close(); }
-  else ElNotification({ type: 'error', message: res.data.message || '登录失败' });
+  if (!loginForm.value.code){
+    ElNotification.warning("请输入验证码")
+    return;
+  }
+  btnLock.value = true;
+  let params = {
+    userAccount: loginForm.value.userAccount,
+    password: loginForm.value.password,
+  }
+  let headers = {
+    "Captcha-Key": captchaInfo.value.key,
+    "Captcha-Code": loginForm.value.code,
+  }
+  $https('/strawberry-user-api/login', 'post',params,2,headers).then( res=> {
+    ElNotification.success(res.data?.msg)
+    $setStore({
+      name: "userInfo",
+      content: res.data.data
+    })
+    $setStore({
+      name: "accessToken",
+      content: res.data.data.accessToken
+    })
+    $setStore({
+      name: "refreshToken",
+      content: res.data.data.refreshToken
+    })
+  }).catch((e)=>{
+    console.log(e)
+    getCode()
+  }).finally(()=>{
+    btnLock.value = false;
+  })
 };
 
+
+
+// 注册表单
+const registerForm = ref({
+  userAccount:'',
+  password:'',
+  // 确认密码
+  confirmPassword: "",
+  // 验证码的值
+  code: "",
+});
 // 注册方法
 const register = async () => {
-  const { user_name, password, confirm, email } = registerForm.value;
-  if (!user_name || !password || !confirm || !email) {
+  const { userAccount, password, confirmPassword, code } = registerForm.value;
+  if (!userAccount || !password || !confirmPassword ) {
     ElNotification({ type: 'warning', message: '请填写完整注册信息' });
     return;
   }
-  if (password !== confirm) { ElNotification({ type: 'warning', message: '两次密码输入不一致' }); return; }
-  const res = await $https('/api/register', 'post', registerForm.value);
-  if (res.data.success) { ElNotification({ type: 'success', message: '注册成功，请登录' }); activeTab.value='login'; }
-  else ElNotification({ type: 'error', message: res.data.message || '注册失败' });
+  if (!code){
+    ElNotification.warning("请输入验证码")
+    return;
+  }
+  btnLock.value = true;
+  let params = {
+    userAccount: userAccount,
+    password: password,
+    confirmPassword: confirmPassword,
+  }
+  let headers = {
+    "Captcha-Key": captchaInfo.value.key,
+    "Captcha-Code": code,
+  }
+  $https('/strawberry-user-api/register', 'post',params,2,headers).then( res=> {
+    console.log(res)
+    ElNotification.success(res.data?.msg)
+  }).catch((e)=>{
+    console.log(e)
+    getCode()
+  }).finally(()=>{
+    btnLock.value = false;
+  })
 };
 
 // 第三方登录
@@ -156,4 +231,9 @@ const socialLogin = (type) => { ElNotification({ type: 'info', message: `触发 
 .social-login { text-align: center; margin: 20px 0; }
 .social-login p { margin-bottom: 10px; color: #666; }
 .social-login .el-button { margin: 0 10px; }
+
+
+:deep(.el-input-group__append){
+  padding: 0 !important;
+}
 </style>

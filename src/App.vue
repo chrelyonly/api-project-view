@@ -25,11 +25,16 @@ const handleLoginSuccess = (user) => {
 const goUserInfo = () => {
   router.push({ path: "/userInfo/index" });
 }
+
+
+
+// 登录组件实例
+const loginCommentRef = ref({})
 /**
  * 用户点击登录事件
  */
 const userLogin = () => {
-  loginDialogVisible.value = true
+  loginCommentRef?.value?.init();
 }
 </script>
 
@@ -72,7 +77,7 @@ const userLogin = () => {
 
     <!-- 登录组件 -->
     <loginComment
-        v-model="loginDialogVisible"
+        ref="loginCommentRef"
         @login-success="handleLoginSuccess"
     ></loginComment>
   </div>

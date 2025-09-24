@@ -6,8 +6,8 @@
  * isToken是否需要token
  */
 import axios from 'axios';
-const {ElMessage} = () => import('element-plus');
-// import {ElMessage} from "element-plus";
+// const {ElMessage} = () => import('element-plus');
+import {ElMessage} from "element-plus";
 const baseURL = import.meta.env.VITE_APP_API;
 /**
  * 创建一个新的 Axios 实例
@@ -72,6 +72,12 @@ const createAxiosInstance = (config = {}) => {
                     data: resConfig.data,
                 });
                 return Promise.reject(new Error(data?.message || '未知错误'));
+            }else{
+            //     如果http状态是200,那么则判断业务状态
+                if (data.code !== 200){
+                    ElMessage.error(data?.msg)
+                    return Promise.reject(new Error(data?.msg || '未知错误'));
+                }
             }
 
             // 返回响应数据

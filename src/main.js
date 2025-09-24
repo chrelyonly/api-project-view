@@ -22,6 +22,11 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 window.$https = http;
 window.$findObject = findObject;
+// 引入自用缓存工具
+import {getStore, setStore} from "@/stores/store.js";
+window.$setStore = setStore;
+window.$getStore = getStore;
+// 引入状态管理
 app.use(createPinia())
 app.use(router)
 // app.use(ElementPlus, {
