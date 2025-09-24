@@ -1,47 +1,40 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
-
-  return { count, doubleCount, increment }
-})
-
-// 分页缓存
+// 记录分页缓存
 export const usePageStore = defineStore('page', () => {
-  const currentPage = ref(1) // 默认第一页
+    const currentPage = ref(1) // 默认第一页
 
-  function setCurrentPage(page) {
-    currentPage.value = page
-  }
+    function setCurrentPage(page) {
+        currentPage.value = page
+    }
 
-  return {
-    currentPage,
-    setCurrentPage
-  }
+    return {
+        currentPage,
+        setCurrentPage
+    }
+})
+
+// 记录全局状态
+export const getUserLoginStore = defineStore('userLoginStatus', () => {
+    const userInfo = ref(undefined)
+    // 获取用户登录状态
+    function getUserLoginStatus() {
+        return !!userInfo.value?.id;
+    }
+    // 获取用户信息
+    function getUserInfo() {
+        return userInfo.value;
+    }
+    // 设置用户信息
+    function setUserInfo(newUserInfo) {
+        userInfo.value = newUserInfo;
+    }
+    return {
+        getUserLoginStatus,
+        getUserInfo,
+        setUserInfo,
+    }
 })
 
 
-
-
-
-
-
-
-// 本地存储操作函数
-export const setLocalStorage = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value))
-}
-
-export const getLocalStorage = (key) => {
-  const value = localStorage.getItem(key)
-  return value ? JSON.parse(value) : null
-}
-
-export const removeLocalStorage = (key) => {
-  localStorage.removeItem(key)
-}

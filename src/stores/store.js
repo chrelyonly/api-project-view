@@ -19,8 +19,11 @@ export const setStore = (params = {}) => {
         type: type,
         datetime: new Date().getTime()
     }
-    if (type) window.sessionStorage.setItem(name, JSON.stringify(obj));
-    else window.sessionStorage.setItem(name, JSON.stringify(obj));
+    if (type) {
+        window.sessionStorage.setItem(name, JSON.stringify(obj));
+    }  else {
+        window.localStorage.setItem(name, JSON.stringify(obj));
+    }
 }
 /**
  * 获取localStorage
@@ -35,8 +38,12 @@ export const getStore = (params = {}) => {
     let obj = {},
         content;
     obj = window.sessionStorage.getItem(name);
-    if (validatenull(obj)) obj = window.localStorage.getItem(name);
-    if (validatenull(obj)) return;
+    if (validatenull(obj)){
+        obj = window.localStorage.getItem(name);
+    }
+    if (validatenull(obj)){
+        return
+    }
     try {
         obj = JSON.parse(obj);
     } catch{

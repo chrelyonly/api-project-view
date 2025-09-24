@@ -166,6 +166,7 @@ const login = async () => {
     getCode()
   }).finally(()=>{
     btnLock.value = false;
+    visible.value = false;
   })
 };
 

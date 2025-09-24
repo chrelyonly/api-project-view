@@ -1,8 +1,9 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import {ref,nextTick} from "vue";
+import {ref, nextTick, onMounted} from "vue";
 import LoginComment from "@/components/login/loginComment.vue";
 import router from "@/router/index.js";
+import {getUserLoginStore} from "@/stores/counter.js";
 // 在 Vue 实例挂载后隐藏 loading
 nextTick (() => {
   const loadingElement = document.getElementById('loading')
@@ -12,6 +13,10 @@ nextTick (() => {
   }
 })
 
+onMounted(()=>{
+  // 检查用户登录状态
+  getUserLogin()
+})
 
 const loginDialogVisible = ref(false);
 const handleLoginSuccess = (user) => {
@@ -36,6 +41,22 @@ const loginCommentRef = ref({})
 const userLogin = () => {
   loginCommentRef?.value?.init();
 }
+
+// 用户登录状态
+const userLoginStatus = ref(false)
+const userInfo = ref({})
+// 获取用户登录状态
+const getUserLogin = () => {
+  userInfo.value = $getStore({
+    name: "userInfo",
+  });
+  if (userInfo?.id) {
+  //   保存全局状态
+  //   getUserLoginStore().setUserInfo(userInfo)
+    getUserLoginStore().setUserInfo(userInfo);
+  }
+  userLoginStatus.value = getUserLoginStore().getUserLoginStatus()
+}
 </script>
 
 <template>
@@ -53,7 +74,7 @@ const userLogin = () => {
           <a href="/link/index"><span>💗</span> 友情链接</a>
 <!--          <a href="/about"><span>ℹ️</span> 关于我们</a>-->
 <!--          <a href="/contact"><span>📞</span> 联系我们</a>-->
-          <div style="float: right;" @click="goUserInfo">
+          <div style="float: right;" @click="goUserInfo" v-if="userLoginStatus">
             <div style="float: left;margin-left: 20px;margin-top: 10px;border-radius: 50%;overflow:hidden;height: 40px;width: 40px;border: #ff9400 1px solid">
               <el-image src="https://i.imgs.ovh/2025/07/29/2AO1n.png"  style="height: 40px"></el-image>
             </div>
@@ -61,7 +82,7 @@ const userLogin = () => {
               <div>管理员</div>
             </div>
           </div>
-          <div style="float: right;margin-left: 20px">
+          <div style="float: right;margin-left: 20px" v-else>
             <el-button type="primary" @click="userLogin">登录/注册</el-button>
           </div>
         </el-col>
