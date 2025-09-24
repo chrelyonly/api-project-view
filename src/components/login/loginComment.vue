@@ -161,6 +161,8 @@ const login = async () => {
       name: "refreshToken",
       content: res.data.data.refreshToken
     })
+  //   登陆成功刷新当前页面
+    window.location.reload();
   }).catch((e)=>{
     console.log(e)
     getCode()

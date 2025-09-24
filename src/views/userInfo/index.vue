@@ -4,8 +4,20 @@
         <h2 class="title">👤 个人信息</h2>
         <!-- 用户头像 -->
         <div class="avatar-section">
-          <el-avatar :src="userInfo.avatar" size="large"></el-avatar>
-          <el-button type="primary" size="small" @click="changeAvatar">修改头像</el-button>
+          <div >
+                <el-avatar style="border: #ff9400 1px solid;height: 100px;width: 100px;" size="large" :src="userInfo.avatar || 'https://i.imgs.ovh/2025/07/29/2AO1n.png'"></el-avatar>
+          </div>
+          <div >
+            <el-button type="primary" size="small" @click="changeAvatar">修改头像</el-button>
+            <!-- 隐藏文件选择框 -->
+            <input
+                type="file"
+                ref="fileInput"
+                accept="image/*"
+                style="display: none"
+                @change="handleFileChange"
+            />
+          </div>
         </div>
 
         <el-form :model="userInfo" label-width="120px" class="info-form" label-position="left">
@@ -110,9 +122,37 @@
     userInfo.value = getUserLoginStore().getUserInfo();
   });
 
-  // 修改头像
+  const fileInput = ref(null);
+  // 选择图片
   const changeAvatar = () => {
-    ElMessage({ type: "info", message: "触发修改头像功能" });
+    fileInput.value.click();
+  }
+  // 文件上传
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const isImage = file.type.startsWith('image/');
+    const isLt2M = file.size / 1024 / 1024 < 2;
+
+    if (!isImage) {
+      ElMessage.error('请选择图片文件！');
+      return;
+    }
+    if (!isLt2M) {
+      ElMessage.error('图片大小不能超过 2MB！');
+      return;
+    }
+
+    // 生成预览
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      userInfo.value.avatar = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // 后续可以上传 file 到后端
+    // uploadAvatar(file);
   };
 
   // 按钮状态
