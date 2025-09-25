@@ -200,7 +200,7 @@
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
-    padding-top: 25vh;
+    padding-top: 100px;
   }
 
   .profile-card {
