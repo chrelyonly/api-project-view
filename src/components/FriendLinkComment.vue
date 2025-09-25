@@ -55,7 +55,7 @@
             <p>{{ comment.content }}</p>
           </div>
           <div class="comment-footer">
-            <el-button type="text" @click="likeComment(comment)">👍 {{ comment.likes }}</el-button>
+            <el-button type="text" @click="likeComment(comment)">👍 {{ comment.star }}</el-button>
             <el-button type="text" @click="reply(comment)">💬 回复</el-button>
           </div>
 
@@ -265,7 +265,7 @@ const submitComment = () => {
       linkId: props.linkId,
       userInfo: userInfo.value,
       createTime: res.data.data.createTime,
-      likes: 0,
+      star: 0,
       children: [],
     });
     newComment.value = "";
@@ -274,7 +274,14 @@ const submitComment = () => {
 
 // 点赞的方法
 const likeComment = (comment) => {
-  comment.likes++;
+  comment.star++;
+
+  let params = {
+    id: comment.id,
+  }
+  $https("/comment-api/commentStar","post",params,1,{}).then(res => {
+
+  })
 };
 
 // 回复评论的 回复框开关
@@ -313,7 +320,7 @@ const submitReply = (comment) => {
       linkId: props.linkId,
       userInfo: userInfo.value,
       createTime: res.data.data.createTime,
-      likes: 0,
+      star: 0,
     });
     replyContent.value = "";
     replyingTo.value = null;
