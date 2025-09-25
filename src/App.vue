@@ -149,6 +149,7 @@ const getUserLogin = () => {
 .background-main {
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
   background-image: url(@/static/img/bg.jpg);
   background-size: cover;
   background-repeat: no-repeat;

@@ -117,8 +117,8 @@
 
   const userInfo = ref({});
 
-  // 模拟获取用户信息
-  onMounted(async () => {
+  // 获取用户信息
+  onMounted(() => {
     userInfo.value = getUserLoginStore().getUserInfo();
   });
 
@@ -166,7 +166,7 @@
       name: userInfo.value.name,
       sign: userInfo.value.sign || '',       // 个性签名
       des: userInfo.value.des || '',         // 描述
-      avatar: userInfo.value.avatar,         // 头像
+      avatarBase64: userInfo.value.avatar,         // 头像
       webSite: userInfo.value.webSite || '', // 个人网站
     }
     $https("/strawberry-user/updateProfile","post",params,2,{}).then( res=> {

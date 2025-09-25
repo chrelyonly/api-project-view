@@ -44,3 +44,5 @@ app.mount('#app')
 //引入图标库
 import "@/iconfont/iconfont.js"
 import "@/iconfont/iconfont.css"
+// 引入日期扩展工具
+import "@/util/dateConfig"
