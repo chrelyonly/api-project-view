@@ -48,6 +48,7 @@
             <el-avatar :src="comment.userInfo.avatar" size="medium"></el-avatar>
             <span class="comment-name">{{ comment.userInfo.userAccount }}</span>
             <span class="comment-time">{{ comment.createTime }}</span>
+            <span class="comment-time">{{ parseUA(comment.userAgent) }}</span>
           </div>
           <div class="comment-body">
             <p>{{ comment.content }}</p>
@@ -75,9 +76,18 @@
                 show-word-limit
                 @keyup.enter.native="submitReply(comment)"
             ></el-input>
-            <el-button type="primary" size="small" @click="submitReply(comment)" style="margin-top: 5px;">
-              评论回复
-            </el-button>
+            <div>
+              <el-image :src="captchaInfo.image" @click="getCode" style="height: 30px"></el-image>
+            </div>
+            <div>
+              <el-input style="width: 150px" v-model="captchaInfo.code" placeholder="请输入验证码">
+              </el-input>
+            </div>
+            <div>
+              <el-button type="primary" size="small" @click="submitReply(comment)" style="margin-top: 5px;">
+                评论回复
+              </el-button>
+            </div>
           </div>
         </div>
       </el-col>
@@ -122,24 +132,70 @@ onMounted(()=>{
   getCode();
 })
 
-
+// 评论内容
 const comments = ref([]);
+// 评论分页
+const commentPage = ref({
+  pageSize: 10,
+  currentPage: 1,
+  total: 0
+});
 // 获取评论内容
 const loadData = ()=>{
   let params = {
     linkId: props.linkId,
+    current: commentPage.value.currentPage,
+    size: commentPage.value.pageSize,
   }
-  $https("","get",params,1,{}).then((res)=>{
-    comments.value = res.data.data;
+  $https("/comment-api/getComment","get",params,1,{}).then((res)=>{
+    const data = res.data.data;
+    commentPage.value.total = data.total;
+    comments.value = data.records;
   })
 }
+// 来访者信息格式化
+const parseUA = (ua) => {
+  let os = '未知系统'
+  let browser = '未知浏览器'
+  let device = 'PC'
 
+  // 操作系统判断
+  if (/windows nt 10/i.test(ua)) os = 'Windows 10'
+  else if (/windows nt 6\.3/i.test(ua)) os = 'Windows 8.1'
+  else if (/windows nt 6\.2/i.test(ua)) os = 'Windows 8'
+  else if (/windows nt 6\.1/i.test(ua)) os = 'Windows 7'
+  else if (/mac os x/i.test(ua)) os = 'Mac OS X'
+  else if (/android/i.test(ua)) os = 'Android'
+  else if (/iphone/i.test(ua)) os = 'iPhone iOS'
+  else if (/ipad/i.test(ua)) os = 'iPad iOS'
+  else if (/linux/i.test(ua)) os = 'Linux'
+
+  // 浏览器判断
+  if (/chrome\/([\d.]+)/i.test(ua)) browser = 'Chrome ' + RegExp.$1
+  else if (/firefox\/([\d.]+)/i.test(ua)) browser = 'Firefox ' + RegExp.$1
+  else if (/safari\/([\d.]+)/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari ' + RegExp.$1
+  else if (/edg\/([\d.]+)/i.test(ua)) browser = 'Edge ' + RegExp.$1
+  else if (/msie\s([\d.]+)/i.test(ua)) browser = 'IE ' + RegExp.$1
+
+  // 设备判断
+  if (/mobile/i.test(ua)) device = 'Mobile'
+  else if (/tablet/i.test(ua)) device = 'Tablet'
+
+  // return { os, browser, device }
+  // 拼接成一句话
+  return `系统：${os}，浏览器：${browser}，设备：${device}`
+}
+
+
+// 回复内容
 const replyContent = ref("");
+// 回复谁
 const replyingTo = ref(null);
 
 // 分页
 const pageSize = 5;
 const currentPage = ref(1);
+// 计算出当前评论
 const pagedComments = computed(() => {
   const start = (currentPage.value - 1) * pageSize;
   return comments.value.slice(start, start + pageSize);
@@ -179,18 +235,16 @@ const submitComment = () => {
     ElNotification.warning("输入正确的验证码")
     return;
   }
-  newComment.value = "";
 //   将数据发送到后端
   let params = {
-    content: "",
-    parentId: "",
-    linkId: "",
+    content: newComment.value,
+    linkId: props.linkId,
   }
   let headers = {
     "Captcha-Key": captchaInfo.value.key,
     "Captcha-Code": captchaInfo.value.code,
   }
-  $https("/comment-api/addComment","post",params,1,headers).then((res)=>{
+  $https("/comment-api/addComment","post",params,2,headers).then((res)=>{
     comments.value.unshift({
       // 无用字段临时标识
       id: res.data.data.id,
@@ -201,6 +255,7 @@ const submitComment = () => {
       likes: 0,
       children: [],
     });
+    newComment.value = "";
   })
 };
 
@@ -238,7 +293,7 @@ const submitReply = (comment) => {
     "Captcha-Key": captchaInfo.value.key,
     "Captcha-Code": captchaInfo.value.code,
   }
-  $https("/comment-api/addComment","post",params,1,headers).then((res)=>{
+  $https("/comment-api/addComment","post",params,2,headers).then((res)=>{
     comment.children.push({
       id: res.data.data.id,
       content: replyContent.value,
