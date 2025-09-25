@@ -13,8 +13,6 @@
               :key="index"
               :xs="24"
               :sm="12"
-              :md="8"
-              :lg="6"
               style="margin-top: 15px"
           >
             <a
@@ -49,6 +47,11 @@ import { ref, computed } from "vue";
 import FriendLinkComment from "@/components/FriendLinkComment.vue";
 
 const links = ref([
+  { name: "chrelyonly", url: "https://chrelyonly.cn", desc: "主页", emoji: "🏠", tag: "友链", group: "朋友圈" },
+  { name: "chrelyonly-API站", url: "https://api-chrelyonly.cn", desc: "API站", emoji: "🏠", tag: "API站", group: "朋友圈" },
+  { name: "大白萝卜_Official-博客", url: "https://blog.imbhj.com", desc: "萝卜的博客", emoji: "🏠", tag: "博客", group: "朋友圈" },
+  { name: "大白萝卜_Official-论坛", url: "https://bbs.imbhj.com", desc: "萝卜的论坛", emoji: "🏠", tag: "论坛", group: "朋友圈" },
+  { name: "chrelyonly-API站", url: "https://api-chrelyonly.cn", desc: "API站", emoji: "🏠", tag: "友链", group: "朋友圈" },
   { name: "chrelyonly的小屋", url: "https://chrelyonly.cn", desc: "个人工具箱 & API 集合", emoji: "🏠", tag: "推荐", group: "推荐" },
   { name: "Vue.js", url: "https://vuejs.org", desc: "渐进式 JavaScript 框架", emoji: "🖖", tag: "前端", group: "前端" },
   { name: "React", url: "https://react.dev", desc: "用于构建用户界面的 JavaScript 库", emoji: "⚛️", tag: "前端", group: "前端" },
