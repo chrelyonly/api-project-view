@@ -62,8 +62,19 @@
           <!-- 回复列表 -->
           <div v-if="comment.children && comment.children.length" class="replies">
             <div class="reply-card" v-for="reply in comment.children" :key="reply.id">
-              <span class="reply-name">{{ reply.userInfo.userAccount }}:</span>
-              <span class="reply-content">{{ reply.content }}</span>
+
+              <!-- 顶部信息行：头像 + 用户名 + 时间 + 设备信息 -->
+              <div class="reply-header">
+                <el-avatar :src="reply.userInfo.avatar" size="24"></el-avatar>
+                <span class="reply-name">{{ reply.userInfo.userAccount }}</span>
+                <span class="reply-time">{{ reply.createTime }}</span>
+                <span class="reply-device">{{ parseUA(reply.userAgent) }}</span>
+              </div>
+
+              <!-- 评论内容 -->
+              <div class="reply-content">
+                {{ reply.content }}
+              </div>
             </div>
           </div>
 
@@ -367,22 +378,58 @@ const handlePageChange = (page) => {
   gap: 15px;
 }
 
-.replies {
-  margin-top: 10px;
-  padding-left: 40px;
-}
-
-.reply-card {
-  font-size: 13px;
-  margin-bottom: 5px;
-}
-
-.reply-name {
-  font-weight: bold;
-}
-
 .reply-input {
   margin-top: 10px;
   padding-left: 40px;
+}
+
+
+
+.replies {
+  margin-left: 30px; /* 子评论缩进 */
+  margin-top: 10px;
+}
+
+.reply-card {
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background-color: #fafafa;
+  transition: all 0.3s;
+}
+
+.reply-card:hover {
+  background-color: #f5f5f5;
+}
+
+.reply-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.reply-name {
+  font-weight: 500;
+  color: #409eff; /* Element Plus 蓝色 */
+}
+
+.reply-time {
+  color: #999;
+}
+
+.reply-device {
+  color: #999;
+  font-style: italic;
+}
+
+.reply-content {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  padding-left: 32px; /* 对齐头像左侧 */
 }
 </style>
