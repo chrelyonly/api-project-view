@@ -23,6 +23,7 @@
             :rows="3"
             show-word-limit
             @keyup.enter.native="submitComment"
+            @blur="getCode"
         ></el-input>
     </div>
     <div style="text-align: center">
@@ -75,6 +76,7 @@
                 :rows="2"
                 show-word-limit
                 @keyup.enter.native="submitReply(comment)"
+                @blur="getCode"
             ></el-input>
             <div>
               <el-image :src="captchaInfo.image" @click="getCode" style="height: 30px"></el-image>
