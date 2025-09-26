@@ -42,7 +42,17 @@
     </div>
 
     <!-- 评论列表 -->
-    <el-row :gutter="20" style="margin-top: 20px">
+    <el-row :gutter="20" style="margin-top: 20px" v-loading="commentLoading">
+      <!-- 排序选项 -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h2 class="title">💬 评论区</h2>
+        <div>
+          <el-button size="small" :type="sortInfo.column==='create_time' && sortInfo.type==='ascs'?'primary':'default'" @click="setSortInfo('create_time','ascs')">时间倒序</el-button>
+          <el-button size="small" :type="sortInfo.column==='create_time' && sortInfo.type==='descs'?'primary':'default'" @click="setSortInfo('create_time','descs')">时间正序</el-button>
+          <el-button size="small" :type="sortInfo.column==='star' && sortInfo.type==='descs'?'primary':'default'" @click="setSortInfo('star','descs')">按点赞</el-button>
+        </div>
+      </div>
+
       <el-col :span="24" v-for="comment in pagedComments" :key="comment.id">
         <div class="comment-card animate__animated animate__fadeIn">
           <div class="comment-header">
@@ -112,17 +122,6 @@
       </el-col>
     </el-row>
 
-    <!-- 分页 -->
-    <el-pagination
-        v-if="comments.length > pageSize"
-        background
-        layout="prev, pager, next"
-        :total="comments.length"
-        :page-size="pageSize"
-        v-model:current-page="currentPage"
-        @current-change="handlePageChange"
-        style="margin-top: 20px; text-align: center;"
-    />
   </el-card>
 </template>
 
@@ -153,17 +152,44 @@ const commentPage = ref({
   currentPage: 1,
   total: 0
 });
+// 排序字段以及方式
+const sortInfo = ref({
+  // 字段
+  column: "create_time",
+  // 排序方式 ascs descs
+  type:"descs",
+})
+const setSortInfo = (column,type) => {
+  sortInfo.value.column = column;
+  sortInfo.value.type = type;
+  loadData()
+}
+// 计算出当前评论
+const pagedComments = computed(() => {
+  const start = (commentPage.value.currentPage - 1) * commentPage.value.pageSize;
+  return comments.value.slice(start, start + commentPage.value.pageSize);
+});
+// 评论loading
+const commentLoading = ref(false);
 // 获取评论内容
 const loadData = ()=>{
   let params = {
     linkId: props.linkId,
     current: commentPage.value.currentPage,
     size: commentPage.value.pageSize,
+    // descs: "create_time",
   }
+  // 如果排序字段类型存在的话则直接填充字段
+  if (sortInfo.value.type && sortInfo.value.column){
+    params[sortInfo.value.type] = sortInfo.value.column
+  }
+  commentLoading.value = true;
   $https("/comment-api/getComment","get",params,1,{}).then((res)=>{
     const data = res.data.data;
     commentPage.value.total = data.total;
     comments.value = data.records;
+  }).finally(() => {
+    commentLoading.value = false;
   })
 }
 // 来访者信息格式化
@@ -204,15 +230,6 @@ const parseUA = (ua) => {
 const replyContent = ref("");
 // 回复谁
 const replyingTo = ref(null);
-
-// 分页
-const pageSize = 5;
-const currentPage = ref(1);
-// 计算出当前评论
-const pagedComments = computed(() => {
-  const start = (currentPage.value - 1) * pageSize;
-  return comments.value.slice(start, start + pageSize);
-});
 
 
 
