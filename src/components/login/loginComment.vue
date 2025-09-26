@@ -55,7 +55,9 @@
     <!-- 第三方登录 -->
     <div class="social-login">
       <p>快速登录:</p>
-      <el-button type="success" circle  @click="socialLogin('草莓通行证')">莓</el-button>
+      <el-button type="success" circle  @click="socialLogin('strawberry')">
+        莓
+      </el-button>
       <el-button circle  @click="socialLogin('github')">
         <svg class="icon" aria-hidden="true" style="width: 30px;">
           <use xlink:href="#icon-github"></use>
@@ -85,7 +87,7 @@
 
 <script setup>
 import {ref, watch, defineProps, defineEmits, onMounted} from 'vue';
-import { ElNotification } from 'element-plus';
+import {ElMessageBox, ElNotification} from 'element-plus';
 
 const visible = ref(false);
 const activeTab = ref('login');
@@ -216,7 +218,62 @@ const register = async () => {
 };
 
 // 第三方登录
-const socialLogin = (type) => { ElNotification({ type: 'info', message: `触发 ${type} 登录` }); };
+const socialLogin = (type) => {
+  ElMessageBox.confirm(
+      `
+    <div style="line-height: 1.6; text-align: left;">
+      <p>✨ 使用 <b>${type}</b> 快捷登录，将会：</p>
+      <ul style="margin-left: 18px;">
+        <li>创建 <b>莓莓通行证</b>（全平台通用账号）</li>
+        <li>创建当前平台的用户账号</li>
+        <li>并自动建立两者之间的关联</li>
+      </ul>
+    </div>
+    `,
+      "⚠️ 登录提示",
+      {
+        confirmButtonText: "立即登录",
+        cancelButtonText: "再想想",
+        type: "warning",
+        dangerouslyUseHTMLString: true,
+        customClass: "social-login-box",
+      }
+  )
+      .then(() => {
+        if (type === "strawberry"){
+          ElNotification({
+            title: "莓莓通行证等待开放中...",
+            message: `敬请期待`,
+            type: "error",
+            duration: 3000,
+          });
+        }else{
+          ElNotification({
+            title: "登录中...",
+            message: `正在跳转至 ${type} 登录，请稍候`,
+            type: "success",
+            duration: 3000,
+          });
+
+          let params = {
+            type: type,
+            href: window.location.href,
+          }
+          $https("/oauth2-api/authorize","post",params,2,{}).then( res => {
+
+          })
+        }
+      })
+      .catch(() => {
+        ElNotification({
+          title: "已取消",
+          message: "您已取消快捷登录",
+          type: "info",
+          duration: 2000,
+        });
+      });
+};
+
 </script>
 
 <style scoped>

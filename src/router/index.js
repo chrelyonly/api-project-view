@@ -40,6 +40,10 @@ const router = createRouter({
       component: () => import('@/views/userInfo/index.vue'),
     },
     {
+      path: '/oauthCallback/index',
+      component: () => import('@/views/oauthCallback/index.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/NotFound.vue'),
