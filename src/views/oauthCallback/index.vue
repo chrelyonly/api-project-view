@@ -143,15 +143,17 @@ onMounted(async () => {
               })
               //   登陆成功刷新当前页面
               window.location.href = redirectUri.value;
-          }, (error) => {
-            // 201是未找到系统用户,让用户绑定系统用户
-            exist.value = false;
-            message.value = "未绑定系统账号，请先绑定";
-            if (error.code === 201) {
-              tokenId.value = error.data.tokenId
-              redirectUri.value = error.data.redirectUri
+          }, (err) => {
+        // 201是未找到系统用户,让用户绑定系统用户
+            if (err.code === 201) {
+              exist.value = false;
+              message.value = "未绑定系统账号，请先绑定";
+              tokenId.value = err.data.tokenId
+              redirectUri.value = err.data.redirectUri
+              getCode();
+            }else{
+              error.value =  err.msg;
             }
-            getCode();
           })
           .catch((err) => {
             error.value = err.message || "授权异常";
