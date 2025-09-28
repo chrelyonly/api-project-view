@@ -76,7 +76,8 @@ const createAxiosInstance = (config = {}) => {
             //     如果http状态是200,那么则判断业务状态
                 if (data.code !== 200){
                     ElMessage.error(data?.msg)
-                    return Promise.reject(new Error(data?.msg || '未知错误'));
+                    // return Promise.reject(new Error(data?.msg || '未知错误'));
+                    return Promise.reject(data);
                 }
             }
 

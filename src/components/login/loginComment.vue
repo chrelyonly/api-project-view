@@ -257,10 +257,11 @@ const socialLogin = (type) => {
 
           let params = {
             type: type,
-            href: window.location.href,
+            redirectUri: window.location.href,
+            origin: window.location.origin,
           }
-          $https("/oauth2-api/authorize","post",params,2,{}).then( res => {
-
+          $https("/oauth2-api/authorize/oauth2","post",params,2,{}).then( res => {
+            window.location.href = res.data.data;
           })
         }
       })
