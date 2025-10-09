@@ -118,7 +118,7 @@
       <el-divider></el-divider>
       <el-card style="padding: 20px">
         <h3>返回结果:
-          <el-button type="success" @click="copyGif">复制内容(复制gif)</el-button>
+          <el-button type="success" @click="copyImage">复制内容(复制gif)</el-button>
         </h3>
         <div v-if="responseResult.code === 200" style="width: 120px;height: 120px;border: #2dff12 1px solid;padding: 2px">
           <el-image :src="responseResult.data" :preview-src-list="[responseResult.data]"  preview-teleported style="width: 100%;height: 100%"></el-image>
@@ -132,15 +132,30 @@
     </el-card>
 
     <!-- 最近历史调用 -->
-    <el-card class="api-section" style="margin-bottom: 200px">
-      <h2 class="title">最近历史调用</h2>
-      <el-table :data="[]" border stripe style="width: 100%" align="center">
-        <el-table-column prop="id" label="id" align="center"></el-table-column>
-        <el-table-column prop="requestUrl" label="请求地址" align="center"></el-table-column>
-        <el-table-column prop="requestParams" label="请求参数" align="center"></el-table-column>
-        <el-table-column prop="requestMethod" label="请求方法" align="center"></el-table-column>
-        <el-table-column prop="requestStatus" label="状态码" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="调用时间" align="center"></el-table-column>
+    <el-card class="api-section" style="margin-bottom: 200px;max-width: 1000px;"  v-loading="historyLoading">
+      <h2 class="title" >最近历史调用</h2>
+      <el-table :data="historyList" border stripe style="width: 100%" align="center">
+        <el-table-column show-overflow-tooltip prop="id" label="id" align="center"></el-table-column>
+<!--        <el-table-column show-overflow-tooltip prop="requestUrl" label="请求地址" align="center"></el-table-column>-->
+<!--        <el-table-column show-overflow-tooltip prop="requestParams" label="请求参数" align="center"></el-table-column>-->
+<!--        <el-table-column show-overflow-tooltip prop="requestMethod" label="请求方法" align="center"></el-table-column>-->
+<!--        <el-table-column show-overflow-tooltip prop="requestStatus" label="状态码" align="center"></el-table-column>-->
+        <el-table-column show-overflow-tooltip prop="createTime" label="调用时间" align="center"></el-table-column>
+        <el-table-column show-overflow-tooltip prop="responseBody" label="响应结果" align="center">
+          <template #default="{row}">
+            <div v-if="row && row.responseBody.code === 200">
+              <el-image style="width: 50px;height: 50px" :src="row.responseBody.data" :preview-src-list="[row.responseBody.data]" preview-teleported></el-image>
+            </div>
+            <div v-else>
+              {{row.responseBody}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="操作" align="center">
+          <template #default="{row}">
+            <el-button type="text" @click="copyImage(row.responseBody.data)">复制内容</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
     <!-- 👇 隐藏区域用于复制 DOM -->
@@ -159,6 +174,7 @@ const id = route.query.id; // 获取传递的 id
 // API 信息
 const apiInfo = ref({});
 const loading = ref(true);
+const historyLoading = ref(false);
 const debugLoading = ref(false);
 
 
@@ -171,6 +187,34 @@ const handleResize = () => {
 // 监听窗口变化
 onMounted(() => {
   window.addEventListener("resize", handleResize);
+  init();
+});
+// 默认方法
+const init = () => {
+  loadData()
+}
+
+// 历史调用数据
+const historyList = ref([]);
+// 获取接口调用历史
+const loadHistory = () => {
+  historyLoading.value = true
+  let params = {
+    type: requestData.value?.params?.[0]?.value,
+    url: requestData.value?.url,
+  }
+  $https("/view-api/api-history","post",params,2,{}).then( res => {
+    let data = res.data.data.records;
+    data.forEach( item => {
+      item.responseBody = JSON.parse(item.responseBody)
+    })
+    historyList.value = data
+  }).finally( ()=> {
+    historyLoading.value = false
+  })
+};
+// 再加接口信息
+const loadData = () => {
   let params = {
     id: id,
   };
@@ -186,6 +230,7 @@ onMounted(() => {
           console.error("requestParams 不是合法的 JSON 字符串");
           requestData.value.params = null; // 或者 {}
         }
+        loadHistory()
       } else {
         requestData.value.params = null; // 或 {}
       }
@@ -197,7 +242,7 @@ onMounted(() => {
   }).finally(() => {
     loading.value = false;
   });
-});
+}
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize);
 });
@@ -251,39 +296,70 @@ function copyText(text) {
   }
 }
 
-
 /**
- * 复制 gif 到剪贴板（适配 execCommand）
+ * 复制图片（包括 GIF、PNG、JPG、WebP 等）到剪贴板
+ * 自动兼容旧浏览器（execCommand）
  */
-const copyGif = () => {
-  const base64Gif = responseResult.value?.data;
-
-  if (!base64Gif || !base64Gif.startsWith('data:image/gif')) {
-    // ElMessage.warning("当前图片不是 GIF 或数据为空");
-    // 不是gif则复制文本
-    copyText(base64Gif)
+const copyImage = async (data = "") => {
+  let base64Data;
+  if (data === ""){
+    base64Data = responseResult.value?.data;
+  }else{
+    base64Data = data;
+  }
+  if (!base64Data) {
+    ElMessage.warning("图片数据为空");
     return;
   }
 
-  // 获取或创建 wrapper 节点
-  let wrapper = document.getElementById('gifWrapper');
+  // 如果不是图片类型（例如纯文本），则直接调用文本复制
+  if (!base64Data.startsWith("data:image/")) {
+    copyText(base64Data);
+    return;
+  }
+
+  try {
+    // 优先使用 Clipboard API（现代浏览器）
+    if (navigator.clipboard && window.ClipboardItem) {
+      const mimeType = base64Data.match(/^data:(.*?);base64,/)[1];
+      const byteString = atob(base64Data.split(",")[1]);
+      const arrayBuffer = new ArrayBuffer(byteString.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([uint8Array], { type: mimeType });
+
+      await navigator.clipboard.write([
+        new ClipboardItem({ [mimeType]: blob })
+      ]);
+
+      ElMessage.success("图片已复制 ✅（可直接粘贴到微信或聊天框）");
+      return;
+    }
+  } catch (err) {
+    console.warn("Clipboard API 复制失败，回退到 execCommand 模式:", err);
+  }
+
+  // ------------------------
+  // 兼容旧浏览器：使用 execCommand(copy)
+  // ------------------------
+  let wrapper = document.getElementById("copyWrapper");
   if (!wrapper) {
-    wrapper = document.createElement('div');
-    wrapper.id = 'gifWrapper';
+    wrapper = document.createElement("div");
+    wrapper.id = "copyWrapper";
     wrapper.contentEditable = true;
-    wrapper.style.position = 'fixed';
-    wrapper.style.left = '-9999px';
-    wrapper.style.top = '-9999px';
+    wrapper.style.position = "fixed";
+    wrapper.style.left = "-9999px";
+    wrapper.style.top = "-9999px";
     document.body.appendChild(wrapper);
   }
 
-  // 清空并插入图片
-  wrapper.innerHTML = '';
-  const img = document.createElement('img');
-  img.src = base64Gif;
+  wrapper.innerHTML = "";
+  const img = document.createElement("img");
+  img.src = base64Data;
   wrapper.appendChild(img);
 
-  // 选择并复制
   const range = document.createRange();
   range.selectNode(img);
   const sel = window.getSelection();
@@ -291,19 +367,20 @@ const copyGif = () => {
   sel.addRange(range);
 
   try {
-    const success = document.execCommand('copy');
+    const success = document.execCommand("copy");
     if (success) {
-      ElMessage.success("GIF 已复制 ✅（请尝试粘贴到微信）");
+      ElMessage.success("图片已复制 ✅（请尝试粘贴到微信）");
     } else {
       ElMessage.error("复制失败 ❌");
     }
   } catch (err) {
     console.error(err);
-    ElMessage.error("浏览器不支持 execCommand(copy) ❌");
+    ElMessage.error("浏览器不支持复制图片 ❌");
   }
 
   sel.removeAllRanges();
 };
+
 
 
 
