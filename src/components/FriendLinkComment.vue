@@ -7,12 +7,12 @@
       <div style="text-align: center;margin: 0 20px 0 auto;">
         <div>
           <el-avatar
-              :src="userInfo.avatar"
+              :src="userInfo?.avatar"
               size="large">
           </el-avatar>
         </div>
         <div>
-          {{ userInfo.userAccount ? userInfo.userAccount : "游" }}
+          {{ userInfo?.userAccount ? userInfo?.userAccount : "游" }}
         </div>
       </div>
         <!-- 评论输入框 -->
@@ -140,7 +140,7 @@ const props = defineProps({
 const userInfo = ref({});
 onMounted(()=>{
   loadData();
-  userInfo.value = getUserLoginStore().getUserInfo();
+  userInfo.value = getUserLoginStore()?.getUserInfo();
   getCode();
 })
 
