@@ -84,12 +84,14 @@
         </el-timeline-item>
       </el-timeline>
     </el-dialog>
+    <FriendLinkComment linkId="10001"></FriendLinkComment>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import FriendLinkComment from "@/components/FriendLinkComment.vue";
 
 // 列表配置
 const option = ref({
