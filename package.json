@@ -12,7 +12,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@smallwei/avue": "^3.6.0",
-    "axios": "1.8.2",
+    "axios": "1.12.0",
     "element-plus": "^2.10.1",
     "highlight.js": "^11.11.1",
     "pinia": "^2.2.6",
