@@ -32,7 +32,7 @@
             <p class="desc">{{ item.desc }}</p>
             <div class="card-footer">
               <div class="btn-group">
-                <el-button size="small" type="primary" @click.stop="showVersion(item, 'win')">🪟 Windows</el-button>
+                <el-button size="small" type="primary" @click.stop="showVersion(item, 'win')">💌 Windows</el-button>
                 <el-button size="small" type="success" @click.stop="showVersion(item, 'mac')">🍎 macOS</el-button>
                 <el-button size="small" type="warning" @click.stop="showVersion(item, 'linux')">🐧 Linux</el-button>
               </div>
