@@ -256,12 +256,13 @@ onMounted(() => {
     title: '🎉 网站更新完成',
     message: `
     <div>
-      <p><strong>🆕 版本号：</strong>v20251009</p>
+      <p><strong>🆕 版本号：</strong>v20251013</p>
       <hr style="margin: 8px 0;" />
       <p><strong>🔧 本次更新内容：</strong></p>
       <ul style="margin: 6px 0; padding-left: 18px;">
-        <li>✅ 新增历史调用信息查询</li>
-        <li>✅ 完善授权登录</li>
+        <li>✅ 修复复制功能异常问题</li>
+        <li>✅ 增加接口下的评论问题</li>
+        <li>✅ 修复不登录的时候评论组件不出来的问题</li>
 <!--        <li>✅ 取消了边看图</li>-->
       </ul>
       <hr style="margin: 8px 0;" />

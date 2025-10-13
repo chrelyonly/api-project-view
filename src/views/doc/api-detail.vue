@@ -118,7 +118,7 @@
       <el-divider></el-divider>
       <el-card style="padding: 20px">
         <h3>返回结果:
-          <el-button type="success" @click="copyImage">复制内容(复制gif)</el-button>
+          <el-button type="success" @click="copyImage()">复制内容(复制gif)</el-button>
         </h3>
         <div v-if="responseResult.code === 200" style="width: 120px;height: 120px;border: #2dff12 1px solid;padding: 2px">
           <el-image :src="responseResult.data" :preview-src-list="[responseResult.data]"  preview-teleported style="width: 100%;height: 100%"></el-image>
@@ -132,7 +132,7 @@
     </el-card>
 
     <!-- 最近历史调用 -->
-    <el-card class="api-section" style="margin-bottom: 200px;max-width: 1000px;"  v-loading="historyLoading">
+    <el-card class="api-section" style="margin-bottom: 20px;max-width: 1000px;"  v-loading="historyLoading">
       <h2 class="title" >最近历史调用</h2>
       <el-table :data="historyList" border stripe style="width: 100%" align="center">
         <el-table-column show-overflow-tooltip prop="id" label="id" align="center"></el-table-column>
@@ -158,8 +158,13 @@
         </el-table-column>
       </el-table>
     </el-card>
+
+    <div class="api-section" style="margin-bottom: 200px;max-width: 1000px;padding: 20" >
+      <FriendLinkComment :linkId="id"></FriendLinkComment>
+    </div>
     <!-- 👇 隐藏区域用于复制 DOM -->
     <div id="gifWrapper" contenteditable style="position: fixed; left: -9999px; top: -9999px;"></div>
+
   </el-container>
 </template>
 
@@ -167,6 +172,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
+import FriendLinkComment from "@/components/FriendLinkComment.vue";
 
 const route = useRoute();  // 获取路由信息（只能读取，不支持 push）
 const router = useRouter(); // 获取路由实例（可以使用 push、replace）
