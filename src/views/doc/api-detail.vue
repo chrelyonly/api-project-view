@@ -74,26 +74,94 @@
               <el-table-column prop="value" label="值" align="center" width="300">
                 <template #default="scope">
                   <!-- 如果是字符串数组 -->
+<!--                  <template v-if="scope.row.type.includes('string[]')">-->
+<!--                      <el-input-->
+<!--                          v-model="scope.row.value"-->
+<!--                      />-->
+<!--                  </template>-->
                   <template v-if="scope.row.type.includes('string[]')">
+                    <div class="string-array-wrapper">
+                      <!-- 已有字符串显示为标签 -->
+                      <el-tag
+                          v-if="scope.row.value !== '[]'"
+                          v-for="(item, index) in scope.row.value"
+                          :key="index"
+                          closable
+                          @close="removeString(scope.row, index)"
+                          style="margin: 4px 4px 4px 0"
+                      >
+                        {{ item }}
+                      </el-tag>
+
+                      <!-- 输入新字符串 -->
                       <el-input
-                          v-model="scope.row.value"
+                          v-model="newString"
+                          size="small"
+                          placeholder="输入后回车添加"
+                          @keyup.enter="addString(scope.row)"
+                          style="width: 200px; margin-top: 4px"
                       />
+                    </div>
                   </template>
                   <!-- 如果是 base64 图片 -->
+<!--                  <template v-else-if="scope.row.type.includes('base64')">-->
+<!--                    <el-input-->
+<!--                        :value="Array.isArray(scope.row.value) ? `当前有[${scope.row.value.length}]组数据` : scope.row.value"-->
+<!--                        readonly-->
+<!--                    >-->
+<!--                      <template #append>-->
+<!--                        <el-upload-->
+<!--                            :show-file-list="false"-->
+<!--                            :before-upload="file => handleImageToBase64(file, scope.row)"-->
+<!--                        >-->
+<!--                          <el-button type="primary" icon="Upload">上传图片</el-button>-->
+<!--                        </el-upload>-->
+<!--                      </template>-->
+<!--                    </el-input>-->
+<!--                  </template>-->
+<!--                  <template v-else-if="scope.row.type.includes('base64')">-->
+<!--                    <template v-for="(item,index) in scope.row.value" :key="index">-->
+<!--                      <el-image style="width: 50px;height: 50px;" :src="item"></el-image>-->
+<!--                    </template>-->
+<!--                      <el-upload-->
+<!--                          :show-file-list="false"-->
+<!--                          :before-upload="file => handleImageToBase64(file, scope.row)"-->
+<!--                      >-->
+<!--                        <el-button type="primary" icon="Upload">上传图片</el-button>-->
+<!--                      </el-upload>-->
+<!--                  </template>-->
                   <template v-else-if="scope.row.type.includes('base64')">
-                    <el-input
-                        :value="Array.isArray(scope.row.value) ? `当前有[${scope.row.value.length}]组数据` : scope.row.value"
-                        readonly
-                    >
-                      <template #append>
-                        <el-upload
-                            :show-file-list="false"
-                            :before-upload="file => handleImageToBase64(file, scope.row)"
+                    <div class="image-upload-wrapper">
+                      <div>可简单拖动改变顺序</div>
+                      <!-- 图片列表 -->
+                      <div class="image-list">
+                        <div
+                            v-if="scope.row.value !== '[]'"
+                            v-for="(item, index) in scope.row.value"
+                            :key="index"
+                            class="image-item"
+                            draggable="true"
+                            @dragstart="dragStart(index, scope.row)"
+                            @dragover.prevent
+                            @drop="drop(index, scope.row)"
                         >
-                          <el-button type="primary" icon="Upload">上传图片</el-button>
-                        </el-upload>
-                      </template>
-                    </el-input>
+                          <el-image :src="item" :preview-src-list="scope.row" preview-teleported style="width: 50px; height: 50px;" />
+                          <el-button
+                              type="text"
+                              icon="Delete"
+                              @click="removeImage(scope.row, index)"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- 上传按钮 -->
+                      <el-upload
+                          :show-file-list="false"
+                          :before-upload="file => handleImageToBase64(file, scope.row)"
+                      >
+                        <el-button type="primary" icon="Upload">上传图片</el-button>
+                      </el-upload>
+                    </div>
                   </template>
 
                   <!-- 其他类型：默认输入框 -->
@@ -118,7 +186,7 @@
       <el-divider></el-divider>
       <el-card style="padding: 20px">
         <h3>返回结果:
-          <el-button type="success" @click="copyImage()">复制内容(复制gif)</el-button>
+          <el-button type="success" @click="copyImage()">复制内容(能复制gif到剪贴板的按钮)</el-button>
         </h3>
         <div v-if="responseResult.code === 200" style="width: 120px;height: 120px;border: #2dff12 1px solid;padding: 2px">
           <el-image :src="responseResult.data" :preview-src-list="[responseResult.data]"  preview-teleported style="width: 100%;height: 100%"></el-image>
@@ -159,7 +227,7 @@
       </el-table>
     </el-card>
 
-    <div class="api-section" style="margin-bottom: 200px;max-width: 1000px;padding: 20" >
+    <div class="api-section" style="margin-bottom: 200px;max-width: 1000px;padding: 20px" >
       <FriendLinkComment :linkId="id"></FriendLinkComment>
     </div>
     <!-- 👇 隐藏区域用于复制 DOM -->
@@ -260,6 +328,46 @@ const requestData = ref({
 });
 const responseResult = ref({});
 
+const newString = ref("") // 每行输入的新字符串
+
+// 添加新字符串
+const addString = (row) => {
+  const value = newString.value
+  if (!value) return
+  if (row.value === "[]"){
+    row.value = [];
+  }
+  row.value.push(value)
+  ElMessage.success(`添加 "${value}" 成功`)
+}
+
+// 删除字符串
+const removeString = (row, index) => {
+  row.value.splice(index, 1)
+  ElMessage.info('已删除该字符串')
+}
+
+// 拖拽源索引
+let dragIndex = null
+// 删除图片
+const removeImage = (row, index) => {
+  row.value.splice(index, 1)
+}
+
+// 拖拽开始
+const dragStart = (index, row) => {
+  dragIndex = index
+}
+
+// 放置
+const drop = (index, row) => {
+  if (dragIndex === null || dragIndex === index) return
+  const temp = row.value[dragIndex]
+  row.value.splice(dragIndex, 1)
+  row.value.splice(index, 0, temp)
+  dragIndex = null
+  ElMessage.info('图片顺序已更新')
+}
 
 /**
  * 复制文本
@@ -457,6 +565,9 @@ function sendRequest() {
 </script>
 
 <style scoped>
+
+
+
 /* 整体容器 */
 .api-container {
   padding: 20px;
@@ -526,5 +637,32 @@ function sendRequest() {
 /* 输入框 */
 .copy-input {
   max-width: 600px;
+}
+
+.image-upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.image-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.image-item {
+  position: relative;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-item .el-button {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  padding: 0;
 }
 </style>
