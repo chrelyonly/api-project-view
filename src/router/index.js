@@ -44,6 +44,10 @@ const router = createRouter({
       component: () => import('@/views/oauthCallback/index.vue'),
     },
     {
+      path: '/downloadCenter/index',
+      component: () => import('@/views/downloadCenter/index.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/NotFound.vue'),

@@ -63,6 +63,7 @@ const getUserLogin = () => {
         <!-- 右边导航 -->
         <el-col :span="12" class="nav">
           <a href="/"><span>🏠</span> 首页</a>
+          <a href="/downloadCenter/index"><span>💾</span> 软件工具下载中心</a>
           <a href="/link/index"><span>💗</span> 友情链接</a>
 <!--          <a href="/about"><span>ℹ️</span> 关于我们</a>-->
 <!--          <a href="/contact"><span>📞</span> 联系我们</a>-->
