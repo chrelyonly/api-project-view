@@ -12,7 +12,7 @@
           </el-avatar>
         </div>
         <div>
-          {{ userInfo?.userAccount ? userInfo?.userAccount : "游" }}
+          {{ userInfo?.userAccount ? userInfo?.userAccount : "登录评论" }}
         </div>
       </div>
         <!-- 评论输入框 -->
