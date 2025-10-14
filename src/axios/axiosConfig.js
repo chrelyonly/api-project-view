@@ -71,7 +71,7 @@ const createAxiosInstance = (config = {}) => {
                     params: resConfig.params,
                     data: resConfig.data,
                 });
-                return Promise.reject(new Error(data?.message || '未知错误'));
+                return Promise.reject(new Error(data?.message || data?.msg || '未知错误'));
             }else{
             //     如果http状态是200,那么则判断业务状态
                 if (data.code !== 200){

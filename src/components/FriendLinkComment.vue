@@ -128,7 +128,7 @@
 <script setup>
 import {ref, computed, onMounted} from "vue";
 import {getUserLoginStore} from "@/stores/counter.js";
-import {ElNotification} from "element-plus";
+import {ElMessage, ElNotification} from "element-plus";
 // 定义 props
 const props = defineProps({
   linkId: {
@@ -286,6 +286,8 @@ const submitComment = () => {
       children: [],
     });
     newComment.value = "";
+  },(err)=>{
+    ElNotification.warning(err.message)
   })
 };
 
