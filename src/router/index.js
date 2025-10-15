@@ -48,6 +48,10 @@ const router = createRouter({
       component: () => import('@/views/downloadCenter/index.vue'),
     },
     {
+      path: '/draggableCard/index',
+      component: () => import('@/views/draggable-card/index.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/NotFound.vue'),

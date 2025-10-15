@@ -62,9 +62,22 @@ const getUserLogin = () => {
 
         <!-- 右边导航 -->
         <el-col :span="12" class="nav">
-          <a href="/"><span>🏠</span> 首页</a>
-          <a href="/downloadCenter/index"><span>💾</span> 软件工具下载中心(测试中)</a>
-          <a href="/link/index"><span>💗</span> 友情链接</a>
+          <router-link to="/">
+            <span>🏠</span> 首页
+          </router-link>
+          <router-link to="/downloadCenter/index">
+            <span>💾</span> 软件工具下载中心(测试中)
+          </router-link>
+          <router-link to="/link/index">
+            <span>💗</span> 友情链接
+          </router-link>
+          <router-link to="/draggableCard/index">
+            <span>🧱</span> 我的背景墙
+          </router-link>
+<!--          <a href="/"><span>🏠</span> 首页</a>-->
+<!--          <a href="/downloadCenter/index"><span>💾</span> 软件工具下载中心(测试中)</a>-->
+<!--          <a href="/link/index"><span>💗</span> 友情链接</a>-->
+<!--          <a href="/draggableCard/index"><span>💗</span> 友情链接</a>-->
 <!--          <a href="/about"><span>ℹ️</span> 关于我们</a>-->
 <!--          <a href="/contact"><span>📞</span> 联系我们</a>-->
           <div style="float: right;" @click="goUserInfo" v-if="userLoginStatus">
