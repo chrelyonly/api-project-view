@@ -26,20 +26,23 @@
             @blur="getCode"
         ></el-input>
     </div>
-    <div style="text-align: center">
-      <div>
-        <el-image :src="captchaInfo.image" @click="getCode" style="height: 30px"></el-image>
-      </div>
-      <div>
-        <el-input style="width: 150px" v-model="captchaInfo.code" placeholder="请输入验证码">
-        </el-input>
-      </div>
-      <div>
-        <el-button type="primary" size="small" @click="submitComment" style="margin-top: 10px;">
-          发布评论
-        </el-button>
-      </div>
+    <div class="captcha-row">
+      <el-input
+          v-model="captchaInfo.code"
+          placeholder="请输入验证码"
+          size="small"
+          style="width: 150px;"
+      />
+      <el-image
+          :src="captchaInfo.image"
+          @click="getCode"
+          style="height: 32px; width: 90px; cursor: pointer; margin: 0 8px;"
+      />
+      <el-button type="primary" size="small" @click="submitComment">
+        发布评论
+      </el-button>
     </div>
+
 
     <!-- 评论列表 -->
     <el-row :gutter="20" style="margin-top: 20px" v-loading="commentLoading">
@@ -99,17 +102,23 @@
                 @keyup.enter.native="submitReply(comment)"
                 @blur="getCode"
             ></el-input>
-            <div>
-              <el-image :src="captchaInfo.image" @click="getCode" style="height: 30px"></el-image>
-            </div>
-            <div>
-              <el-input style="width: 150px" v-model="captchaInfo.code" placeholder="请输入验证码">
-              </el-input>
-            </div>
-            <div>
-              <el-button type="primary" size="small" @click="submitReply(comment)" style="margin-top: 5px;">
+            <div class="captcha-row">
+              <el-input
+                  v-model="captchaInfo.code"
+                  placeholder="请输入验证码"
+                  size="small"
+                  style="width: 150px;"
+              />
+              <el-image
+                  :src="captchaInfo.image"
+                  @click="getCode"
+                  style="height: 32px; width: 90px; cursor: pointer; margin: 0 8px;"
+              />
+              <el-button type="primary" size="small" @click="submitReply(comment)">
                 评论回复
               </el-button>
+            </div>
+            <div>
             </div>
           </div>
         </div>
@@ -286,8 +295,6 @@ const submitComment = () => {
       children: [],
     });
     newComment.value = "";
-  },(err)=>{
-    ElNotification.warning(err.message)
   })
 };
 
@@ -352,6 +359,22 @@ const handlePageChange = (page) => {
 </script>
 
 <style scoped>
+.captcha-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap; /* 小屏幕时自动换行 */
+}
+
+.captcha-row .el-input {
+  margin-bottom: 5px;
+}
+
+.captcha-row .el-button {
+  white-space: nowrap;
+}
+
 .wrapper {
   margin-bottom: 20px;
   border-radius: 15px;
