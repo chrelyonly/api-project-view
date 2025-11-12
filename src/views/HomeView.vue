@@ -252,36 +252,36 @@ onMounted(() => {
 
 
 // 弹出公告
-  ElNotification({
-    title: '🎉 网站更新完成',
-    message: `
-    <div>
-      <p><strong>🆕 版本号：</strong>v20251013</p>
-      <hr style="margin: 8px 0;" />
-      <p><strong>🔧 本次更新内容：</strong></p>
-      <ul style="margin: 6px 0; padding-left: 18px;">
-        <li>✅ 修复复制功能异常问题</li>
-        <li>✅ 增加接口下的评论问题</li>
-        <li>✅ 修复不登录的时候评论组件不出来的问题</li>
-        <li>✅ 现在可以更好的方式上传表情包图片了</li>
-        <li>✅ 现在可以更好的方式进行文本数组上传了</li>
-        <li>✅ 现在不登录也能看到评论区了(因为报错了,没做判断未登录的信息获取导致组件加载异常)</li>
-<!--        <li>✅ 取消了边看图</li>-->
-      </ul>
-      <hr style="margin: 8px 0;" />
-      <p><strong>📬 联系我们：</strong></p>
-      <p>如遇问题，可通过 <el-tag>wx: whoAmI1172576293</el-tag> 加群提交反馈。</p>
-      <p style="margin-top: 8px;">感谢您的支持与使用，祝您使用愉快！🎈</p>
-    </div>
-  `,
-    dangerouslyUseHTMLString: true,
-    type: 'success',
-    duration: 8000,
-    position: 'top-right',
-    offset: 80,
-    showClose: true,
-    customClass: 'custom-notify-box'
-  })
+//   ElNotification({
+//     title: '🎉 网站更新完成',
+//     message: `
+//     <div>
+//       <p><strong>🆕 版本号：</strong>v20251013</p>
+//       <hr style="margin: 8px 0;" />
+//       <p><strong>🔧 本次更新内容：</strong></p>
+//       <ul style="margin: 6px 0; padding-left: 18px;">
+//         <li>✅ 修复复制功能异常问题</li>
+//         <li>✅ 增加接口下的评论问题</li>
+//         <li>✅ 修复不登录的时候评论组件不出来的问题</li>
+//         <li>✅ 现在可以更好的方式上传表情包图片了</li>
+//         <li>✅ 现在可以更好的方式进行文本数组上传了</li>
+//         <li>✅ 现在不登录也能看到评论区了(因为报错了,没做判断未登录的信息获取导致组件加载异常)</li>
+// <!--        <li>✅ 取消了边看图</li>-->
+//       </ul>
+//       <hr style="margin: 8px 0;" />
+//       <p><strong>📬 联系我们：</strong></p>
+//       <p>如遇问题，可通过 <el-tag>wx: whoAmI1172576293</el-tag> 加群提交反馈。</p>
+//       <p style="margin-top: 8px;">感谢您的支持与使用，祝您使用愉快！🎈</p>
+//     </div>
+//   `,
+//     dangerouslyUseHTMLString: true,
+//     type: 'success',
+//     duration: 8000,
+//     position: 'top-right',
+//     offset: 80,
+//     showClose: true,
+//     customClass: 'custom-notify-box'
+//   })
 });
 // 输入框回车事件
 const handleEnter = ()=>{

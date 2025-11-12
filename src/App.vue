@@ -68,6 +68,9 @@ const getUserLogin = () => {
           <router-link to="/downloadCenter/index">
             <span>💾</span> 软件工具下载中心(测试中)
           </router-link>
+          <router-link to="/code-template/index">
+            <span>🍪</span> 代码模板库
+          </router-link>
           <router-link to="/link/index">
             <span>💗</span> 友情链接
           </router-link>

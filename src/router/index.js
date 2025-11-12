@@ -52,6 +52,18 @@ const router = createRouter({
       component: () => import('@/views/draggable-card/index.vue'),
     },
     {
+      path: '/code-template/index',
+      component: () => import('@/views/code-template/index.vue'),
+    },
+
+
+
+
+
+
+
+    //   保留404
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/NotFound.vue'),

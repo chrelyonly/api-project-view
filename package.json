@@ -16,6 +16,7 @@
     "element-plus": "^2.10.1",
     "highlight.js": "^11.11.1",
     "pinia": "^2.2.6",
+    "prismjs": "^1.30.0",
     "recharts": "^2.15.1",
     "unplugin-auto-import": "^0.19.0",
     "unplugin-vue-components": "^0.28.0",
