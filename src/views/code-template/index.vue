@@ -275,7 +275,7 @@ const toggleTag = (tag) => {
 };
 
 // 从API获取模板数据
-const fetchTemplates = async () => {
+const fetchTemplates =  () => {
   loading.value = true;
   error.value = null;
   
@@ -283,25 +283,25 @@ const fetchTemplates = async () => {
     // 使用$https工具调用API获取模板数据
     // 注意：这里使用空参数对象，不需要特定的id
     const params = {};
-    const response = $https("/code-template-api/list", "get", params, 1, {})
-    
-    if (response && response.data && response.data.code === 200 && response.data.data) {
-      // 确保数据格式正确
-      const apiTemplates = Array.isArray(response.data.data) ? response.data.data : [];
-      
-      // 如果API返回了数据，则使用API数据
-      if (apiTemplates.length > 0) {
-        templates.value = apiTemplates;
+    $https("/code-template-api/list", "get", params, 1, {}).then(response => {
+      if (response && response.data && response.data.code === 200 && response.data.data) {
+        // 确保数据格式正确
+        const apiTemplates = Array.isArray(response.data.data.records) ? response.data.data.records : [];
+
+        // 如果API返回了数据，则使用API数据
+        if (apiTemplates.length > 0) {
+          templates.value = apiTemplates;
+        } else {
+          // 否则使用默认数据作为后备
+          templates.value = [...defaultTemplates];
+          ElMessage.warning('未获取到模板数据，显示默认示例');
+        }
       } else {
-        // 否则使用默认数据作为后备
+        // API返回格式不符合预期，使用默认数据
         templates.value = [...defaultTemplates];
-        ElMessage.warning('未获取到模板数据，显示默认示例');
+        ElMessage.warning('数据格式异常，显示默认示例');
       }
-    } else {
-      // API返回格式不符合预期，使用默认数据
-      templates.value = [...defaultTemplates];
-      ElMessage.warning('数据格式异常，显示默认示例');
-    }
+    })
   } catch (err) {
     console.error('获取模板数据失败:', err);
     error.value = '获取模板数据失败，请稍后重试';
@@ -388,7 +388,7 @@ const finishEditing = (templateId) => {
           >
             {{ tag.toUpperCase() }}
           </el-tag>
-          
+
           <span class="tags-label" style="margin-left: 20px;">类型筛选：</span>
           <el-tag
               v-for="tag in ['example','advanced','basic']"
@@ -415,24 +415,24 @@ const finishEditing = (templateId) => {
           </div>
           <p>加载模板中...</p>
         </div>
-        
+
         <!-- 错误状态 -->
         <div v-else-if="error" class="error-state">
           <p>{{ error }}</p>
           <el-button type="primary" @click="refreshData">重新获取</el-button>
         </div>
-        
+
         <!-- 统计信息 -->
         <div v-else-if="hasActiveFilters" class="stats-info">
           共找到 {{ templateStats.total }} 个模板 (JavaScript: {{ templateStats.javascript }}, Python: {{ templateStats.python }}, Java: {{ templateStats.java }})
         </div>
-        
+
         <!-- 空状态 -->
         <div v-else-if="filteredTemplates.length === 0" class="empty-state">
           <p>没有找到符合条件的模板</p>
           <el-button type="primary" @click="refreshData">刷新数据</el-button>
         </div>
-        
+
         <!-- 分类显示模板 -->
         <template v-else>
           <template v-for="(items, language) in categorizedTemplates" :key="language">
@@ -441,14 +441,14 @@ const finishEditing = (templateId) => {
               {{ language === 'javascript' ? 'JavaScript' : language === 'python' ? 'Python' : 'Java' }} 模板
               <span class="category-count">({{ items.length }})</span>
             </h2>
-            
+
             <div class="language-templates">
               <div v-for="template in items" :key="template.id" class="template-card">
                 <div class="header">
                   <h3>{{ template.title }}</h3>
                   <div>
-                    <el-tag 
-                      v-for="tag in template.tags" 
+                    <el-tag
+                      v-for="tag in template.tags"
                       :key="tag"
                       :type="getTagType(tag)"
                       :effect="'plain'"
@@ -483,8 +483,8 @@ const finishEditing = (templateId) => {
                     <div v-for="n in template.code.split('\n').length" :key="n" class="line-number">{{ n }}</div>
                   </div>
                   <div class="code-wrapper">
-                    <pre :class="'language-' + template.language_name"><code 
-                      contenteditable 
+                    <pre :class="'language-' + template.language_name"><code
+                      contenteditable
                       @input="(e) => { updateCode(template.id, e.target.textContent); debouncedHighlight(e.target); }"
                       @focus="startEditing(template.id)"
                       @blur="finishEditing(template.id)"
@@ -513,7 +513,8 @@ const finishEditing = (templateId) => {
 /* 页面整体样式 */
 .page-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: rgba(255,255,255,0.7);
+  margin: 60px auto 0;
   padding: 20px;
 }
 
