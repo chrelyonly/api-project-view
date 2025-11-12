@@ -6,6 +6,7 @@ import 'prismjs/components/prism-javascript.js';
 import 'prismjs/components/prism-java.js';
 import 'prismjs/components/prism-python.js';
 import { ElButton, ElTag, ElMessage, ElInput } from 'element-plus';
+import FriendLinkComment from "@/components/FriendLinkComment.vue";
 
 // 获取标签类型
 const getTagType = (tag) => {
@@ -502,7 +503,10 @@ const finishEditing = (templateId) => {
           </template>
         </template>
       </div>
-    </div>
+
+
+    <FriendLinkComment linkId="10002"></FriendLinkComment>
+  </div>
 </template>
 
 <style scoped>
