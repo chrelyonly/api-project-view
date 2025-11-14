@@ -13,9 +13,89 @@ nextTick (() => {
   }
 })
 
+const visible = ref(false);
+const menuStyle = ref({});
+
+const menuWidth = 210;   // 你的菜单宽度
+const menuHeight = 200;  // 大概高度，多一些没关系
+
+const openMenu = (e) => {
+  e.preventDefault();
+
+  let x = e.clientX;
+  let y = e.clientY;
+
+  const winWidth = window.innerWidth;
+  const winHeight = window.innerHeight;
+
+  // 如果右边放不下 → 往左挪
+  if (x + menuWidth > winWidth) {
+    x = winWidth - menuWidth - 10; // 距离右边 10 像素
+  }
+
+  // 如果下边放不下 → 往上挪
+  if (y + menuHeight > winHeight) {
+    y = winHeight - menuHeight - 10; // 距离底部 10 像素
+  }
+
+  menuStyle.value = {
+    top: y + "px",
+    left: x + "px",
+  };
+
+  visible.value = true;
+};
+
+function closeMenu() {
+  visible.value = false;
+}
+// ====== 菜单功能 ======
+function openDevTools() {
+  ElNotification({
+    title: "提示",
+    message: "无法直接打开 DevTools，请按 F12 或 Ctrl + Shift + I",
+    type: "info"
+  });
+  closeMenu();
+}
+
+function refreshPage() {
+  location.reload();
+}
+
+function goBack() {
+  history.back();
+}
+
+function goForward() {
+  history.forward();
+}
+
+function copyURL() {
+  navigator.clipboard.writeText(location.href);
+  ElMessage.success("已复制当前 URL ✨");
+}
+
+function openNewTab() {
+  window.open(location.href, "_blank");
+}
+
+function viewSource() {
+  window.open("view-source:" + location.href, "_blank");
+}
 onMounted(()=>{
   // 检查用户登录状态
   getUserLogin()
+
+  // 全局右键自定义
+  window.addEventListener("contextmenu", openMenu);
+
+  // 任意左键点击关闭
+  window.addEventListener("mousedown", (e) => {
+    if (!e.target.closest(".cute-menu")) {
+      closeMenu();
+    }
+  });
 })
 /**
  * 前往用户信息
@@ -103,6 +183,33 @@ const getUserLogin = () => {
     <transition name="fade-slide" mode="out-in">
       <RouterView />
     </transition>
+
+
+
+
+    <!-- 全局右键菜单 -->
+    <transition name="menu-ani">
+      <div
+          v-show="visible"
+          class="cute-menu"
+          :style="menuStyle"
+      >
+        <div class="cute-title">🌸 常用操作</div>
+
+        <div class="cute-item" @click="openDevTools">🛠 打开开发者工具</div>
+        <div class="cute-item" @click="refreshPage">🔄 刷新页面</div>
+
+        <div class="cute-item" @click="goBack">⬅ 返回</div>
+        <div class="cute-item" @click="goForward">➡ 前进</div>
+
+        <div class="cute-divider"></div>
+
+        <div class="cute-item" @click="copyURL">🔗 复制当前链接</div>
+        <div class="cute-item" @click="openNewTab">🆕 在新标签页打开</div>
+        <div class="cute-item" @click="viewSource">📄 查看网页源代码</div>
+      </div>
+    </transition>
+
 
 
     <!-- 登录组件 -->
@@ -200,4 +307,156 @@ const getUserLogin = () => {
 .animate-frame {
   animation: frameIn 0.5s ease-out forwards;
 }
+
+/* 渐变光晕 */
+@keyframes glow {
+  0% { box-shadow: 0 0 12px rgba(255, 130, 180, 0.3); }
+  50% { box-shadow: 0 0 22px rgba(255, 130, 200, 0.5); }
+  100% { box-shadow: 0 0 12px rgba(255, 130, 180, 0.3); }
+}
+
+/* 弹出动画更丝滑 */
+.menu-fade-enter-active {
+  animation: pop 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.menu-fade-leave-active {
+  animation: fadeOut 0.15s ease forwards;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes fadeOut {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0; }
+}
+
+/* 轻量玻璃拟态（减少性能负担） */
+.cute-menu {
+  position: fixed;
+  width: 210px;
+  padding: 10px 0;
+  border-radius: 16px;
+  background: rgba(255, 245, 250, 0.72);
+  backdrop-filter: blur(8px); /* 降低模糊强度，更流畅 */
+  border: 1px solid rgba(255, 180, 220, 0.45);
+  box-shadow: 0 6px 18px rgba(255, 150, 200, 0.25);
+  z-index: 999999;
+
+  /* 弹出动画 — 小巧精致不卡顿 */
+  animation: menuPop 0.15s ease;
+}
+
+/* 优化弹出动画（减少缩放幅度） */
+@keyframes menuPop {
+  0% {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 菜单标题 */
+.cute-title {
+  padding: 6px 16px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #d14fa2;
+}
+
+/* 项目 */
+.cute-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #c93a8a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+/* 悬停效果优化 — 不卡顿 */
+.cute-item:hover {
+  background: rgba(255, 220, 235, 0.85);
+  padding-left: 22px;
+  border-radius: 10px;
+}
+
+/* 分割线 */
+.cute-divider {
+  height: 1px;
+  margin: 8px 0;
+  background: rgba(255, 160, 220, 0.4);
+}
+
+/* ---------------------------
+    ① 右键菜单本体（无动画）
+---------------------------- */
+.cute-menu {
+  position: fixed;
+  width: 210px;
+  padding: 10px 0;
+  border-radius: 16px;
+  background: rgba(255, 245, 250, 0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 180, 220, 0.45);
+  box-shadow: 0 6px 18px rgba(255, 150, 200, 0.25);
+  z-index: 999999;
+}
+
+/* ---------------------------
+    ② 出现动画（Vue 进入）
+---------------------------- */
+.menu-ani-enter-from {
+  opacity: 0;
+  transform: scale(0.87);
+}
+.menu-ani-enter-active {
+  transition: all 0.15s ease-out;
+}
+.menu-ani-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---------------------------
+    ③ 消失动画（Vue 离开）
+---------------------------- */
+.menu-ani-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+.menu-ani-leave-active {
+  transition: all 0.13s ease-in;
+}
+.menu-ani-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* ---------------------------
+    菜单项 hover 动画
+---------------------------- */
+.cute-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #c93a8a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.cute-item:hover {
+  background: rgba(255, 220, 235, 0.85);
+  padding-left: 22px;
+  border-radius: 10px;
+}
+
 </style>
