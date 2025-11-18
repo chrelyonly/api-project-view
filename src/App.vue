@@ -88,14 +88,14 @@ onMounted(()=>{
   getUserLogin()
 
   // 全局右键自定义
-  window.addEventListener("contextmenu", openMenu);
+  // window.addEventListener("contextmenu", openMenu);
 
   // 任意左键点击关闭
-  window.addEventListener("mousedown", (e) => {
-    if (!e.target.closest(".cute-menu")) {
-      closeMenu();
-    }
-  });
+  // window.addEventListener("mousedown", (e) => {
+  //   if (!e.target.closest(".cute-menu")) {
+  //     closeMenu();
+  //   }
+  // });
 })
 /**
  * 前往用户信息

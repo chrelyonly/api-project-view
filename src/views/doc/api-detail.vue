@@ -71,7 +71,7 @@
               </el-table-column>
               <el-table-column prop="type" label="类型"  align="center"></el-table-column>
               <el-table-column prop="dataLength" label="需要数据长度"  align="center"></el-table-column>
-              <el-table-column prop="value" label="值" align="center" width="300">
+              <el-table-column prop="value" label="值" align="center" min-width="300">
                 <template #default="scope">
                   <!-- 如果是字符串数组 -->
 <!--                  <template v-if="scope.row.type.includes('string[]')">-->
@@ -161,6 +161,58 @@
                       >
                         <el-button type="primary" icon="Upload">上传图片</el-button>
                       </el-upload>
+                    </div>
+                  </template>
+<!--                  如果是JSON -->
+                  <template v-else-if="scope.row.type.includes('JSON')">
+                    <div class="json-wrapper">
+                      {{scope.row.value}}
+                      <el-form :model="scope.row.value" label-width="80px" :inline="isMobile" size="small">
+                        <!-- 是否启用 -->
+                        <el-form-item label="启用" prop="enable">
+                          <el-switch
+                              v-model="scope.row.value.enable"
+                              active-text="启用"
+                              inactive-text="禁用"
+                              active-color="#13ce66"
+                              inactive-color="#ff4949"
+                          />
+                        </el-form-item>
+
+                        <!-- 颜色值 -->
+                        <el-form-item label="颜色值" prop="color">
+                          <el-input
+                              v-model="scope.row.value.color"
+                              placeholder="颜色值，例如 0xA29C93"
+                              style="width: 200px;"
+                          />
+                        </el-form-item>
+
+                        <!-- 模糊度 -->
+                        <el-form-item label="模糊度" prop="similarity">
+                          <el-input-number
+                              v-model="scope.row.value.similarity"
+                              :min="0"
+                              :max="1"
+                              :step="0.01"
+                              placeholder="0~1"
+                              style="width: 200px;"
+                          />
+                        </el-form-item>
+
+                        <!-- 混合度 -->
+                        <el-form-item label="混合度" prop="blend">
+                          <el-input-number
+                              v-model="scope.row.value.blend"
+                              :min="0"
+                              :max="1"
+                              :step="0.01"
+                              placeholder="0~1"
+                              style="width: 200px;"
+                          />
+                        </el-form-item>
+                      </el-form>
+                      <div>勾选后默认gif,png的话则为一帧的gif透明矢量图</div>
                     </div>
                   </template>
 
@@ -300,6 +352,14 @@ const loadData = () => {
       if (apiInfo.value?.requestParams) {
         try {
           requestData.value.params = JSON.parse(apiInfo.value.requestParams);
+
+        //  循环处理下数据格式
+          for (let i = 0; i < requestData.value.params.length; i++) {
+            let temp = requestData.value.params[i]
+            if (temp.type.includes('JSON')){
+              temp.value = JSON.parse(temp.value);
+            }
+          }
         } catch (e) {
           console.error("requestParams 不是合法的 JSON 字符串");
           requestData.value.params = null; // 或者 {}
