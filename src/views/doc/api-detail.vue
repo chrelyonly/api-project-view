@@ -243,7 +243,7 @@
         <div v-if="responseResult.code === 200" style="width: 120px;height: 120px;border: #2dff12 1px solid;padding: 2px">
           <el-image :src="responseResult.data" :preview-src-list="[responseResult.data]"  preview-teleported style="width: 100%;height: 100%"></el-image>
         </div>
-        <div v-else>
+        <div >
           {{responseResult.msg}}
         </div>
       </el-card>
