@@ -44,7 +44,7 @@
 
 
     <!-- 新增的：在线调试请求窗口 -->
-    <el-card class="api-section" style="max-width: 1000px;" v-loading="debugLoading">
+    <el-card class="api-section" style="max-width: 1300px;" v-loading="debugLoading">
       <h2 class="title">在线调试请求</h2>
       <el-form :model="requestData" label-width="80px" :inline="isMobile">
         <el-form-item label="接口地址">
@@ -166,7 +166,6 @@
 <!--                  如果是JSON -->
                   <template v-else-if="scope.row.type.includes('JSON')">
                     <div class="json-wrapper">
-                      {{scope.row.value}}
                       <el-form :model="scope.row.value" label-width="80px" :inline="isMobile" size="small">
                         <!-- 是否启用 -->
                         <el-form-item label="启用" prop="enable">
@@ -181,11 +180,13 @@
 
                         <!-- 颜色值 -->
                         <el-form-item label="颜色值" prop="color">
-                          <el-input
+                          <el-color-picker
                               v-model="scope.row.value.color"
-                              placeholder="颜色值，例如 0xA29C93"
+                              show-alpha
+                              color-format="hex"
                               style="width: 200px;"
                           />
+                          <el-button icon="search" type="success" @click="openGlobalSelectColor(scope.row.value)">取色器</el-button>
                         </el-form-item>
 
                         <!-- 模糊度 -->
@@ -252,7 +253,7 @@
     </el-card>
 
     <!-- 最近历史调用 -->
-    <el-card class="api-section" style="margin-bottom: 20px;max-width: 1000px;"  v-loading="historyLoading">
+    <el-card class="api-section" style="margin-bottom: 20px;max-width: 1300px;"  v-loading="historyLoading">
       <h2 class="title" >最近历史调用</h2>
       <el-table :data="historyList" border stripe style="width: 100%" align="center">
         <el-table-column show-overflow-tooltip prop="id" label="id" align="center"></el-table-column>
@@ -279,7 +280,7 @@
       </el-table>
     </el-card>
 
-    <div class="api-section" style="margin-bottom: 200px;max-width: 1000px;padding: 20px" >
+    <div class="api-section" style="margin-bottom: 200px;max-width: 1300px;padding: 20px" >
       <FriendLinkComment :linkId="id"></FriendLinkComment>
     </div>
     <!-- 👇 隐藏区域用于复制 DOM -->
@@ -558,7 +559,22 @@ const copyImage = async (data = "") => {
 
 
 
+// 打开全局颜色选择器
+const openGlobalSelectColor = async (item) => {
+  if (!window.EyeDropper) {
+    ElMessage.error("当前浏览器不支持全局取色（EyeDropper API）");
+    return;
+  }
+  const eyeDropper = new EyeDropper();
 
+  try {
+    const result = await eyeDropper.open();
+    item.color = result.sRGBHex
+    console.log("选中的颜色：", result.sRGBHex);  // "#A29C93"
+  } catch (err) {
+    console.log("取色取消");
+  }
+}
 
 
 // 调试上传文件获取base64
@@ -606,6 +622,16 @@ function sendRequest() {
     // 转换一下类型,如果数据类型是数组 值不是数组那么转换一下
     if (item.type.includes('[]') && !Array.isArray(item.value)) {
       requestDataTemp[item.name] = JSON.parse(item.value);
+    }
+  //   如果是JSON
+    if (item.type.includes('JSON')){
+      if (item.value && item.value.color) {
+        const color = item.value.color;
+        // 支持 "#A29C93" 或 "A29C93"
+        let hex = color.replace('#', '').replace('0x', '');
+
+        item.value.color = '0x' + hex.toUpperCase();
+      }
     }
   })
   // 测试的时候处理下
