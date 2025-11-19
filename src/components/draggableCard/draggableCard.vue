@@ -120,10 +120,16 @@ const animate = () => {
   const canvasHeight = canvasRef.value?.clientHeight || 500
   blocks.value.forEach(item => {
     item.left -= item.speed
-    if (item.left + item.width < 0) {
-      item.left = canvasWidth
-      item.top = Math.random() * canvasHeight
-      item.color = randomColor()
+    if (!item.width) {
+      item.width = item.text.length * 15
+    }
+    if (item.left + item.width <= 0) {
+        item.left = canvasWidth
+        item.top = Math.random() * canvasHeight
+        if (item.top >= canvasHeight) {
+          item.top = item.top - 30
+        }
+        item.color = randomColor()
     }
   })
   requestAnimationFrame(animate)
@@ -206,7 +212,7 @@ const loadData = () => {
 /* 内容块保持原来的花边样式 */
 .block {
   position: absolute;
-  min-width: 150px;
+  /* min-width: 150px; */
   height: 30px;
   border-radius: 8px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
@@ -217,10 +223,14 @@ const loadData = () => {
   color: #fff; /* 白色字体更明显 */
   font-weight: bold;
   text-align: center;
+  padding: 0 15px;
 }
 
 .block-header {
   width: 100%;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
 }
 </style>
