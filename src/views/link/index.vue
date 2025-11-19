@@ -25,10 +25,10 @@
                   <img :src="item.avatar || getFavicon(item.url)" alt="网站头像" />
                 </div>
                 <div class="card-header">
-                  <h3>{{ item.name }} <span class="emoji">{{ item.emoji }}</span></h3>
+                  <h3>{{ item.name }}</h3>
                 </div>
                 <div class="card-body">
-                  <p>{{ item.desc }}</p>
+                  <p>{{ item.des }}</p>
                 </div>
                 <div class="card-footer">
                   <span class="status">🌐 {{ item.url }}</span>
@@ -70,32 +70,37 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import {ref, computed, onMounted} from "vue";
 import FriendLinkComment from "@/components/FriendLinkComment.vue";
 
-const links = ref([
-  { name: "chrelyonly", url: "https://chrelyonly.cn", desc: "主页", emoji: "🏠", tag: "友链", group: "朋友圈" },
-  { name: "chrelyonly-API站", url: "https://api-chrelyonly.cn", desc: "API站", emoji: "🏠", tag: "API站", group: "朋友圈" },
-  { name: "大白萝卜_Official-博客", url: "https://blog.imbhj.com", desc: "萝卜的博客", emoji: "🏠", tag: "博客", group: "朋友圈" },
-  { name: "大白萝卜_Official-论坛", url: "https://bbs.imbhj.com", desc: "萝卜的论坛", emoji: "🏠", tag: "论坛", group: "朋友圈" },
-  { name: "chrelyonly的小屋", url: "https://chrelyonly.cn", desc: "个人工具箱 & API 集合", emoji: "🏠", tag: "推荐", group: "推荐" },
-  { name: "Vue.js", url: "https://vuejs.org", desc: "渐进式 JavaScript 框架", emoji: "🖖", tag: "前端", group: "前端" },
-  { name: "React", url: "https://react.dev", desc: "用于构建用户界面的 JavaScript 库", emoji: "⚛️", tag: "前端", group: "前端" },
-  { name: "Element Plus", url: "https://element-plus.org", desc: "基于 Vue3 的 UI 组件库", emoji: "🎨", tag: "UI", group: "前端" },
-  { name: "Ant Design Vue", url: "https://www.antdv.com", desc: "企业级 Vue UI 组件库", emoji: "🖌️", tag: "UI", group: "前端" },
-  { name: "MDN Web Docs", url: "https://developer.mozilla.org", desc: "Web 开发者必备文档", emoji: "📚", tag: "文档", group: "文档" },
-  { name: "Stack Overflow", url: "https://stackoverflow.com", desc: "程序员问答社区", emoji: "💡", tag: "社区", group: "社区" },
-  { name: "GitHub", url: "https://github.com", desc: "全球最大的代码托管平台", emoji: "🐙", tag: "工具", group: "工具" },
-  { name: "CodePen", url: "https://codepen.io", desc: "前端在线实验与分享平台", emoji: "🖍️", tag: "工具", group: "工具" },
-  { name: "Node.js", url: "https://nodejs.org", desc: "JavaScript 运行时环境", emoji: "🟢", tag: "后端", group: "后端" },
-  { name: "Vite", url: "https://vitejs.dev", desc: "极速 Web 构建工具", emoji: "⚡", tag: "工具", group: "工具" },
-  { name: "掘金", url: "https://juejin.cn", desc: "程序员技术社区", emoji: "🚀", tag: "社区", group: "社区" },
-]);
+const links = ref([]);
+onMounted(()=>{
+  loadData()
+})
+const commentPage = ref({
+  pageSize: 50,
+  currentPage: 1,
+  total: 0
+});
+/**
+ * 加载数据
+ */
+const loadData = () => {
+  let params = {
+    current: commentPage.value.currentPage,
+    size: commentPage.value.pageSize,
+  }
+  $https("/friendlink-api/list","get",params,1,{}).then(res => {
+    const data = res.data.data;
+    links.value = data.records;
+  })
+}
+
 
 const groupedLinks = computed(() => {
   return links.value.reduce((acc, link) => {
-    if (!acc[link.group]) acc[link.group] = [];
-    acc[link.group].push(link);
+    if (!acc[link.groupName]) acc[link.groupName] = [];
+    acc[link.groupName].push(link);
     return acc;
   }, {});
 });
