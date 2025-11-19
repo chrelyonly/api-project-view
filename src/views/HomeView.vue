@@ -253,36 +253,39 @@ onMounted(() => {
 
 
 // 弹出公告
-//   ElNotification({
-//     title: '🎉 网站更新完成',
-//     message: `
-//     <div>
-//       <p><strong>🆕 版本号：</strong>v20251013</p>
-//       <hr style="margin: 8px 0;" />
-//       <p><strong>🔧 本次更新内容：</strong></p>
-//       <ul style="margin: 6px 0; padding-left: 18px;">
-//         <li>✅ 修复复制功能异常问题</li>
-//         <li>✅ 增加接口下的评论问题</li>
-//         <li>✅ 修复不登录的时候评论组件不出来的问题</li>
-//         <li>✅ 现在可以更好的方式上传表情包图片了</li>
-//         <li>✅ 现在可以更好的方式进行文本数组上传了</li>
-//         <li>✅ 现在不登录也能看到评论区了(因为报错了,没做判断未登录的信息获取导致组件加载异常)</li>
-// <!--        <li>✅ 取消了边看图</li>-->
-//       </ul>
-//       <hr style="margin: 8px 0;" />
-//       <p><strong>📬 联系我们：</strong></p>
-//       <p>如遇问题，可通过 <el-tag>wx: whoAmI1172576293</el-tag> 加群提交反馈。</p>
-//       <p style="margin-top: 8px;">感谢您的支持与使用，祝您使用愉快！🎈</p>
-//     </div>
-//   `,
-//     dangerouslyUseHTMLString: true,
-//     type: 'success',
-//     duration: 8000,
-//     position: 'top-right',
-//     offset: 80,
-//     showClose: true,
-//     customClass: 'custom-notify-box'
-//   })
+  ElNotification({
+    title: '⚡ API 重生计划启动！',
+    message: `
+    <div>
+      <hr style="margin: 8px 0;" />
+      <p><strong>😼 本次复仇计划更新：</strong></p>
+      <ul style="margin: 6px 0; padding-left: 18px;">
+        <li>🔥 上一世任人调戏的接口，这一世加上了更严格的校验！</li>
+        <li>⚔️ 限流器已出鞘：想狂刷？除非你能打赢 429！</li>
+        <li>🛡️ JSON 强制规范：格式乱给？这一世我不会再原谅你！</li>
+      </ul>
+      <hr style="margin: 8px 0;" />
+      <p><strong>📜 API 复仇宣言：</strong></p>
+      <p style="line-height: 1.6;">
+        上一世我默默无闻，如 404 寒风中瑟瑟发抖；<br />
+        这一世我重启人生，誓做全网最稳定的 200！<br />
+        凡调用我者，皆需尊重；凡冒犯我者，日志永久留档！🔥
+      </p>
+      <hr style="margin: 8px 0;" />
+      <p><strong>📬 联系我们：</strong></p>
+      <p>如遇问题，加我进群 <el-tag>wx: whoAmI1172576293</el-tag> 聆听我的复仇计划。我们会温柔处理，不会 429 你 🙂</p>
+      <p style="margin-top: 8px;">感谢你的使用与陪伴，复仇之路因你更精彩！🎉</p>
+    </div>
+  `,
+    dangerouslyUseHTMLString: true,
+    type: 'success',
+    duration: 9000,
+    position: 'top-right',
+    offset: 80,
+    showClose: true,
+    customClass: 'custom-notify-box'
+  })
+
 });
 // 输入框回车事件
 const handleEnter = ()=>{
