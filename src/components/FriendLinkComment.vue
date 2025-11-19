@@ -72,7 +72,7 @@
             <span class="comment-time">{{ comment.createTime }}</span>
             <span class="comment-time">{{ parseUA(comment.userAgent) }}</span>
           </div>
-          <div class="comment-body">
+          <div class="comment-body" style="white-space: pre-line;">
             <p>{{ comment.content }}</p>
           </div>
           <div class="comment-footer">
