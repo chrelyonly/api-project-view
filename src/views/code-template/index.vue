@@ -503,8 +503,6 @@ const finishEditing = (templateId) => {
           </template>
         </template>
       </div>
-
-
     <FriendLinkComment linkId="10002"></FriendLinkComment>
   </div>
 </template>

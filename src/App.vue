@@ -136,12 +136,12 @@ const getUserLogin = () => {
     <div class="topHeader">
       <el-row align="middle">
         <!-- 左边 LOGO -->
-        <el-col :span="12" class="logo">
+        <el-col :span="4" class="logo">
           🍓 我的站点
         </el-col>
 
         <!-- 右边导航 -->
-        <el-col :span="12" class="nav">
+        <el-col :span="20" class="nav">
           <router-link to="/">
             <span>🏠</span> 首页
           </router-link>

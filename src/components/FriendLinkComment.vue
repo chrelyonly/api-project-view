@@ -81,6 +81,7 @@
                 comment.linkId === "10000"?"友情链接":
                 comment.linkId === "10001"?"下载中心":
                 comment.linkId === "10002"?"代码模板":
+                comment.linkId === "10003"?"留言板":
                 comment.linkId === ""?"网站首页":"网站接口详情"
               }}
             </el-button>
@@ -362,6 +363,8 @@ const goLinkIdPage = (linkId) => {
     router.push({ path: "/downloadCenter/index"});
   }else if(linkId === "10002"){
     router.push({ path: "/code-template/index"});
+  }else if(linkId === "10003"){
+    router.push({ path: "/message/index"});
   }else if(linkId === ""){
     router.push({ path: "/"});
   }else{
