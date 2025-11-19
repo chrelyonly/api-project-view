@@ -155,7 +155,7 @@ const getUserLogin = () => {
             <span>💗</span> 友情链接
           </router-link>
           <router-link to="/draggableCard/index">
-            <span>🧱</span> 我的背景墙
+            <span>🧱</span> 背景墙
           </router-link>
 <!--          <a href="/"><span>🏠</span> 首页</a>-->
 <!--          <a href="/downloadCenter/index"><span>💾</span> 软件工具下载中心(测试中)</a>-->
