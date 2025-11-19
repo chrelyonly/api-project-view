@@ -10,8 +10,18 @@
           clearable
           style="width: 240px;"
       />
+      <el-input
+          v-model="captchaInfo.code"
+          placeholder="请输入验证码"
+          size="small"
+          style="width: 150px;"
+      />
+      <el-image
+          :src="captchaInfo.image"
+          @click="getCode"
+          style="height: 32px; width: 90px; cursor: pointer; margin: 0 8px;"
+      />
       <el-button type="primary" size="small" @click="addBlock">➕ 添加</el-button>
-      <el-button type="danger" size="small" @click="clearAll">🗑 清空</el-button>
     </div>
 
     <!-- 弹幕画布 -->
@@ -44,34 +54,65 @@ const randomColor = () => {
   const b = Math.floor(Math.random() * 200 + 30)
   return `rgb(${r},${g},${b})`
 }
+// 验证码信息
+const captchaInfo = ref({
+  // 标识
+  key: "",
+  // 图片
+  image: "",
+  // 值
+  code: "",
+})
+// 获取验证码
+const getCode = ()=>{
+  let params = {
+
+  }
+  $https("/strawberry-user-api/getCode","get",params,1,{}).then(res => {
+    captchaInfo.value.image = res.data.data.image
+    captchaInfo.value.key = res.data.data.key
+  })
+}
 
 // 添加块
 const addBlock = () => {
-  if (!newText.value.trim()) return
-  const id = Date.now()
-  const canvasWidth = canvasRef.value?.clientWidth || 800
-  blocks.value.push({
-    id,
+  if (!newText.value.trim()) {
+    ElNotification.warning("输入评论内容.")
+    return;
+  }
+  if (!captchaInfo.value.code) {
+    ElNotification.warning("输入正确的验证码")
+    return;
+  }
+  let params = {
     text: newText.value,
-    left: canvasWidth,
-    top: Math.random() * (canvasRef.value?.clientHeight || 500),
-    speed: Math.random() * 2 + 1,
-    width: 120,
-    color: randomColor(),
+    color: randomColor()
+  }
+  let headers = {
+    "Captcha-Key": captchaInfo.value.key,
+    "Captcha-Code": captchaInfo.value.code,
+  }
+  $https("/backgroundwall-api/addWall","post",params,2,headers).then((res)=>{
+    const id = Date.now()
+    const canvasWidth = canvasRef.value?.clientWidth || 800
+    blocks.value.push({
+      id,
+      text: newText.value,
+      left: canvasWidth,
+      top: Math.random() * (canvasRef.value?.clientHeight || 500),
+      speed: Math.random() * 2 + 1,
+      width: 120,
+      color: randomColor(),
+    })
+    newText.value = ''
+  }).finally(() => {
+    // 发送的时候需要刷新验证码
+    getCode();
   })
-  newText.value = ''
-  saveLayout()
+
+
 }
 
-const saveLayout = () => {
-  localStorage.setItem('user-blocks', JSON.stringify(blocks.value))
-}
-
-// 清空
-const clearAll = () => {
-  blocks.value = []
-  localStorage.removeItem('user-blocks')
-}
 
 // 弹幕动画循环
 const animate = () => {
@@ -91,21 +132,38 @@ const animate = () => {
 // 载入本地缓存
 onMounted(() => {
   nextTick(() => {
-    const canvasWidth = canvasRef.value?.clientWidth || 800
-    const canvasHeight = canvasRef.value?.clientHeight || 500
-    const saved = localStorage.getItem('user-blocks')
-    if (saved) {
-      blocks.value = JSON.parse(saved).map(item => ({
-        ...item,
-        speed: item.speed || Math.random() * 2 + 1,
-        color: item.color || randomColor(),
-        left: item.left > 0 ? item.left : Math.random() * canvasWidth,
-        top: item.top > 0 ? item.top : Math.random() * canvasHeight,
-      }))
-    }
-    animate()
+    loadData();
+    getCode();
   })
 })
+const commentPage = ref({
+  pageSize: 50,
+  currentPage: 1,
+  total: 0
+});
+/**
+ * 加载数据
+ */
+const loadData = () => {
+  const canvasWidth = canvasRef.value?.clientWidth || 800
+  const canvasHeight = canvasRef.value?.clientHeight || 500
+  let params = {
+    current: commentPage.value.currentPage,
+    size: commentPage.value.pageSize,
+  }
+  $https("/backgroundwall-api/list","get",params,1,{}).then(res => {
+    const data = res.data.data;
+    blocks.value = data.records.map(item => ({
+      ...item,
+      speed: item.speed || Math.random() * 2 + 1,
+      color: item.color || randomColor(),
+      left: item.left > 0 ? item.left : Math.random() * canvasWidth,
+      top: item.top > 0 ? item.top : Math.random() * canvasHeight,
+    }))
+    // 开始播放
+    animate()
+  })
+}
 </script>
 
 

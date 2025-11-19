@@ -62,7 +62,7 @@ const createAxiosInstance = (config = {}) => {
             const { status, data, config: resConfig } = response;
 
             if (status !== 200) {
-                ElMessage.error("网络开小差了哦~")
+                ElMessage.error(data?.message || data?.msg || "网络开小差了哦~")
                 // 打印非 200 响应日志
                 console.warn(`响应错误: ${status}`, data, {
                     url: resConfig.url,
