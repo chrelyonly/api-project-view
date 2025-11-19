@@ -62,6 +62,13 @@
           <div class="comment-header">
             <el-avatar :src="comment.userInfo.avatar" size="medium"></el-avatar>
             <span class="comment-name">{{ comment.userInfo.userAccount }}</span>
+            <span v-if="comment.userInfo.email">
+              <el-tooltip
+                  content="用户填写了邮箱地址,可以收到关于评论的动态"
+              >
+                ✉️
+              </el-tooltip>
+            </span>
             <span class="comment-time">{{ comment.createTime }}</span>
             <span class="comment-time">{{ parseUA(comment.userAgent) }}</span>
           </div>
@@ -345,7 +352,6 @@ const likeComment = (comment) => {
 
 // 前往对于接口详情的方法
 const goLinkIdPage = (linkId) => {
-debugger
 // comment.linkId === "10000"?"友情链接":
 // comment.linkId === "10001"?"下载中心":
 // comment.linkId === "10002"?"代码模板":
