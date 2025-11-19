@@ -406,9 +406,6 @@ const submitReply = (comment) => {
   })
 };
 
-const handlePageChange = (page) => {
-  currentPage.value = page;
-};
 </script>
 
 <style scoped>

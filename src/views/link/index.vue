@@ -22,7 +22,7 @@
             >
               <div class="card animate__animated animate__fadeIn">
                 <div class="card-avatar">
-                  <img :src="item.avatar || getFavicon(item.url)" alt="网站头像" />
+                  <img :src="item.avatar && item.avatar.split(',')[0] || getFavicon(item.url)" alt="网站头像" />
                 </div>
                 <div class="card-header">
                   <h3>{{ item.name }}</h3>
