@@ -17,13 +17,13 @@ const buttonRight = computed(() => {
 <template>
   <!-- 右侧悬浮按钮（随 Drawer 移动） -->
   <div
-      class="float-button"
+      class="float-button fancy-btn"
+      :class="{ open: drawerVisible }"
       :style="{ right: buttonRight }"
       @click="drawerVisible = !drawerVisible"
   >
-    {{ drawerIcon }}
+    <span>{{ drawerIcon }}</span>
   </div>
-
   <!-- Drawer 侧边栏 -->
   <el-drawer
       v-model="drawerVisible"
@@ -40,25 +40,57 @@ const buttonRight = computed(() => {
 </template>
 
 <style scoped>
-.float-button {
+.fancy-btn {
   position: fixed;
   top: 50%;
+  transform: translateY(-50%);
   z-index: 9999;
-  width: 45px;
-  height: 45px;
-  background: #409eff;
-  color: #fff;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  font-size: 24px;
+  background: linear-gradient(135deg, #4a90e2, #7b61ff);
+  color: #fff;
+  font-size: 26px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  transition: right 0.3s ease, background 0.3s;
+
+  /* 动画 */
+  transition:
+      right 0.35s cubic-bezier(0.2, 0.8, 0.3, 1),
+      transform 0.25s ease,
+      box-shadow 0.3s ease,
+      background 0.3s ease;
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
 
-.float-button:hover {
-  background: #66b1ff;
+/* 悬停上浮 */
+.fancy-btn:hover {
+  transform: translateY(-50%) scale(1.07);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.3);
+}
+
+/* 点击反馈 */
+.fancy-btn:active {
+  transform: translateY(-50%) scale(0.93);
+}
+
+/* 按钮内部图标旋转 */
+.fancy-btn span {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+/* Drawer 打开时图标旋转 90°（☰ → ✖ 更自然） */
+.fancy-btn.open span {
+  transform: rotate(90deg);
+}
+
+/* Drawer 打开时背景色变换 */
+.fancy-btn.open {
+  background: linear-gradient(135deg, #ff5f6d, #ffc371);
+  box-shadow: 0 8px 22px rgba(255, 95, 109, 0.4);
 }
 </style>
