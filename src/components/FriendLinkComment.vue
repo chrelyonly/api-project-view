@@ -184,6 +184,9 @@ const sortInfo = ref({
   type:"descs",
 })
 const setSortInfo = (column,type) => {
+  //排序的时候重置分页和数据
+  comments.value = []
+  commentPage.value.currentPage = 1
   sortInfo.value.column = column;
   sortInfo.value.type = type;
   loadData()
