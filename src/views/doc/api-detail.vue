@@ -636,7 +636,7 @@ function sendRequest() {
   })
   // 测试的时候处理下
   let url = requestData.value.url;
-  // let url = requestData.value.url.toString().split("https://nginx-3.frp.chrelyonly.cn/api/")[1];
+  // let url = requestData.value.url.toString().split("https://api.chrelyonly.cn/api/")[1];
   debugLoading.value = true;
   // debugger
   $https(url,requestData.value.method,requestDataTemp,requestData.value.method === "GET"?1:2,{}).then((res) => {

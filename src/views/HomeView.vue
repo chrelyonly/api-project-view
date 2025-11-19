@@ -8,7 +8,7 @@
 
 
               <p align="center">
-                <a href="https://nginx-3.frp.chrelyonly.cn" target="_blank">
+                <a href="https://api.chrelyonly.cn" target="_blank">
                   <img alt="chrelyonly!" src="https://nginx-3.frp.chrelyonly.cn/moe-counter-api/@nginx-3.frp.chrelyonly.cn?name=nginx-3.frp.chrelyonly.cn&theme=rule34">
                 </a>
               </p>

@@ -139,15 +139,15 @@
           </div>
         </div>
       </el-col>
-      <div style="text-align: center;margin: 0 auto">
-        <el-button type="primary" @click="loadMore" >加载更多</el-button>
-      </div>
       <!-- 🔽 没有数据时显示 -->
       <el-col v-if="pagedComments.length === 0" :span="24">
         <div class="comment-card animate__animated animate__fadeIn">
           <el-empty description="暂无数据"></el-empty>
         </div>
       </el-col>
+      <div style="text-align: center;margin: 0 auto" v-if="pagedComments.length !== 0">
+        <el-button type="primary" @click="loadMore" >加载更多</el-button>
+      </div>
     </el-row>
 
   </el-card>

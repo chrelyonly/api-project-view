@@ -151,6 +151,9 @@ const getUserLogin = () => {
           <router-link to="/code-template/index">
             <span>🍪</span> 代码模板库
           </router-link>
+          <router-link to="/message/index">
+            <span>💗</span> 留言
+          </router-link>
           <router-link to="/link/index">
             <span>💗</span> 友情链接
           </router-link>

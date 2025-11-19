@@ -55,6 +55,10 @@ const router = createRouter({
       path: '/code-template/index',
       component: () => import('@/views/code-template/index.vue'),
     },
+    {
+      path: '/message/index',
+      component: () => import('@/views/message/index.vue'),
+    },
 
 
 
