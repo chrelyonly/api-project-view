@@ -75,10 +75,8 @@
                 <el-col
                     v-for="(item, index) in option.sponsorData"
                     :key="index"
-                    :xs="12"
-                    :sm="8"
-                    :md="6"
-                    :lg="4"
+                    span=""
+                    style="margin-top: 10px"
                 >
                   <div class="sponsor-card animate__animated animate__zoomIn">
                     <h3 class="sponsor-name">{{ item.name }}</h3>
@@ -157,6 +155,8 @@
             <!--                </el-col>-->
           </el-row>
         </el-card>
+        <!--  侧边栏 -->
+        <homeSidebar></homeSidebar>
       </div>
 </template>
 
@@ -165,6 +165,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import {ElNotification} from "element-plus";
 import {usePageStore} from "@/stores/counter.js";
+import HomeSidebar from "@/components/sidebar/homeSidebar.vue";
 const router = useRouter();
 const option = ref({
   searchKey: undefined,
@@ -329,7 +330,7 @@ const goMonitor = () => {
 .container {
   width: 100%;
   margin: 0 auto;
-  max-width: 1400px;
+  max-width: 80%;
   opacity: 0.9;
 }
 

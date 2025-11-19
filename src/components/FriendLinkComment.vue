@@ -2,7 +2,7 @@
   <el-card class="wrapper animate__animated animate__fadeInUp">
     <h2 class="title">💬 评论区</h2>
 
-    <div style="display: flex">
+    <div style="display: flex" v-show="userInfo?.userAccount">
       <!-- 当前用户头像 -->
       <div style="text-align: center;margin: 0 20px 0 auto;">
         <div>
@@ -12,7 +12,7 @@
           </el-avatar>
         </div>
         <div>
-          {{ userInfo?.userAccount ? userInfo?.userAccount : "登录评论" }}
+          {{ userInfo?.userAccount ? userInfo?.userAccount : "未登录" }}
         </div>
       </div>
         <!-- 评论输入框 -->
@@ -26,7 +26,7 @@
             @blur="getCode"
         ></el-input>
     </div>
-    <div class="captcha-row">
+    <div class="captcha-row"  v-show="userInfo?.userAccount">
       <el-input
           v-model="captchaInfo.code"
           placeholder="请输入验证码"
@@ -49,6 +49,7 @@
       <!-- 排序选项 -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2 class="title">💬 评论区</h2>
+        <el-tag>共计: {{commentPage.total}}</el-tag>
         <div>
           <el-button size="small" :type="sortInfo.column==='create_time' && sortInfo.type==='ascs'?'primary':'default'" @click="setSortInfo('create_time','ascs')">时间倒序</el-button>
           <el-button size="small" :type="sortInfo.column==='create_time' && sortInfo.type==='descs'?'primary':'default'" @click="setSortInfo('create_time','descs')">时间正序</el-button>
@@ -68,6 +69,14 @@
             <p>{{ comment.content }}</p>
           </div>
           <div class="comment-footer">
+            <el-button type="text"  v-if="comment.linkId !== linkId" @click="goLinkIdPage(comment.linkId)">🥟
+              来源: {{
+                comment.linkId === "10000"?"友情链接":
+                comment.linkId === "10001"?"下载中心":
+                comment.linkId === "10002"?"代码模板":
+                comment.linkId === ""?"网站首页":"网站接口详情"
+              }}
+            </el-button>
             <el-button type="text" @click="likeComment(comment)">👍 {{ comment.star }}</el-button>
             <el-button type="text" @click="reply(comment)">💬 回复</el-button>
           </div>
@@ -123,6 +132,9 @@
           </div>
         </div>
       </el-col>
+      <div style="text-align: center;margin: 0 auto">
+        <el-button type="primary" @click="loadMore" >加载更多</el-button>
+      </div>
       <!-- 🔽 没有数据时显示 -->
       <el-col v-if="pagedComments.length === 0" :span="24">
         <div class="comment-card animate__animated animate__fadeIn">
@@ -138,6 +150,9 @@
 import {ref, computed, onMounted} from "vue";
 import {getUserLoginStore} from "@/stores/counter.js";
 import {ElMessage, ElNotification} from "element-plus";
+import {useRouter} from "vue-router";
+import {MessageBox} from "@element-plus/icons-vue";
+const router = useRouter();
 // 定义 props
 const props = defineProps({
   linkId: {
@@ -175,8 +190,9 @@ const setSortInfo = (column,type) => {
 }
 // 计算出当前评论
 const pagedComments = computed(() => {
-  const start = (commentPage.value.currentPage - 1) * commentPage.value.pageSize;
-  return comments.value.slice(start, start + commentPage.value.pageSize);
+  // const start = (commentPage.value.currentPage - 1) * commentPage.value.pageSize;
+  // return comments.value.slice(start, start + commentPage.value.pageSize);
+  return comments.value;
 });
 // 评论loading
 const commentLoading = ref(false);
@@ -196,11 +212,23 @@ const loadData = ()=>{
   $https("/comment-api/getComment","get",params,1,{}).then((res)=>{
     const data = res.data.data;
     commentPage.value.total = data.total;
-    comments.value = data.records;
+    comments.value.push(...data.records);
   }).finally(() => {
     commentLoading.value = false;
   })
 }
+// 加载更多
+const loadMore = () => {
+  if (comments.value.length >= commentPage.value.total){
+    ElNotification.warning("没有更多啦~")
+    return;
+  }
+  commentPage.value.currentPage++
+  loadData();
+};
+
+
+
 // 来访者信息格式化
 const parseUA = (ua) => {
   let os = '未知系统'
@@ -298,6 +326,7 @@ const submitComment = () => {
   })
 };
 
+
 // 点赞的方法
 const likeComment = (comment) => {
   comment.star++;
@@ -308,6 +337,27 @@ const likeComment = (comment) => {
   $https("/comment-api/commentStar","post",params,1,{}).then(res => {
 
   })
+};
+
+
+// 前往对于接口详情的方法
+const goLinkIdPage = (linkId) => {
+debugger
+// comment.linkId === "10000"?"友情链接":
+// comment.linkId === "10001"?"下载中心":
+// comment.linkId === "10002"?"代码模板":
+// comment.linkId === ""?"网站首页":"网站接口详情"
+  if (linkId === "10000"){
+    router.push({ path: "/link/index"});
+  }else if(linkId === "10001"){
+    router.push({ path: "/downloadCenter/index"});
+  }else if(linkId === "10002"){
+    router.push({ path: "/code-template/index"});
+  }else if(linkId === ""){
+    router.push({ path: "/"});
+  }else{
+    router.push({ path: "/doc/api-detail", query: { id: linkId } });
+  }
 };
 
 // 回复评论的 回复框开关
