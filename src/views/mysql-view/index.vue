@@ -34,9 +34,9 @@ const copyToClipboard = (item) => {
       <span class="star">🌸</span>
     </div>
 
-    <h1 class="title">🌟 MariaDB 公益连接导航页 🌟</h1>
+    <h1 class="title">🌟 mysql 公益连接导航页 🌟</h1>
     <p class="subtitle">
-      提供可公开访问的 MariaDB（MySQL 兼容）服务，适合开发、教学与测试场景 🌱
+      提供可公开访问的 mysql（MySQL 兼容）服务，适合开发、教学与测试场景 🌱
     </p>
 
     <div class="card-container">
@@ -59,7 +59,7 @@ const copyToClipboard = (item) => {
       </el-card>
     </div>
 
-    <p class="footer-tip">💡 点击任意卡片即可复制 MariaDB 连接字符串！</p>
+    <p class="footer-tip">💡 点击任意卡片即可复制 mysql 连接字符串！</p>
   </div>
 </template>
 

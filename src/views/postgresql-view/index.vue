@@ -3,14 +3,14 @@ import { ElMessage } from 'element-plus'
 
 const mysqlList = [
   {
-    name: 'mongodb 公益节点 1',
+    name: 'postgresql 公益节点 1',
     host: 'api.chrelyonly.cn',
     port: '55433',
     user: 'postgresql-public1',
     password: 'postgresql-public1',
   },
   {
-    name: 'mongodb 公益节点 2',
+    name: 'postgresql 公益节点 2',
     host: 'api.chrelyonly.cn',
     port: '55434',
     user: 'postgresql-public2',
@@ -34,9 +34,9 @@ const copyToClipboard = (item) => {
       <span class="star">🌸</span>
     </div>
 
-    <h1 class="title">🌟 mongodb 公益连接导航页 🌟</h1>
+    <h1 class="title">🌟 postgresql 公益连接导航页 🌟</h1>
     <p class="subtitle">
-      提供可公开访问的 mongodb 服务，适合开发、教学与测试场景 🌱
+      提供可公开访问的 postgresql 服务，适合开发、教学与测试场景 🌱
     </p>
 
     <div class="card-container">
