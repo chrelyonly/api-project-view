@@ -5,16 +5,16 @@ const mysqlList = [
   {
     name: 'mongodb 公益节点 1',
     host: 'api.chrelyonly.cn',
-    port: '27017',
-    user: 'mongodb-public1',
-    password: 'mongodb-public1',
+    port: '55433',
+    user: 'postgresql-public1',
+    password: 'postgresql-public1',
   },
   {
     name: 'mongodb 公益节点 2',
     host: 'api.chrelyonly.cn',
-    port: '27018',
-    user: 'mongodb-public2',
-    password: 'mongodb-public2',
+    port: '55434',
+    user: 'postgresql-public2',
+    password: 'postgresql-public2',
   },
 ]
 

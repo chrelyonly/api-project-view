@@ -5,23 +5,16 @@ const mysqlList = [
   {
     name: 'MariaDB 公益节点 1',
     host: 'api.chrelyonly.cn',
-    port: '13301',
+    port: '53308',
     user: 'root',
     password: 'mariadb-public1',
   },
   {
     name: 'MariaDB 公益节点 2',
     host: 'api.chrelyonly.cn',
-    port: '13302',
+    port: '53309',
     user: 'root',
     password: 'mariadb-public2',
-  },
-  {
-    name: 'MariaDB 公益节点 3',
-    host: 'api.chrelyonly.cn',
-    port: '13303',
-    user: 'root',
-    password: 'mariadb-public3',
   },
 ]
 

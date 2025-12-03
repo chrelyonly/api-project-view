@@ -5,20 +5,14 @@ const redisList = [
   {
     name: 'Redis 服务器1-节点1',
     host: 'api.chrelyonly.cn',
-    port: '16371',
+    port: '56379',
     password: 'redis-public1',
   },
   {
     name: 'Redis 服务器1-节点2',
     host: 'api.chrelyonly.cn',
-    port: '16372',
+    port: '56380',
     password: 'redis-public2',
-  },
-  {
-    name: 'Redis 服务器1-节点2',
-    host: 'api.chrelyonly.cn',
-    port: '16373',
-    password: 'redis-public3',
   },
 ]
 

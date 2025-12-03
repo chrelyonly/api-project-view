@@ -187,33 +187,57 @@ const option = ref({
       status: 1,
     },
     {
-      name: 'redis在线免费连接',
-      content: 'redis在线免费连接',
+      name: 'redis公益',
+      content: 'redis公益',
       path: '/redis-view/index',
       // 1vue路由跳转,  2路径跳转
       jumpType:1,
       status: 1,
     },
     {
-      name: 'mysql在线免费连接',
-      content: 'mysql在线免费连接',
+      name: 'mysql公益',
+      content: 'mysql公益',
+      path: '/mysql-view/index',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:1,
+      status: 1,
+    },
+    {
+      name: 'mariadb公益(mariadb为mysql的分支)',
+      content: 'mariadb公益(mariadb为mysql的分支)',
       path: '/mariadb-view/index',
       // 1vue路由跳转,  2路径跳转
       jumpType:1,
       status: 1,
     },
     {
-      name: 'sql-server在线免费连接',
-      content: 'sql-server在线免费连接',
+      name: 'sql-server公益(已弃用)',
+      content: 'sql-server公益(已弃用)',
       path: '/sql-server-view/index',
       // 1vue路由跳转,  2路径跳转
       jumpType:1,
       status: 1,
     },
     {
-      name: 'mongodb在线免费连接',
-      content: 'mongodb在线免费连接',
+      name: 'mongodb公益',
+      content: 'mongodb公益',
       path: '/mongodb-view/index',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:1,
+      status: 1,
+    },
+    {
+      name: 'postgresql公益',
+      content: 'postgresql公益',
+      path: '/postgresql-view/index',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:1,
+      status: 1,
+    },
+    {
+      name: '达梦8公益(测试版)',
+      content: '达梦8公益(测试版)',
+      path: '/dm-view/index',
       // 1vue路由跳转,  2路径跳转
       jumpType:1,
       status: 1,

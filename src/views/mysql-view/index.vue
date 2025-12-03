@@ -3,26 +3,26 @@ import { ElMessage } from 'element-plus'
 
 const mysqlList = [
   {
-    name: 'mongodb 公益节点 1',
+    name: 'mysql(9.5) 公益节点 1',
     host: 'api.chrelyonly.cn',
-    port: '27017',
-    user: 'mongodb-public1',
-    password: 'mongodb-public1',
+    port: '53306',
+    user: 'root',
+    password: 'mysql-public1-9.5',
   },
   {
-    name: 'mongodb 公益节点 2',
+    name: 'mysql(9.5)  公益节点 2',
     host: 'api.chrelyonly.cn',
-    port: '27018',
-    user: 'mongodb-public2',
-    password: 'mongodb-public2',
+    port: '53307',
+    user: 'root',
+    password: 'mysql-public2-9.5',
   },
 ]
 
 const copyToClipboard = (item) => {
-  // const conn = `mysql://${item.user}:${item.password}@${item.host}:${item.port}`
-  // navigator.clipboard.writeText(conn).then(() => {
-  //   ElMessage.success('🎉 连接信息已复制到剪贴板！')
-  // })
+  const conn = `mysql://${item.user}:${item.password}@${item.host}:${item.port}`
+  navigator.clipboard.writeText(conn).then(() => {
+    ElMessage.success('🎉 连接信息已复制到剪贴板！')
+  })
 }
 </script>
 
@@ -34,9 +34,9 @@ const copyToClipboard = (item) => {
       <span class="star">🌸</span>
     </div>
 
-    <h1 class="title">🌟 mongodb 公益连接导航页 🌟</h1>
+    <h1 class="title">🌟 MariaDB 公益连接导航页 🌟</h1>
     <p class="subtitle">
-      提供可公开访问的 mongodb 服务，适合开发、教学与测试场景 🌱
+      提供可公开访问的 MariaDB（MySQL 兼容）服务，适合开发、教学与测试场景 🌱
     </p>
 
     <div class="card-container">
@@ -59,7 +59,7 @@ const copyToClipboard = (item) => {
       </el-card>
     </div>
 
-<!--    <p class="footer-tip">💡 点击任意卡片即可复制 MariaDB 连接字符串！</p>-->
+    <p class="footer-tip">💡 点击任意卡片即可复制 MariaDB 连接字符串！</p>
   </div>
 </template>
 

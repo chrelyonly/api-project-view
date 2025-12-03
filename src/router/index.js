@@ -24,12 +24,24 @@ const router = createRouter({
       component: () => import('@/views/mariadb-view/index.vue'),
     },
     {
+      path: '/mysql-view/index',
+      component: () => import('@/views/mysql-view/index.vue'),
+    },
+    {
       path: '/sql-server-view/index',
       component: () => import('@/views/sql-server-view/index.vue'),
     },
     {
       path: '/mongodb-view/index',
       component: () => import('@/views/mongodb-view/index.vue'),
+    },
+    {
+      path: '/postgresql-view/index',
+      component: () => import('@/views/postgresql-view/index.vue'),
+    },
+    {
+      path: '/dm-view/index',
+      component: () => import('@/views/dm-view/index.vue'),
     },
     {
       path: '/link/index',
