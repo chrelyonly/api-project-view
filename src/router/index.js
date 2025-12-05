@@ -15,6 +15,8 @@ const router = createRouter({
       path: '/server/view',
       component: () => import('@/views/server/view.vue'),
     },
+
+
     {
       path: '/redis-view/index',
       component: () => import('@/views/redis-view/index.vue'),
@@ -43,6 +45,14 @@ const router = createRouter({
       path: '/dm-view/index',
       component: () => import('@/views/dm-view/index.vue'),
     },
+    {
+      path: '/docker-view/index',
+      component: () => import('@/views/docker-view/index.vue'),
+    },
+
+
+
+
     {
       path: '/link/index',
       component: () => import('@/views/link/index.vue'),

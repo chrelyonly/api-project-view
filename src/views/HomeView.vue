@@ -242,6 +242,14 @@ const option = ref({
       jumpType:1,
       status: 1,
     },
+    {
+      name: 'docker镜像公益(自用调试)',
+      content: 'docker镜像公益(自用调试)',
+      path: '/docker-view/index',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:1,
+      status: 1,
+    },
     // {
     //   name: '任务面板',
     //   content: '查看和管理当前任务',
