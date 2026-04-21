@@ -36,8 +36,10 @@
                       <p>{{ item.content }}</p>
                     </div>
                     <div class="card-footer">
-                      <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>
-                      <span class="date">⏳ {{ item.updateTime }}</span>
+<!--                      <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>-->
+                      <span v-if="item?.apiConfig?.countNumber">调用次数: {{ item?.apiConfig?.countNumber }}</span>
+                      <span v-else>调用次数: 0</span>
+                      <span class="date">⏳ {{ item?.apiConfig?.updateTime ?? item.updateTime }}</span>
                     </div>
                   </div>
                 </el-col>
@@ -186,88 +188,7 @@ const option = ref({
       jumpType:2,
       status: 1,
     },
-    {
-      name: 'redis公益',
-      content: 'redis公益',
-      path: '/redis-view/index',
-      // 1vue路由跳转,  2路径跳转
-      jumpType:1,
-      status: 1,
-    },
-    {
-      name: 'mysql公益',
-      content: 'mysql公益',
-      path: '/mysql-view/index',
-      // 1vue路由跳转,  2路径跳转
-      jumpType:1,
-      status: 1,
-    },
-    {
-      name: 'mariadb公益(mariadb为mysql的分支)',
-      content: 'mariadb公益(mariadb为mysql的分支)',
-      path: '/mariadb-view/index',
-      // 1vue路由跳转,  2路径跳转
-      jumpType:1,
-      status: 1,
-    },
-    {
-      name: 'sql-server公益(已弃用)',
-      content: 'sql-server公益(已弃用)',
-      path: '/sql-server-view/index',
-      // 1vue路由跳转,  2路径跳转
-      jumpType:1,
-      status: 1,
-    },
-    {
-      name: 'mongodb公益',
-      content: 'mongodb公益',
-      path: '/mongodb-view/index',
-      // 1vue路由跳转,  2路径跳转
-      jumpType:1,
-      status: 1,
-    },
-    {
-      name: 'postgresql公益',
-      content: 'postgresql公益',
-      path: '/postgresql-view/index',
-      // 1vue路由跳转,  2路径跳转
-      jumpType:1,
-      status: 1,
-    },
-    {
-      name: '达梦8公益(测试版)',
-      content: '达梦8公益(测试版)',
-      path: '/dm-view/index',
-      // 1vue路由跳转,  2路径跳转
-      jumpType:1,
-      status: 1,
-    },
-    {
-      name: 'docker镜像公益(自用调试)',
-      content: 'docker镜像公益(自用调试)',
-      path: '/docker-view/index',
-      // 1vue路由跳转,  2路径跳转
-      jumpType:1,
-      status: 1,
-    },
-    // {
-    //   name: '任务面板',
-    //   content: '查看和管理当前任务',
-    //   path: '/tasks',
-    //   status: 2,
-    // },
-    // {
-    //   name: '图表统计',
-    //   content: '访问系统分析图表',
-    //   path: '/charts',
-    //   status: 2,
-    // },
-    // {
-    //   name: '设置中心',
-    //   content: '系统参数与功能配置',
-    //   path: '/settings',
-    //   status: 2,
-    // }
+
   ]
 });
 const goPath = (item) => {
@@ -284,39 +205,39 @@ onMounted(() => {
   getSponsorList();
 
 
-// 弹出公告
-  ElNotification({
-    title: '⚡ API 重生计划启动！',
-    message: `
-    <div>
-      <hr style="margin: 8px 0;" />
-      <p><strong>😼 本次复仇计划更新：</strong></p>
-      <ul style="margin: 6px 0; padding-left: 18px;">
-        <li>🔥 上一世任人调戏的接口，这一世加上了更严格的校验！</li>
-        <li>⚔️ 限流器已出鞘：想狂刷？除非你能打赢 429！</li>
-        <li>🛡️ JSON 强制规范：格式乱给？这一世我不会再原谅你！</li>
-      </ul>
-      <hr style="margin: 8px 0;" />
-      <p><strong>📜 API 复仇宣言：</strong></p>
-      <p style="line-height: 1.6;">
-        上一世我默默无闻，如 404 寒风中瑟瑟发抖；<br />
-        这一世我重启人生，誓做全网最稳定的 200！<br />
-        凡调用我者，皆需尊重；凡冒犯我者，日志永久留档！🔥
-      </p>
-      <hr style="margin: 8px 0;" />
-      <p><strong>📬 联系我们：</strong></p>
-      <p>如遇问题，加我进群 <el-tag>wx: whoAmI1172576293</el-tag> 聆听我的复仇计划。我们会温柔处理，不会 429 你 🙂</p>
-      <p style="margin-top: 8px;">感谢你的使用与陪伴，复仇之路因你更精彩！🎉</p>
-    </div>
-  `,
-    dangerouslyUseHTMLString: true,
-    type: 'success',
-    duration: 9000,
-    position: 'top-right',
-    offset: 80,
-    showClose: true,
-    customClass: 'custom-notify-box'
-  })
+// // 弹出公告
+//   ElNotification({
+//     title: '⚡ API 重生计划启动！',
+//     message: `
+//     <div>
+//       <hr style="margin: 8px 0;" />
+//       <p><strong>😼 本次复仇计划更新：</strong></p>
+//       <ul style="margin: 6px 0; padding-left: 18px;">
+//         <li>🔥 上一世任人调戏的接口，这一世加上了更严格的校验！</li>
+//         <li>⚔️ 限流器已出鞘：想狂刷？除非你能打赢 429！</li>
+//         <li>🛡️ JSON 强制规范：格式乱给？这一世我不会再原谅你！</li>
+//       </ul>
+//       <hr style="margin: 8px 0;" />
+//       <p><strong>📜 API 复仇宣言：</strong></p>
+//       <p style="line-height: 1.6;">
+//         上一世我默默无闻，如 404 寒风中瑟瑟发抖；<br />
+//         这一世我重启人生，誓做全网最稳定的 200！<br />
+//         凡调用我者，皆需尊重；凡冒犯我者，日志永久留档！🔥
+//       </p>
+//       <hr style="margin: 8px 0;" />
+//       <p><strong>📬 联系我们：</strong></p>
+//       <p>如遇问题，加我进群 <el-tag>wx: whoAmI1172576293</el-tag> 聆听我的复仇计划。我们会温柔处理，不会 429 你 🙂</p>
+//       <p style="margin-top: 8px;">感谢你的使用与陪伴，复仇之路因你更精彩！🎉</p>
+//     </div>
+//   `,
+//     dangerouslyUseHTMLString: true,
+//     type: 'success',
+//     duration: 9000,
+//     position: 'top-right',
+//     offset: 80,
+//     showClose: true,
+//     customClass: 'custom-notify-box'
+//   })
 
 });
 // 输入框回车事件

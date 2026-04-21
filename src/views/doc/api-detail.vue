@@ -23,6 +23,10 @@
         <el-descriptions-item label="返回格式">
           <el-tag type="info">{{ apiInfo.responseType }}</el-tag>
         </el-descriptions-item>
+        <el-descriptions-item label="调用次数">
+          <el-tag type="success" v-if="apiInfo?.apiConfig?.countNumber">{{ apiInfo.apiConfig.countNumber }}</el-tag>
+          <el-tag v-else>0</el-tag>
+        </el-descriptions-item>
       </el-descriptions>
     </el-card>
 
