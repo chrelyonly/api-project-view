@@ -268,17 +268,12 @@
         <el-table-column show-overflow-tooltip prop="createTime" label="调用时间" align="center"></el-table-column>
         <el-table-column show-overflow-tooltip prop="responseBody" label="响应结果" align="center">
           <template #default="{row}">
-            <div v-if="row && row.responseBody?.code === 200">
-              <el-image style="width: 50px;height: 50px" :src="row.responseBody.data" :preview-src-list="[row.responseBody.data]" preview-teleported></el-image>
+            <div v-if="row && row.requestStatus === '200'">
+               成功请求不展示资源
             </div>
             <div v-else>
               {{row.responseBody}}
             </div>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip label="操作" align="center">
-          <template #default="{row}">
-            <el-button type="text" @click="copyImage(row.responseBody.data)">复制内容</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -336,9 +331,6 @@ const loadHistory = () => {
   }
   $https("/view-api/api-history","post",params,2,{}).then( res => {
     let data = res.data.data.records;
-    data.forEach( item => {
-      item.responseBody = JSON.parse(item.responseBody)
-    })
     historyList.value = data
   }).finally( ()=> {
     historyLoading.value = false

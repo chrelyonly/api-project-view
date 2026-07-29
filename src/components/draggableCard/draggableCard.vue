@@ -44,6 +44,7 @@
 
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
+import {ElNotification} from "element-plus";
 
 const blocks = ref([])
 const newText = ref('')
