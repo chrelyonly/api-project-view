@@ -268,7 +268,7 @@
         <el-table-column show-overflow-tooltip prop="createTime" label="调用时间" align="center"></el-table-column>
         <el-table-column show-overflow-tooltip prop="responseBody" label="响应结果" align="center">
           <template #default="{row}">
-            <div v-if="row && row.responseBody.code === 200">
+            <div v-if="row && row.responseBody?.code === 200">
               <el-image style="width: 50px;height: 50px" :src="row.responseBody.data" :preview-src-list="[row.responseBody.data]" preview-teleported></el-image>
             </div>
             <div v-else>
