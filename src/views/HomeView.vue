@@ -2,6 +2,34 @@
   <!--        顶部预留空间 -->
   <div style="height: 20vh"></div>
       <div class="container">
+        <!-- 功能导航 -->
+        <el-card class="wrapper animate__animated animate__fadeInUp">
+          <h2 class="title">🔧 功能导航</h2>
+          <el-row :gutter="20">
+            <el-col
+                v-for="(item, index) in option.featureList"
+                :key="index"
+                :xs="24"
+                :sm="12"
+                :md="8"
+                :lg="6"
+                style="margin-top: 10px"
+            >
+              <div class="card animate__animated animate__fadeIn" @click="goPath(item)">
+                <div class="card-header">
+                  <h3>{{ item.name }}</h3>
+                </div>
+                <div class="card-body">
+                  <p>{{ item.content }}</p>
+                </div>
+                <div class="card-footer">
+                  <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>
+                  <span class="date">⏳ {{ item.updateTime }}</span>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </el-card>
             <!-- API 列表 -->
             <el-card class="wrapper animate__animated animate__fadeInUp" >
               <h2 class="title">🚀 API 接口</h2>
@@ -91,34 +119,7 @@
                 </el-col>
               </el-row>
             </el-card>
-        <!-- 功能导航 -->
-        <el-card class="wrapper animate__animated animate__fadeInUp">
-          <h2 class="title">🔧 功能导航</h2>
-          <el-row :gutter="20">
-            <el-col
-                v-for="(item, index) in option.featureList"
-                :key="index"
-                :xs="24"
-                :sm="12"
-                :md="8"
-                :lg="6"
-                style="margin-top: 10px"
-            >
-              <div class="card animate__animated animate__fadeIn" @click="goPath(item)">
-                <div class="card-header">
-                  <h3>{{ item.name }}</h3>
-                </div>
-                <div class="card-body">
-                  <p>{{ item.content }}</p>
-                </div>
-                <div class="card-footer">
-                  <span class="status">{{ item.status === 1 ? '🟢 正常' : '🔴 异常' }}</span>
-                  <span class="date">⏳ {{ item.updateTime }}</span>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-        </el-card>
+
 
             <!-- 服务监控 -->
 <!--            <el-card class="wrapper animate__animated animate__fadeInUp">-->
@@ -181,9 +182,81 @@ const option = ref({
   sponsorData: [],
   featureList: [
     {
-      name: '头像表情包制作',
+      name: '创意头像表情包制作',
       content: '头像表情包制作',
       path: '/emoji-app',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '都来给我听音乐',
+      content: '你听不听啊',
+      path: 'https://music-app.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '自签ssl证书',
+      content: '草莓也在用的ssl签名工具',
+      path: 'https://sign-ssl.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '安卓签名证书',
+      content: '草莓也在用的安卓签名工具',
+      path: 'https://sign-android.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '论坛',
+      content: '你来评论看看',
+      path: 'https://bbs.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '自用图床',
+      content: '通过minio搭建,定时7天删除',
+      path: 'https://image-hosting.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: 'oauth2授权中心',
+      content: 'oauth2授权中心通用',
+      path: 'https://oauth2.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '浏览器自动化API',
+      content: '进群研究吧',
+      path: 'https://chrome-api.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: 'docker镜像库',
+      content: 'docker镜像库,',
+      path: 'https://docker.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '更多功能',
+      content: 'AI,镜像站,进群问吧,有些就一个接口',
+      path: '#',
       // 1vue路由跳转,  2路径跳转
       jumpType:2,
       status: 1,
