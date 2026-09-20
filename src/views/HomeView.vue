@@ -239,8 +239,24 @@ const option = ref({
     },
     {
       name: '浏览器自动化API',
-      content: '进群研究吧',
-      path: 'https://chrome-api.chrelyonly.cn',
+      content: '带用户配置文件',
+      path: 'https://docs.apipost.net/docs/detail/6e4132d7a872000?target_id=a84e22db640e1',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '文字转语音',
+      content: '语音合成器',
+      path: 'https://docs.apipost.net/docs/detail/6d449f2cd470000?locale=zh-cn&target_id=140a868932c004',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '莓莓修仙',
+      content: '入我莓灵宗,修一场自在仙途',
+      path: 'https://cultivation.chrelyonly.cn',
       // 1vue路由跳转,  2路径跳转
       jumpType:2,
       status: 1,
@@ -249,6 +265,14 @@ const option = ref({
       name: 'docker镜像库',
       content: 'docker镜像库,',
       path: 'https://docker.chrelyonly.cn',
+      // 1vue路由跳转,  2路径跳转
+      jumpType:2,
+      status: 1,
+    },
+    {
+      name: '自搭建临时邮箱',
+      content: '自搭建临时邮箱,',
+      path: '#',
       // 1vue路由跳转,  2路径跳转
       jumpType:2,
       status: 1,
